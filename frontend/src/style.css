@@ -1437,6 +1437,119 @@ a:focus-visible {
 .dhcp-editor > .ant-alert {
   margin-bottom: 18px;
 }
+.reservation-identity-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.reservation-network-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.reservation-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 16px;
+}
+.reservation-section-heading h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+.reservation-extra-heading > .ant-btn {
+  margin-left: auto;
+}
+.reservation-full-row {
+  grid-column: 1 / -1;
+}
+.reservation-option {
+  padding: 16px 0 0;
+  border-top: 1px solid var(--border);
+}
+.reservation-option-fields {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1.5fr) minmax(0, 1fr) 110px 150px 32px;
+  gap: 12px;
+  align-items: start;
+}
+.reservation-option-fields > .ant-btn {
+  margin-top: 30px;
+}
+.reservation-option-fields .ant-form-item {
+  min-width: 0;
+}
+.reservation-table .ant-table-cell {
+  overflow-wrap: anywhere;
+}
+.reservation-table .ant-table-cell:last-child {
+  white-space: nowrap;
+}
+.reservation-hostname {
+  display: block;
+  overflow-wrap: anywhere;
+}
+.reservation-comment {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+.reservation-setting-value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+}
+.reservation-inherited {
+  color: var(--text-muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.reservation-mobile-settings {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0;
+  font-size: 13px;
+}
+.reservation-mobile-settings > div {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  gap: 8px;
+}
+.reservation-mobile-settings dt {
+  color: var(--text-muted);
+}
+.reservation-mobile-settings dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.reservation-mobile-settings .reservation-inherited {
+  margin-left: 8px;
+}
+.reservation-review {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 1200px) {
+  .reservation-identity-grid,
+  .reservation-network-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .reservation-option-fields {
+    grid-template-columns: 90px minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+@media (max-width: 760px) {
+  .reservation-identity-grid,
+  .reservation-network-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .reservation-option-fields {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .reservation-option-fields > .ant-btn {
+    margin-top: 0;
+    justify-self: end;
+  }
+}
 .config-preview {
   white-space: pre-wrap;
   overflow-wrap: anywhere;

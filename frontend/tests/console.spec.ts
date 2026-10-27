@@ -176,7 +176,7 @@ test("DHCP reservations, subnet lifecycle and HA views", async ({ page }) => {
   ).toBeVisible();
   await page.getByRole("button", { name: "确认同步", exact: true }).click();
   const reservation = page
-    .getByRole("row")
+    .locator(".reservation-table tr[data-row-key]")
     .filter({ hasText: "02:00:00:00:00:ee" });
   await expect(reservation).toContainText("198.51.100.60");
   await reservation.getByRole("button", { name: "编辑保留地址" }).click();

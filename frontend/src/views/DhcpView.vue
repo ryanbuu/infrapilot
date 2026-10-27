@@ -18,6 +18,7 @@ import {
 import { api } from "../api";
 import type { DhcpState, DhcpSubnet, DhcpLease, Reservation } from "../types";
 import HelpHint from "../components/HelpHint.vue";
+import ReservationOptionsForm from "../components/ReservationOptionsForm.vue";
 const { message, modal: Modal } = AntdApp.useApp();
 const props = defineProps<{
   section: "subnets" | "reservations" | "leases" | "ha";
@@ -95,7 +96,7 @@ const filteredReservations = computed(() =>
   reservations.value.filter(
     (r) =>
       (!subnetFilter.value || r.subnetId === subnetFilter.value) &&
-      `${r.mac} ${r.address} ${r.hostname}`
+      `${r.mac} ${r.address} ${r.hostname} ${r.comment} ${r.prefix} ${r.effective?.router} ${r.effective?.dnsServers}`
         .toLowerCase()
         .includes(search.value.toLowerCase()),
   ),
@@ -168,6 +169,80 @@ const reservationForm = reactive({
   mac: "",
   address: "",
   hostname: "",
+  router: "",
+  dnsServers: "",
+  domain: "",
+  searchDomains: "",
+  ntpServers: "",
+  mtu: null as number | string | null,
+  nextServer: "",
+  serverHostname: "",
+  bootFileName: "",
+  clientClasses: [] as string[],
+  comment: "",
+  extraOptions: [] as import("../types").DhcpOption[],
+});
+const selectedReservation = ref<Reservation>();
+const reservationDefaults = computed(() =>
+  selectedReservation.value?.subnetId === reservationForm.subnetId
+    ? selectedReservation.value.inherited
+    : data.value?.subnets.find((s) => s.id === reservationForm.subnetId)
+        ?.reservationDefaults || {},
+);
+const reservationReview = computed(() => {
+  const settings = reservationForm;
+  const network = (key: string, value: string | number | null) =>
+    value || `继承：${reservationDefaults.value[key] || "网络设置"}`;
+  const fields = [
+    { label: "固定 IP", value: settings.address },
+    { label: "MAC 地址", value: settings.mac },
+    { label: "主机名", value: settings.hostname || "未指定" },
+    { label: "网关", value: network("router", settings.router) },
+    { label: "DNS 服务器", value: network("dnsServers", settings.dnsServers) },
+    { label: "域名", value: network("domain", settings.domain) },
+    {
+      label: "搜索域",
+      value: network("searchDomains", settings.searchDomains),
+    },
+    { label: "NTP 服务器", value: network("ntpServers", settings.ntpServers) },
+    { label: "MTU", value: network("mtu", settings.mtu) },
+  ];
+  if (settings.nextServer || selectedReservation.value?.nextServer)
+    fields.push({
+      label: "启动服务器 IP",
+      value: network("nextServer", settings.nextServer),
+    });
+  if (settings.serverHostname || selectedReservation.value?.serverHostname)
+    fields.push({
+      label: "启动服务器名称",
+      value: network("serverHostname", settings.serverHostname),
+    });
+  if (settings.bootFileName || selectedReservation.value?.bootFileName)
+    fields.push({
+      label: "启动文件",
+      value: network("bootFileName", settings.bootFileName),
+    });
+  if (
+    settings.clientClasses.length ||
+    selectedReservation.value?.clientClasses.length
+  )
+    fields.push({
+      label: "客户端分类",
+      value: settings.clientClasses.join(", ") || "清除分类",
+    });
+  if (settings.comment || selectedReservation.value?.comment)
+    fields.push({ label: "备注", value: settings.comment || "清除备注" });
+  if (
+    !settings.extraOptions.length &&
+    selectedReservation.value?.extraOptions.length
+  )
+    fields.push({ label: "附加 DHCP 选项", value: "清除原有附加选项" });
+  for (const option of settings.extraOptions)
+    fields.push({
+      label: `${option.space || "dhcp4"} / ${option.name || option.code}`,
+      value: `${option.data || "（空值）"} · ${option["never-send"] ? "禁止发送" : option["always-send"] ? "始终发送" : "按客户端请求"}`,
+    });
+  return fields;
 });
 function openSubnet(s?: DhcpSubnet) {
   editing.value = !!s;
@@ -190,23 +265,37 @@ function openSubnet(s?: DhcpSubnet) {
 }
 function openReservation(r?: Reservation, subnetId?: number) {
   editing.value = !!r && !!r.editable;
+  selectedReservation.value = r;
   Object.assign(reservationForm, {
     subnetId: subnetId || r?.subnetId || data.value?.subnets[0]?.id || 1,
     mac: r?.mac || "",
     address: r?.address || "",
     hostname: r?.hostname || "",
+    router: r?.router || "",
+    dnsServers: r?.dnsServers || "",
+    domain: r?.domain || "",
+    searchDomains: r?.searchDomains || "",
+    ntpServers: r?.ntpServers || "",
+    mtu: r?.mtu || null,
+    nextServer: r?.nextServer || "",
+    serverHostname: r?.serverHostname || "",
+    bootFileName: r?.bootFileName || "",
+    clientClasses: [...(r?.clientClasses || [])],
+    comment: r?.comment || "",
+    extraOptions: JSON.parse(JSON.stringify(r?.extraOptions || [])).map(
+      (o: import("../types").DhcpOption) => ({ "csv-format": true, ...o }),
+    ),
   });
   open("reservation");
 }
 function reserveLease(l: DhcpLease) {
-  editing.value = false;
+  openReservation(undefined, l.subnetId);
   Object.assign(reservationForm, {
     subnetId: l.subnetId,
     mac: l.mac,
     address: l.address,
     hostname: l.hostname,
   });
-  open("reservation");
 }
 function open(kind: string) {
   editor.value = kind;
@@ -346,11 +435,13 @@ const subnetColumns = [
   { title: "操作", key: "actions", width: 150 },
 ];
 const reservationColumns = [
-  { title: "固定地址", dataIndex: "address", width: 155 },
-  { title: "MAC 地址", dataIndex: "mac", width: 175 },
-  { title: "主机名", dataIndex: "hostname" },
-  { title: "子网", dataIndex: "prefix", width: 170 },
-  { title: "操作", key: "actions", width: 150 },
+  { title: "固定地址", dataIndex: "address", width: "12%" },
+  { title: "MAC 地址", dataIndex: "mac", width: "16%" },
+  { title: "主机名", key: "hostname", width: "14%" },
+  { title: "子网", dataIndex: "prefix", width: "14%" },
+  { title: "网关", key: "router", width: "15%" },
+  { title: "DNS 服务器", key: "dnsServers", width: "21%" },
+  { title: "操作", key: "actions", width: "8%" },
 ];
 const leaseColumns = [
   { title: "IP 地址", dataIndex: "address", width: 150 },
@@ -545,7 +636,7 @@ const leaseColumns = [
             </div>
           </template>
           <template v-else
-            ><div class="dhcp-options-grid">
+            ><div class="dhcp-options-grid reservation-identity-grid">
               <a-form-item label="所属子网" required
                 ><a-select
                   v-model:value="reservationForm.subnetId"
@@ -569,7 +660,17 @@ const leaseColumns = [
                   v-model:value="reservationForm.hostname"
                   aria-label="保留主机名"
               /></a-form-item>
-            </div> </template
+            </div>
+            <ReservationOptionsForm
+              :key="
+                reservationForm.subnetId +
+                '|' +
+                (selectedReservation?.mac || 'new')
+              "
+              :settings="reservationForm"
+              :defaults="reservationDefaults"
+              :client-classes="data.clientClasses || []"
+            /> </template
         ></a-form>
         <template v-else
           ><a-alert message="主备节点配置校验通过" type="info" show-icon
@@ -581,9 +682,23 @@ const leaseColumns = [
           ></a-alert>
           <div class="change-preview">
             <div class="preview-name">待提交变更</div>
-            <pre class="config-preview">{{
+            <pre v-if="editor === 'subnet'" class="config-preview">{{
               JSON.stringify(payload().values, null, 2)
             }}</pre>
+            <a-descriptions
+              v-else
+              :column="mobile ? 1 : 2"
+              bordered
+              size="small"
+              class="reservation-review"
+            >
+              <a-descriptions-item
+                v-for="item in reservationReview"
+                :key="item.label"
+                :label="item.label"
+                >{{ item.value }}</a-descriptions-item
+              >
+            </a-descriptions>
           </div></template
         >
         <div class="editor-footer">
@@ -667,15 +782,47 @@ const leaseColumns = [
         </div>
         <a-table
           :columns="reservationColumns"
+          table-layout="fixed"
+          class="reservation-table"
           :data-source="filteredReservations"
           :row-key="
             (r: Reservation) => r.subnetId + '|' + r.mac + '|' + r.address
           "
-          :scroll="{ x: 900 }"
+          :scroll="{ x: 1100 }"
           size="middle"
           :pagination="{ pageSize: 12 }"
-          ><template #bodyCell="{ column, record }"
-            ><template v-if="column.key === 'actions'"
+          ><template #headerCell="{ column }"
+            ><span
+              v-if="['router', 'dnsServers'].includes(column.key)"
+              class="section-label"
+              >{{ column.title
+              }}<HelpHint
+                :label="column.title + '列表说明'"
+                text="显示此设备的配置值；未单独指定时继承所属网络的设置。条件分类策略由服务端在客户端请求时决定。" /></span
+            ><span v-else>{{ column.title }}</span></template
+          >
+          <template #bodyCell="{ column, record }"
+            ><template v-if="column.key === 'hostname'"
+              ><span class="reservation-hostname">{{
+                record.hostname || "—"
+              }}</span
+              ><a-tooltip v-if="record.comment" :title="record.comment"
+                ><div class="reservation-comment">
+                  {{ record.comment }}
+                </div></a-tooltip
+              ></template
+            >
+            <template v-else-if="['router', 'dnsServers'].includes(column.key)"
+              ><div class="reservation-setting-value">
+                <span>{{ record.effective?.[column.key] || "—" }}</span
+                ><a-tooltip
+                  v-if="!record[column.key]"
+                  title="继承所属网络的设置"
+                  ><span class="reservation-inherited">继承</span></a-tooltip
+                >
+              </div></template
+            >
+            <template v-else-if="column.key === 'actions'"
               ><a-button
                 type="link"
                 size="small"
@@ -882,6 +1029,27 @@ const leaseColumns = [
             <p class="record-fqdn">
               {{ r.hostname || "未提供主机名" }} · {{ r.prefix }}
             </p>
+            <dl class="reservation-mobile-settings">
+              <div>
+                <dt>网关</dt>
+                <dd>
+                  {{ r.effective?.router || "—"
+                  }}<span v-if="!r.router" class="reservation-inherited"
+                    >继承</span
+                  >
+                </dd>
+              </div>
+              <div>
+                <dt>DNS</dt>
+                <dd>
+                  {{ r.effective?.dnsServers || "—"
+                  }}<span v-if="!r.dnsServers" class="reservation-inherited"
+                    >继承</span
+                  >
+                </dd>
+              </div>
+            </dl>
+            <p v-if="r.comment" class="record-fqdn">{{ r.comment }}</p>
             <div class="row-actions">
               <a-button
                 type="link"

@@ -16,11 +16,13 @@ public class DhcpService {
   private final KeaClient client;
   private final ObjectMapper mapper;
   private final AuditService audit;
+  private final ReservationSettings reservationSettings;
 
   public DhcpService(KeaClient c, ObjectMapper m, AuditService a) {
     client = c;
     mapper = m;
     audit = a;
+    reservationSettings = new ReservationSettings(m);
   }
 
   public record Change(String revision, int subnetId, JsonNode values) {}
@@ -183,12 +185,8 @@ public class DhcpService {
     for (var p : s.path("pools")) pools.add(p.path("pool").asText());
     ArrayNode reservations = v.putArray("reservations");
     for (var r : s.path("reservations"))
-      reservations.add(
-          obj()
-              .put("mac", r.path("hw-address").asText())
-              .put("address", r.path("ip-address").asText())
-              .put("hostname", r.path("hostname").asText())
-              .put("editable", r.has("hw-address")));
+      reservations.add(reservationSettings.view(cfg, s, r));
+    v.set("reservationDefaults", reservationSettings.view(cfg, s, obj()).path("inherited"));
     return v;
   }
 
@@ -213,6 +211,9 @@ public class DhcpService {
     if (!s.configs().isEmpty()) {
       ObjectNode cfg = s.configs().values().iterator().next();
       for (var sub : subnets(cfg)) subnetViews.add(subnetView(cfg, sub));
+      ArrayNode classes = out.putArray("clientClasses");
+      for (JsonNode c : cfg.path("Dhcp4").path("client-classes"))
+        classes.add(c.path("name").asText());
     }
     Map<String, ObjectNode> merged = new TreeMap<>();
     for (var e : s.leases().entrySet())
@@ -413,6 +414,7 @@ public class DhcpService {
     domain(hostname);
     ObjectNode r = old == null ? obj() : old;
     r.put("hw-address", mac).put("ip-address", address).put("hostname", hostname);
+    reservationSettings.patch(r, values, s);
     reservations.add(r);
   }
 

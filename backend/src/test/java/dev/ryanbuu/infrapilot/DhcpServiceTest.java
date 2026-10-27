@@ -202,4 +202,145 @@ class DhcpServiceTest {
     assertThat(client.commands).contains("kea1:lease4-del", "kea2:lease4-del");
     verify(audit).finish(0, "SUCCESS", "两台租约已释放，已请求清理 DDNS");
   }
+
+  ObjectNode host(String node) {
+    JsonNode cfg = client.call(node, "config-get", null).path("arguments").path("Dhcp4");
+    for (JsonNode r : cfg.path("subnet4").get(0).path("reservations"))
+      if (r.path("hw-address").asText().equals("02:00:00:00:00:ee")) return (ObjectNode) r;
+    throw new AssertionError("Reservation not found");
+  }
+
+  void saveReservation(ObjectNode values) {
+    service.change("reservation-save", change(service.view().path("revision").asText(), 1, values), "admin", false);
+  }
+
+  JsonNode hostOption(JsonNode host, int code) {
+    for (JsonNode option : host.path("option-data"))
+      if (option.path("space").asText("dhcp4").equals("dhcp4") && option.path("code").asInt() == code) return option;
+    return mapper.nullNode();
+  }
+
+  @Test
+  void hostNetworkAndBootOverridesPersistOnBothNodesAndClearBackToInheritance() {
+    ObjectNode values = reservation("02:00:00:00:00:ee", "198.51.100.60")
+        .put("router", "198.51.100.2").put("dnsServers", "192.0.2.20,192.0.2.21")
+        .put("domain", "devices.example.com").put("searchDomains", "devices.example.com,example.com")
+        .put("ntpServers", "192.0.2.30").put("mtu", 1450)
+        .put("nextServer", "192.0.2.40").put("serverHostname", "boot.example.com")
+        .put("bootFileName", "ipxe.efi").put("comment", "办公打印机");
+    values.putArray("clientClasses").add("printer");
+    values.putArray("extraOptions").addObject().put("code", 66).put("data", "boot.example.com")
+        .put("always-send", true);
+    service.change("reservation-save", change(service.view().path("revision").asText(), 1, values), "admin", true);
+    assertThat(service.view().path("subnets").get(0).path("reservations").size()).isEqualTo(1);
+    saveReservation(values);
+    for (String node : List.of("kea1", "kea2")) {
+      JsonNode r = host(node);
+      assertThat(hostOption(r, 3).path("data").asText()).isEqualTo("198.51.100.2");
+      assertThat(hostOption(r, 6).path("data").asText()).isEqualTo("192.0.2.20, 192.0.2.21");
+      assertThat(hostOption(r, 26).path("data").asText()).isEqualTo("1450");
+      assertThat(hostOption(r, 66).path("always-send").asBoolean()).isTrue();
+      assertThat(r.path("next-server").asText()).isEqualTo("192.0.2.40");
+      assertThat(r.path("client-classes").get(0).asText()).isEqualTo("printer");
+      assertThat(r.path("user-context").path("comment").asText()).isEqualTo("办公打印机");
+    }
+    JsonNode rendered = service.view().path("subnets").get(0).path("reservations").get(1);
+    assertThat(rendered.path("effective").path("dnsServers").asText()).isEqualTo("192.0.2.20, 192.0.2.21");
+    assertThat(rendered.path("inherited").path("dnsServers").asText()).isEqualTo("192.0.2.10, 192.0.2.11");
+    values.put("router", "").put("dnsServers", "").putNull("mtu");
+    values.put("nextServer", "").put("serverHostname", "").put("bootFileName", "");
+    values.putArray("clientClasses");
+    saveReservation(values);
+    rendered = service.view().path("subnets").get(0).path("reservations").get(1);
+    assertThat(rendered.path("router").asText()).isEmpty();
+    assertThat(rendered.path("effective").path("router").asText()).isEqualTo("198.51.100.1");
+    for (String node : List.of("kea1", "kea2")) {
+      assertThat(hostOption(host(node), 3).isNull()).isTrue();
+      assertThat(host(node).has("next-server")).isFalse();
+      assertThat(host(node).has("client-classes")).isFalse();
+    }
+  }
+
+  @Test
+  void partialHostEditsRetainVendorOptionsClassificationsAndPrivateMetadata() {
+    saveReservation(reservation("02:00:00:00:00:ee", "198.51.100.60"));
+    for (String node : List.of("kea1", "kea2")) {
+      ObjectNode cfg = (ObjectNode) client.call(node, "config-get", null).path("arguments").deepCopy();
+      ObjectNode r = (ObjectNode) cfg.path("Dhcp4").path("subnet4").get(0).path("reservations").get(1);
+      r.put("next-server", "192.0.2.40").putArray("client-classes").add("existing-device");
+      r.putObject("user-context").put("inventory-id", "retained").put("comment", "before");
+      r.putArray("option-data").addObject().put("code", 6).put("data", "192.0.2.20").put("always-send", true);
+      r.withArray("option-data").addObject().put("space", "vendor-4491").put("code", 1).put("data", "01:02").put("csv-format", false);
+      client.call(node, "config-set", cfg);
+    }
+    saveReservation(reservation("02:00:00:00:00:ee", "198.51.100.60").put("dnsServers", "192.0.2.21").put("comment", "after"));
+    for (String node : List.of("kea1", "kea2")) {
+      JsonNode r = host(node);
+      assertThat(hostOption(r, 6).path("always-send").asBoolean()).isTrue();
+      assertThat(r.path("option-data").get(0).path("space").asText()).isEqualTo("vendor-4491");
+      assertThat(r.path("option-data").get(0).path("csv-format").asBoolean()).isFalse();
+      assertThat(r.path("next-server").asText()).isEqualTo("192.0.2.40");
+      assertThat(r.path("client-classes").get(0).asText()).isEqualTo("existing-device");
+      assertThat(r.path("user-context").path("inventory-id").asText()).isEqualTo("retained");
+    }
+  }
+
+  @Test
+  void displaysPoolSubnetAndGlobalInheritanceWithoutInventingHostOverrides() {
+    for (String node : List.of("kea1", "kea2")) {
+      ObjectNode cfg = (ObjectNode) client.call(node, "config-get", null).path("arguments").deepCopy();
+      ObjectNode global = (ObjectNode) cfg.path("Dhcp4");
+      global.putArray("option-data").addObject().put("code", 42).put("data", "192.0.2.42");
+      ObjectNode s = (ObjectNode) global.path("subnet4").get(0);
+      ((ObjectNode) s.path("pools").get(0)).putArray("option-data").addObject().put("code", 6).put("data", "192.0.2.99");
+      s.withArray("reservations").addObject().put("hw-address", "02:00:00:00:00:ee").put("ip-address", "198.51.100.120");
+      client.call(node, "config-set", cfg);
+    }
+    JsonNode r = service.view().path("subnets").get(0).path("reservations").get(1);
+    assertThat(r.path("dnsServers").asText()).isEmpty();
+    assertThat(r.path("effective").path("dnsServers").asText()).isEqualTo("192.0.2.99");
+    assertThat(r.path("inherited").path("router").asText()).isEqualTo("198.51.100.1");
+    assertThat(r.path("inherited").path("ntpServers").asText()).isEqualTo("192.0.2.42");
+  }
+
+  @Test
+  void invalidHostSettingsAreRejectedBeforeAnyConfigurationWrite() {
+    List<ObjectNode> invalid = List.of(
+        mapper.createObjectNode().put("router", "203.0.113.1"),
+        mapper.createObjectNode().put("dnsServers", "256.1.1.1"),
+        mapper.createObjectNode().put("dnsServers", "192.0.2.1,,192.0.2.2"),
+        mapper.createObjectNode().put("domain", "bad domain"),
+        mapper.createObjectNode().put("searchDomains", "good.example,bad domain"),
+        mapper.createObjectNode().put("ntpServers", "time.example.com"),
+        mapper.createObjectNode().put("mtu", 65536),
+        mapper.createObjectNode().put("mtu", 1.5),
+        mapper.createObjectNode().put("nextServer", "::1"),
+        mapper.createObjectNode().put("serverHostname", "x".repeat(65)),
+        mapper.createObjectNode().put("bootFileName", "\u4e2d".repeat(43)),
+        mapper.createObjectNode().put("clientClasses", "not-an-array"));
+    String revision = service.view().path("revision").asText();
+    for (ObjectNode patch : invalid) {
+      ObjectNode values = reservation("02:00:00:00:00:ee", "198.51.100.60");
+      values.setAll(patch);
+      assertThatThrownBy(() -> service.change("reservation-save", change(revision, 1, values), "admin", false))
+          .as(patch.toString()).isInstanceOfSatisfying(ApiException.class, e -> assertThat(e.status().value()).isEqualTo(400));
+    }
+    assertThat(client.commands).doesNotContain("kea1:config-set", "kea2:config-set");
+  }
+
+  @Test
+  void extraOptionsCannotShadowManagedFieldsOrDuplicateOptions() {
+    for (int mode = 0; mode < 3; mode++) {
+      ObjectNode values = reservation("02:00:00:00:00:ee", "198.51.100.60");
+      ArrayNode options = values.putArray("extraOptions");
+      if (mode == 0) options.addObject().put("code", 6).put("data", "192.0.2.10");
+      if (mode == 1) {
+        options.addObject().put("code", 66).put("data", "a");
+        options.addObject().put("code", 66).put("data", "b");
+      }
+      if (mode == 2) options.addObject().put("code", 66).put("data", "a").put("always-send", true).put("never-send", true);
+      assertThatThrownBy(() -> saveReservation(values)).isInstanceOf(ApiException.class);
+    }
+    assertThat(client.commands).doesNotContain("kea1:config-set", "kea2:config-set");
+  }
 }

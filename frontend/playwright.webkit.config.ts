@@ -8,6 +8,7 @@ export default defineConfig({
     "gateway.spec.ts",
     "forwarding.spec.ts",
     "bind.spec.ts",
+    "reservations.spec.ts",
   ],
   outputDir: "test-results/webkit",
   use: {
