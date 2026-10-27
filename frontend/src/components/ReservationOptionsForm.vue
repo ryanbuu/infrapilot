@@ -8,6 +8,8 @@ const props = defineProps<{
   settings: ReservationSettings;
   defaults: Record<string, string>;
   clientClasses: string[];
+  serverDomain: string;
+  staticDnsAvailable: boolean;
 }>();
 const networkFields = [
   {
@@ -71,6 +73,22 @@ function optionCode(option: DhcpOption, value: number | null) {
 </script>
 
 <template>
+  <a-form-item>
+    <template #label
+      ><span class="section-label"
+        >DNS 维护方式<HelpHint
+          label="DNS 维护方式说明"
+          :text="`静态维护用于服务器名称，使用 ${serverDomain || '主区域'}，解析记录通过 DNS 页面维护；动态注册沿用所属网络的自动注册策略。保留地址用于固定分配或避免冲突，不代表客户端当前一定使用 DHCP。`" /></span
+    ></template>
+    <a-radio-group
+      v-model:value="settings.dnsMode"
+      aria-label="DNS 维护方式"
+      :options="[
+        { value: 'static', label: '静态维护', disabled: !staticDnsAvailable },
+        { value: 'dynamic', label: '动态注册' },
+      ]"
+    />
+  </a-form-item>
   <div class="reservation-section-heading">
     <h3>网络设置</h3>
     <HelpHint

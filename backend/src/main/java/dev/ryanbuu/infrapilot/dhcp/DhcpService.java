@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.*;
 import com.fasterxml.jackson.databind.node.*;
 import dev.ryanbuu.infrapilot.api.ApiException;
 import dev.ryanbuu.infrapilot.audit.AuditService;
+import dev.ryanbuu.infrapilot.config.InfraPilotProperties;
 import java.security.*;
 import java.time.*;
 import java.util.*;
@@ -17,12 +18,14 @@ public class DhcpService {
   private final ObjectMapper mapper;
   private final AuditService audit;
   private final ReservationSettings reservationSettings;
+  private final ReservationDnsPolicy dnsPolicy;
 
-  public DhcpService(KeaClient c, ObjectMapper m, AuditService a) {
+  public DhcpService(KeaClient c, ObjectMapper m, AuditService a, InfraPilotProperties properties) {
     client = c;
     mapper = m;
     audit = a;
     reservationSettings = new ReservationSettings(m);
+    dnsPolicy = new ReservationDnsPolicy(properties);
   }
 
   public record Change(String revision, int subnetId, JsonNode values) {}
@@ -185,7 +188,7 @@ public class DhcpService {
     for (var p : s.path("pools")) pools.add(p.path("pool").asText());
     ArrayNode reservations = v.putArray("reservations");
     for (var r : s.path("reservations"))
-      reservations.add(reservationSettings.view(cfg, s, r));
+      reservations.add(dnsPolicy.decorate(reservationSettings.view(cfg, s, r), r));
     v.set("reservationDefaults", reservationSettings.view(cfg, s, obj()).path("inherited"));
     return v;
   }
@@ -205,7 +208,9 @@ public class DhcpService {
             .put("enabled", client.enabled())
             .put("revision", s.revision())
             .put("aligned", s.aligned())
-            .put("writable", writable(s));
+            .put("writable", writable(s))
+            .put("serverDomain", dnsPolicy.domain())
+            .put("staticDnsAvailable", s.configs().size() == 2 && s.configs().values().stream().allMatch(dnsPolicy::available));
     out.set("nodes", mapper.valueToTree(s.nodes()));
     ArrayNode subnetViews = out.putArray("subnets");
     if (!s.configs().isEmpty()) {
@@ -213,7 +218,7 @@ public class DhcpService {
       for (var sub : subnets(cfg)) subnetViews.add(subnetView(cfg, sub));
       ArrayNode classes = out.putArray("clientClasses");
       for (JsonNode c : cfg.path("Dhcp4").path("client-classes"))
-        classes.add(c.path("name").asText());
+        if (!c.path("name").asText().equals(ReservationDnsPolicy.SKIP)) classes.add(c.path("name").asText());
     }
     Map<String, ObjectNode> merged = new TreeMap<>();
     for (var e : s.leases().entrySet())
@@ -235,6 +240,15 @@ public class DhcpService {
                   .put("ddnsReverse", l.path("fqdn-rev").asBoolean())
                   .put("revision", hash(leaseCopies(s, ip)));
           v.putArray("seenOn");
+          JsonNode reservation = reservation(s, l);
+          v.put("reserved", reservation != null);
+          if (reservation != null) {
+            v.put("reservationAddress", reservation.path("ip-address").asText());
+            v.put("reservationDnsMode", dnsPolicy.isStatic(reservation) ? "static" : "dynamic");
+            v.put("reservationFqdn", dnsPolicy.isStatic(reservation)
+                ? reservation.path("hostname").asText().replaceAll("\\.$", "") : "");
+            v.put("reservationEditable", reservation.has("hw-address"));
+          }
           merged.put(ip, v);
         }
         v.withArray("seenOn").add(e.getKey());
@@ -380,7 +394,7 @@ public class DhcpService {
       return;
     }
     if (s == null) throw new ApiException(NOT_FOUND, "子网不存在");
-    if (!Set.of("reservation-save", "reservation-delete").contains(operation))
+    if (!Set.of("reservation-save", "reservation-create", "reservation-delete").contains(operation))
       throw bad("不支持的配置操作");
     String mac = values.path("mac").asText().toLowerCase(Locale.ROOT);
     if (!mac.matches("[0-9a-f]{2}(:[0-9a-f]{2}){5}")
@@ -397,6 +411,10 @@ public class DhcpService {
       if (old == null) throw new ApiException(NOT_FOUND, "保留地址不存在");
       return;
     }
+    if (operation.equals("reservation-create") && old != null)
+      throw new ApiException(CONFLICT, "此 MAC 在该子网已有保留地址，请编辑现有记录");
+    String dnsMode = values.has("dnsMode") ? values.path("dnsMode").asText()
+        : dnsPolicy.isStatic(old) ? "static" : "dynamic";
     String address = values.path("address").asText();
     long[] net = network(s.path("subnet").asText());
     long a = ip(address);
@@ -415,6 +433,7 @@ public class DhcpService {
     ObjectNode r = old == null ? obj() : old;
     r.put("hw-address", mac).put("ip-address", address).put("hostname", hostname);
     reservationSettings.patch(r, values, s);
+    dnsPolicy.patch(r, cfg, dnsMode);
     reservations.add(r);
   }
 
@@ -456,14 +475,16 @@ public class DhcpService {
       }
     } catch (Exception e) {
       boolean restored = true;
-      for (String node : attempted)
+      List<String> recoveryOrder = new ArrayList<>(attempted);
+      Collections.reverse(recoveryOrder);
+      for (String node : recoveryOrder)
         try {
           ObjectNode current = config(node);
-          if (current.equals(before.configs().get(node))) continue;
-          if (!current.equals(after.get(node))) {
+          if (!current.equals(before.configs().get(node)) && !current.equals(after.get(node))) {
             restored = false;
             continue;
           }
+          // Failed hook loading can alter runtime state even if config-get returns the old JSON.
           client.call(node, "config-set", before.configs().get(node));
           client.call(node, "config-write", obj());
         } catch (Exception rollback) {
@@ -493,10 +514,12 @@ public class DhcpService {
     JsonNode copies = leaseCopies(s, a.address());
     if (copies.isEmpty()) throw new ApiException(NOT_FOUND, "租约不存在");
     String mac = copies.elements().next().path("hw-address").asText();
+    boolean staticDns = dnsPolicy.isStatic(reservation(s, copies.elements().next()));
     for (JsonNode copy : copies)
       if (!copy.path("hw-address").asText().equals(mac))
         throw new ApiException(CONFLICT, "两台节点的租约客户端不一致，请先检查 HA");
     if (a.action().equals("resend-ddns")) {
+      if (staticDns) throw bad("此设备使用静态 DNS 维护，无需重发动态注册");
       JsonNode lease = copies.elements().next();
       if (!active(lease) || lease.path("hostname").asText().isBlank())
         throw bad("只有具备主机名的有效租约才能重发 DNS 更新");
@@ -516,7 +539,7 @@ public class DhcpService {
       for (String node : s.configs().keySet()) {
         if (a.action().equals("resend-ddns") && index > 0) break;
         ObjectNode args = obj().put("ip-address", a.address());
-        if (a.action().equals("release")) args.put("update-ddns", index == 0);
+        if (a.action().equals("release")) args.put("update-ddns", index == 0 && !staticDns);
         client.call(node, a.action().equals("release") ? "lease4-del" : "lease4-resend-ddns", args);
         index++;
       }
@@ -525,7 +548,18 @@ public class DhcpService {
       throw new ApiException(SERVICE_UNAVAILABLE, "租约操作结果未确认，请查看审计，不要重复提交");
     }
     audit.finish(
-        id, "SUCCESS", a.action().equals("release") ? "两台租约已释放，已请求清理 DDNS" : "已请求重发动态 DNS 更新");
+        id, "SUCCESS", a.action().equals("release") ? staticDns
+            ? "两台租约已释放，静态 DNS 记录保留" : "两台租约已释放，已请求清理 DDNS" : "已请求重发动态 DNS 更新");
     return Map.of("auditId", id);
+  }
+
+  private JsonNode reservation(Snapshot snapshot, JsonNode lease) {
+    String mac = lease.path("hw-address").asText();
+    if (mac.isBlank() || snapshot.configs().isEmpty()) return null;
+    ObjectNode subnet = subnet(snapshot.configs().values().iterator().next(), lease.path("subnet-id").asInt());
+    if (subnet == null) return null;
+    for (JsonNode host : subnet.path("reservations"))
+      if (host.path("hw-address").asText().equalsIgnoreCase(mac)) return host;
+    return null;
   }
 }

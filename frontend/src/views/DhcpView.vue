@@ -108,7 +108,7 @@ const filteredLeases = computed(
         (l) =>
           (!subnetFilter.value || l.subnetId === subnetFilter.value) &&
           (!activeOnly.value || l.active) &&
-          `${l.address} ${l.mac} ${l.hostname}`
+          `${l.address} ${l.mac} ${l.hostname} ${l.reservationFqdn || ""}`
             .toLowerCase()
             .includes(search.value.toLowerCase()),
       )
@@ -165,6 +165,7 @@ const subnetForm = reactive({
   validLifetime: 7200,
 });
 const reservationForm = reactive({
+  dnsMode: "dynamic" as "static" | "dynamic",
   subnetId: 1,
   mac: "",
   address: "",
@@ -197,6 +198,10 @@ const reservationReview = computed(() => {
     { label: "固定 IP", value: settings.address },
     { label: "MAC 地址", value: settings.mac },
     { label: "主机名", value: settings.hostname || "未指定" },
+    {
+      label: "DNS 维护方式",
+      value: settings.dnsMode === "static" ? "静态维护" : "动态注册",
+    },
     { label: "网关", value: network("router", settings.router) },
     { label: "DNS 服务器", value: network("dnsServers", settings.dnsServers) },
     { label: "域名", value: network("domain", settings.domain) },
@@ -267,6 +272,8 @@ function openReservation(r?: Reservation, subnetId?: number) {
   editing.value = !!r && !!r.editable;
   selectedReservation.value = r;
   Object.assign(reservationForm, {
+    dnsMode:
+      r?.dnsMode || (data.value?.staticDnsAvailable ? "static" : "dynamic"),
     subnetId: subnetId || r?.subnetId || data.value?.subnets[0]?.id || 1,
     mac: r?.mac || "",
     address: r?.address || "",
@@ -289,8 +296,22 @@ function openReservation(r?: Reservation, subnetId?: number) {
   open("reservation");
 }
 function reserveLease(l: DhcpLease) {
+  const existing = reservations.value.find(
+    (r) =>
+      r.subnetId === l.subnetId && r.mac.toLowerCase() === l.mac.toLowerCase(),
+  );
+  if (existing) {
+    if (existing.editable) openReservation(existing);
+    return;
+  }
   openReservation(undefined, l.subnetId);
   Object.assign(reservationForm, {
+    dnsMode:
+      l.ddnsForward || l.ddnsReverse
+        ? "dynamic"
+        : data.value?.staticDnsAvailable
+          ? "static"
+          : "dynamic",
     subnetId: l.subnetId,
     mac: l.mac,
     address: l.address,
@@ -330,15 +351,21 @@ function payload() {
         : { ...reservationForm },
   };
 }
+function reservationOperation() {
+  return editor.value === "subnet"
+    ? "subnet-save"
+    : editing.value
+      ? "reservation-save"
+      : "reservation-create";
+}
 async function preview() {
   busy.value = true;
   editError.value = "";
   try {
-    await api(
-      "/dhcp/preview/" +
-        (editor.value === "subnet" ? "subnet-save" : "reservation-save"),
-      { method: "POST", body: JSON.stringify(payload()) },
-    );
+    await api("/dhcp/preview/" + reservationOperation(), {
+      method: "POST",
+      body: JSON.stringify(payload()),
+    });
     review.value = true;
   } catch (e) {
     editError.value = (e as Error).message;
@@ -350,11 +377,10 @@ async function save() {
   busy.value = true;
   editError.value = "";
   try {
-    await api(
-      "/dhcp/changes/" +
-        (editor.value === "subnet" ? "subnet-save" : "reservation-save"),
-      { method: "POST", body: JSON.stringify(payload()) },
-    );
+    await api("/dhcp/changes/" + reservationOperation(), {
+      method: "POST",
+      body: JSON.stringify(payload()),
+    });
     editor.value = "";
     message.success("主备节点已更新并持久化");
     await load();
@@ -670,6 +696,8 @@ const leaseColumns = [
               :settings="reservationForm"
               :defaults="reservationDefaults"
               :client-classes="data.clientClasses || []"
+              :server-domain="data.serverDomain"
+              :static-dns-available="data.staticDnsAvailable"
             /> </template
         ></a-form>
         <template v-else
@@ -805,8 +833,14 @@ const leaseColumns = [
             ><template v-if="column.key === 'hostname'"
               ><span class="reservation-hostname">{{
                 record.hostname || "—"
-              }}</span
-              ><a-tooltip v-if="record.comment" :title="record.comment"
+              }}</span>
+              <div
+                v-if="record.dnsMode === 'static' && record.fqdn"
+                class="record-fqdn"
+              >
+                {{ record.fqdn }}
+              </div>
+              <a-tooltip v-if="record.comment" :title="record.comment"
                 ><div class="reservation-comment">
                   {{ record.comment }}
                 </div></a-tooltip
@@ -860,7 +894,22 @@ const leaseColumns = [
           :pagination="{ pageSize: 12 }"
           ><template #bodyCell="{ column, record }"
             ><template v-if="column.key === 'client'"
-              ><strong>{{ record.hostname || "未提供主机名" }}</strong>
+              ><strong>{{
+                record.reservationDnsMode === "static"
+                  ? record.reservationFqdn
+                  : record.hostname || "未提供主机名"
+              }}</strong
+              ><HelpHint
+                v-if="
+                  record.reservationFqdn &&
+                  record.hostname.replace(/\.$/, '') !== record.reservationFqdn
+                "
+                label="租约名称说明"
+                :text="
+                  '设备名称来自静态保留配置。原租约记录名称：' +
+                  (record.hostname || '未提供')
+                "
+              />
               <div class="record-fqdn mono">
                 {{ record.mac || "未提供 MAC" }}
               </div></template
@@ -882,7 +931,9 @@ const leaseColumns = [
                 }}
               </div></template
             ><template v-else-if="column.key === 'dns'"
-              ><span
+              ><span v-if="record.reservationDnsMode === 'static'"
+                >静态 DNS</span
+              ><span v-else
                 >{{ record.ddnsForward ? "A " : ""
                 }}{{ record.ddnsReverse ? "PTR" : "" }}</span
               >
@@ -894,14 +945,25 @@ const leaseColumns = [
                 <a-button
                   type="link"
                   size="small"
-                  :disabled="!canEdit || !record.mac"
-                  aria-label="将租约保留"
+                  :disabled="
+                    !canEdit ||
+                    !record.mac ||
+                    (record.reserved && !record.reservationEditable)
+                  "
+                  :aria-label="
+                    record.reserved ? '编辑已有保留地址' : '将租约保留'
+                  "
                   @click="reserveLease(record)"
-                  >保留</a-button
+                  >{{ record.reserved ? "编辑保留" : "保留" }}</a-button
                 ><a-button
                   type="link"
                   size="small"
-                  :disabled="!canEdit || !record.active || !record.hostname"
+                  :disabled="
+                    !canEdit ||
+                    !record.active ||
+                    !record.hostname ||
+                    record.reservationDnsMode === 'static'
+                  "
                   aria-label="重发 DNS"
                   @click="leaseAction(record, 'resend-ddns')"
                   >重发 DNS</a-button
@@ -1027,7 +1089,7 @@ const leaseColumns = [
             </div>
             <p class="record-value">{{ r.mac }}</p>
             <p class="record-fqdn">
-              {{ r.hostname || "未提供主机名" }} · {{ r.prefix }}
+              {{ r.fqdn || r.hostname || "未提供主机名" }} · {{ r.prefix }}
             </p>
             <dl class="reservation-mobile-settings">
               <div>
@@ -1077,7 +1139,21 @@ const leaseColumns = [
               <strong>{{ l.address }}</strong
               ><a-tag>{{ l.active ? "有效" : "已过期" }}</a-tag>
             </div>
-            <p class="record-fqdn">{{ l.hostname || "未提供主机名" }}</p>
+            <p class="record-fqdn">
+              {{
+                l.reservationDnsMode === "static"
+                  ? l.reservationFqdn
+                  : l.hostname || "未提供主机名"
+              }}
+            </p>
+            <HelpHint
+              v-if="
+                l.reservationFqdn &&
+                l.hostname.replace(/\.$/, '') !== l.reservationFqdn
+              "
+              label="租约名称说明"
+              :text="'原租约记录名称：' + (l.hostname || '未提供')"
+            />
             <p class="record-value">{{ l.mac }}</p>
             <div class="mobile-record-content">
               <span>到期时间</span
@@ -1088,19 +1164,30 @@ const leaseColumns = [
               }}
             </div>
             <div class="mobile-record-meta">
-              副本 {{ nodeNames(l.seenOn) }} · {{ l.ddnsForward ? "A " : ""
-              }}{{ l.ddnsReverse ? "PTR" : "" }}
+              副本 {{ nodeNames(l.seenOn) }} ·
+              {{
+                l.reservationDnsMode === "static"
+                  ? "静态 DNS"
+                  : (l.ddnsForward ? "A " : "") + (l.ddnsReverse ? "PTR" : "")
+              }}
             </div>
             <div class="row-actions">
               <a-button
                 type="link"
-                :disabled="!canEdit || !l.mac"
-                aria-label="将租约保留"
+                :disabled="
+                  !canEdit || !l.mac || (l.reserved && !l.reservationEditable)
+                "
+                :aria-label="l.reserved ? '编辑已有保留地址' : '将租约保留'"
                 @click="reserveLease(l)"
-                >保留</a-button
+                >{{ l.reserved ? "编辑保留" : "保留" }}</a-button
               ><a-button
                 type="link"
-                :disabled="!canEdit || !l.active || !l.hostname"
+                :disabled="
+                  !canEdit ||
+                  !l.active ||
+                  !l.hostname ||
+                  l.reservationDnsMode === 'static'
+                "
                 aria-label="重发 DNS"
                 @click="leaseAction(l, 'resend-ddns')"
                 >重发 DNS</a-button

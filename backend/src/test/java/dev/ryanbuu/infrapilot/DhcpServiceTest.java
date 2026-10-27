@@ -22,6 +22,7 @@ class DhcpServiceTest {
     String failNode = "";
     boolean failed;
     final List<String> commands = new ArrayList<>();
+    final Map<String, JsonNode> arguments = new HashMap<>();
 
     Client() {
       super(new DhcpProperties(), settings, mapper);
@@ -29,6 +30,7 @@ class DhcpServiceTest {
 
     public JsonNode call(String node, String cmd, JsonNode args) {
       commands.add(node + ":" + cmd);
+      if (args != null) arguments.put(node + ":" + cmd, args.deepCopy());
       if (node.equals(failNode) && cmd.equals("config-set") && !failed) {
         failed = true;
         throw new ApiException(HttpStatus.BAD_GATEWAY, "test failure");
@@ -38,7 +40,7 @@ class DhcpServiceTest {
   }
 
   final Client client = new Client();
-  final DhcpService service = new DhcpService(client, mapper, audit);
+  final DhcpService service = new DhcpService(client, mapper, audit, settings);
 
   ObjectNode reservation(String mac, String ip) {
     return mapper
@@ -342,5 +344,96 @@ class DhcpServiceTest {
       assertThatThrownBy(() -> saveReservation(values)).isInstanceOf(ApiException.class);
     }
     assertThat(client.commands).doesNotContain("kea1:config-set", "kea2:config-set");
+  }
+
+  void serverDomain() {
+    settings.setZones(List.of(new InfraPilotProperties.Zone("intra", "intra.example.com.",
+        "Servers", false, null, null, null, null)));
+  }
+
+  @Test
+  void creatingAnAlreadyReservedMacCannotOverwriteItsAddressOrOptions() {
+    ObjectNode values = reservation("02:00:00:00:00:ee", "198.51.100.60").put("dnsServers", "192.0.2.44");
+    saveReservation(values);
+    JsonNode before = service.view();
+    client.commands.clear();
+    ObjectNode duplicate = reservation("02:00:00:00:00:ee", "198.51.100.61");
+    assertThatThrownBy(() -> service.change("reservation-create", change(before.path("revision").asText(), 1, duplicate), "admin", false))
+        .isInstanceOfSatisfying(ApiException.class, e -> assertThat(e.status().value()).isEqualTo(409));
+    assertThat(service.view().path("subnets")).isEqualTo(before.path("subnets"));
+    assertThat(client.commands).doesNotContain("kea1:config-set", "kea2:config-set");
+  }
+
+  @Test
+  void leaseReservationMatchingUsesSubnetAndMacEvenWhenReservedIpDiffers() {
+    var state = service.view();
+    service.change("reservation-create", change(state.path("revision").asText(), 2,
+        reservation("02:00:00:00:00:01", "203.0.113.60")), "admin", false);
+    assertThat(service.view().path("leases").get(0).path("reserved").asBoolean()).isFalse();
+    saveReservation(reservation("02:00:00:00:00:01", "198.51.100.60"));
+    JsonNode lease = service.view().path("leases").get(0);
+    assertThat(lease.path("reserved").asBoolean()).isTrue();
+    assertThat(lease.path("reservationAddress").asText()).isEqualTo("198.51.100.60");
+    assertThat(lease.path("address").asText()).isEqualTo("198.51.100.101");
+  }
+
+  @Test
+  void staticReservationsUseMainZoneAndPreserveTheActualLeaseHostname() {
+    serverDomain();
+    saveReservation(reservation("02:00:00:00:00:01", "198.51.100.101").put("dnsMode", "static"));
+    JsonNode state = service.view(), lease = state.path("leases").get(0);
+    assertThat(state.path("staticDnsAvailable").asBoolean()).isTrue();
+    assertThat(lease.path("hostname").asText()).isEqualTo("device-1.internal.dhcp.intra.example.com.");
+    assertThat(lease.path("reservationFqdn").asText()).isEqualTo("test-device.intra.example.com");
+    assertThat(lease.path("reservationDnsMode").asText()).isEqualTo("static");
+    JsonNode host = state.path("subnets").get(0).path("reservations").get(1);
+    assertThat(host.path("hostname").asText()).isEqualTo("test-device");
+    assertThat(host.path("clientClasses").toString()).doesNotContain("SKIP_DDNS");
+    for (String node : List.of("kea1", "kea2")) {
+      JsonNode cfg = client.call(node, "config-get", null).path("arguments").path("Dhcp4");
+      JsonNode nativeHost = cfg.path("subnet4").get(0).path("reservations").get(1);
+      assertThat(nativeHost.path("hostname").asText()).isEqualTo("test-device.intra.example.com.");
+      assertThat(nativeHost.path("client-classes").get(0).asText()).isEqualTo("SKIP_DDNS");
+    }
+  }
+
+  @Test
+  void staticReservationsBlockDdnsResendAndReleasePreservesStaticDns() {
+    serverDomain();
+    saveReservation(reservation("02:00:00:00:00:01", "198.51.100.101").put("dnsMode", "static"));
+    JsonNode lease = service.view().path("leases").get(0);
+    assertThatThrownBy(() -> service.lease(new DhcpService.LeaseAction(lease.path("revision").asText(),
+        lease.path("address").asText(), "resend-ddns"), "admin"))
+        .isInstanceOfSatisfying(ApiException.class, e -> assertThat(e.status().value()).isEqualTo(400));
+    assertThat(client.commands).doesNotContain("kea1:lease4-resend-ddns", "kea2:lease4-resend-ddns");
+    service.lease(new DhcpService.LeaseAction(lease.path("revision").asText(), lease.path("address").asText(), "release"), "admin");
+    for (String node : List.of("kea1", "kea2"))
+      assertThat(client.arguments.get(node + ":lease4-del").path("update-ddns").asBoolean()).isFalse();
+    verify(audit).finish(0, "SUCCESS", "两台租约已释放，静态 DNS 记录保留");
+  }
+
+  @Test
+  void staticDnsCannotBeEnabledWithoutTheNativePolicyHook() {
+    serverDomain();
+    for (String node : List.of("kea1", "kea2")) {
+      ObjectNode cfg = (ObjectNode) client.call(node, "config-get", null).path("arguments").deepCopy();
+      ((ObjectNode) cfg.path("Dhcp4")).remove("hooks-libraries");
+      client.call(node, "config-set", cfg);
+    }
+    client.commands.clear();
+    assertThat(service.view().path("staticDnsAvailable").asBoolean()).isFalse();
+    assertThatThrownBy(() -> saveReservation(reservation("02:00:00:00:00:ee", "198.51.100.60").put("dnsMode", "static")))
+        .isInstanceOf(ApiException.class);
+    assertThat(client.commands).doesNotContain("kea1:config-set", "kea2:config-set");
+  }
+
+  @Test
+  void failedRuntimeLoadReappliesOriginalConfigEvenWhenConfigGetIsUnchanged() {
+    JsonNode before = service.view();
+    client.failNode = "kea2";
+    assertThatThrownBy(() -> saveReservation(reservation("02:00:00:00:00:ee", "198.51.100.60")))
+        .isInstanceOf(ApiException.class);
+    assertThat(client.commands.stream().filter(s -> s.equals("kea2:config-set")).count()).isEqualTo(2);
+    assertThat(service.view().path("subnets")).isEqualTo(before.path("subnets"));
   }
 }

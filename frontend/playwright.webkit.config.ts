@@ -9,6 +9,7 @@ export default defineConfig({
     "forwarding.spec.ts",
     "bind.spec.ts",
     "reservations.spec.ts",
+    "reservation-policy.spec.ts",
   ],
   outputDir: "test-results/webkit",
   use: {

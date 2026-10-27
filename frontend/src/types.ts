@@ -77,6 +77,7 @@ export interface DhcpOption {
   [key: string]: unknown;
 }
 export interface ReservationSettings {
+  dnsMode: "static" | "dynamic";
   router: string;
   dnsServers: string;
   domain: string;
@@ -91,6 +92,7 @@ export interface ReservationSettings {
   extraOptions: DhcpOption[];
 }
 export interface Reservation extends ReservationSettings {
+  fqdn: string;
   mac: string;
   address: string;
   hostname: string;
@@ -112,6 +114,11 @@ export interface DhcpSubnet {
   reservationDefaults: Record<string, string>;
 }
 export interface DhcpLease {
+  reserved: boolean;
+  reservationAddress?: string;
+  reservationFqdn?: string;
+  reservationDnsMode?: "static" | "dynamic";
+  reservationEditable?: boolean;
   address: string;
   mac: string;
   clientId: string;
@@ -126,6 +133,8 @@ export interface DhcpLease {
   seenOn: string[];
 }
 export interface DhcpState {
+  serverDomain: string;
+  staticDnsAvailable: boolean;
   clientClasses: string[];
   enabled: boolean;
   revision: string;
