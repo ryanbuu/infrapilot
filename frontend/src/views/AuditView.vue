@@ -4,6 +4,7 @@ import { ReloadOutlined, ClockCircleOutlined } from "@ant-design/icons-vue";
 import { api } from "../api";
 import type { AuditEvent } from "../types";
 import HelpHint from "../components/HelpHint.vue";
+import DataValues from "../components/DataValues.vue";
 const rows = ref<AuditEvent[]>([]),
   loading = ref(false),
   error = ref(""),
@@ -133,6 +134,8 @@ onMounted(load);
       /></span>
     </div>
     <a-table
+      table-layout="fixed"
+      class="audit-desktop-table"
       :columns="columns"
       :data-source="filtered"
       row-key="id"
@@ -141,11 +144,16 @@ onMounted(load);
       :scroll="{ x: 760 }"
       ><template #bodyCell="{ column, record }"
         ><template v-if="column.key === 'time'"
-          ><span class="audit-time">{{
-            new Date(record.occurredAt).toLocaleString("zh-CN", {
-              hour12: false,
-            })
-          }}</span></template
+          ><time class="audit-time" :datetime="record.occurredAt"
+            ><span>{{
+              new Date(record.occurredAt).toLocaleDateString("zh-CN")
+            }}</span
+            ><span class="record-fqdn">{{
+              new Date(record.occurredAt).toLocaleTimeString("zh-CN", {
+                hour12: false,
+              })
+            }}</span></time
+          ></template
         ><template v-else-if="column.key === 'action'"
           ><a-tag
             :color="
@@ -158,7 +166,7 @@ onMounted(load);
             >{{ actions[record.action] || record.action }}</a-tag
           ></template
         ><template v-else-if="column.key === 'record'"
-          ><div class="mono">{{ record.recordName }}</div>
+          ><DataValues :values="record.recordName" />
           <div class="record-fqdn">
             {{
               record.recordType === "DHCP4"
@@ -199,6 +207,48 @@ onMounted(load);
         </div></template
       ></a-table
     >
+    <section class="audit-mobile-list" aria-label="审计记录">
+      <a-empty v-if="!filtered.length && !loading" description="暂无审计记录" />
+      <article
+        v-for="record in filtered"
+        :key="record.id"
+        class="mobile-record"
+      >
+        <div class="mobile-record-heading">
+          <a-tag>{{ actions[record.action] || record.action }}</a-tag>
+          <a-badge
+            :status="
+              record.status === 'SUCCESS'
+                ? 'success'
+                : record.status === 'FAILED'
+                  ? 'error'
+                  : 'warning'
+            "
+            :text="statuses[record.status]"
+          />
+        </div>
+        <div class="mobile-record-content">
+          <DataValues :values="record.recordName" />
+        </div>
+        <div class="record-fqdn">{{ record.zoneId }} · {{ record.actor }}</div>
+        <div class="audit-mobile-meta">
+          <time class="audit-time" :datetime="record.occurredAt">{{
+            new Date(record.occurredAt).toLocaleString("zh-CN", {
+              hour12: false,
+            })
+          }}</time>
+          <a-button
+            type="link"
+            size="small"
+            @click="
+              selected = record;
+              drawer = true;
+            "
+            >详情</a-button
+          >
+        </div>
+      </article>
+    </section>
     <div class="audit-pagination">
       <a-button
         :disabled="offset === 0 || loading"

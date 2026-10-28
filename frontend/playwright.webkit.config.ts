@@ -10,6 +10,7 @@ export default defineConfig({
     "bind.spec.ts",
     "reservations.spec.ts",
     "reservation-policy.spec.ts",
+    "data-layout.spec.ts",
   ],
   outputDir: "test-results/webkit",
   use: {

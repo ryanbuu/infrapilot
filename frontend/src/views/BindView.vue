@@ -10,6 +10,7 @@ import {
 } from "@ant-design/icons-vue";
 import { api } from "../api";
 import HelpHint from "../components/HelpHint.vue";
+import ConfigSummary from "../components/ConfigSummary.vue";
 import { sectionTitles, sectionKinds, sectionHelp, templates } from "../bind";
 import type {
   BindState,
@@ -90,9 +91,9 @@ const command = computed(() =>
   selected.value?.commands.find((c) => c.id === commandId.value),
 );
 const columns = [
-  { title: "名称", key: "name" },
-  { title: "配置类型", dataIndex: "kind", width: 160 },
-  { title: "View", dataIndex: "view", width: 140 },
+  { title: "名称", key: "name", width: "27%" },
+  { title: "配置类型", dataIndex: "kind", width: 110 },
+  { title: "View", dataIndex: "view", width: 110 },
   { title: "配置摘要", key: "summary" },
   { title: "操作", key: "actions", width: 180 },
 ];
@@ -456,14 +457,14 @@ const fieldLabels: Record<string, string> = {
   count: "保留数量",
   kind: "数据类型",
 };
-function summary(o: BindObject) {
-  return (
-    Object.entries(o.fields)
-      .filter(([k]) => !["secret", "database"].includes(k))
-      .slice(0, 4)
-      .map(([k, v]) => `${k} ${v}`)
-      .join(" · ") || "—"
-  );
+function summaryFields(o: BindObject) {
+  return Object.entries(o.fields)
+    .filter(([key]) => !["secret", "database"].includes(key))
+    .slice(0, 4)
+    .map(([key, value]) => ({
+      label: fieldLabels[key] || key,
+      values: Array.isArray(value) ? value.map(String) : [String(value ?? "—")],
+    }));
 }
 const statRows = computed(() => {
   const result: { key: string; value: string | number }[] = [];
@@ -691,6 +692,7 @@ const statRows = computed(() => {
                   />
                 </h3>
                 <a-table
+                  table-layout="fixed"
                   size="small"
                   :columns="[
                     { title: '计数器', dataIndex: 'key' },
@@ -740,6 +742,7 @@ const statRows = computed(() => {
             </div>
             <div class="panel bind-table">
               <a-table
+                table-layout="fixed"
                 :columns="columns"
                 :data-source="rows"
                 row-key="id"
@@ -756,9 +759,7 @@ const statRows = computed(() => {
                       }}
                     </div></template
                   ><template v-else-if="column.key === 'summary'"
-                    ><span class="bind-summary">{{
-                      summary(record)
-                    }}</span></template
+                    ><ConfigSummary :fields="summaryFields(record)" /></template
                   ><template v-else-if="column.key === 'actions'"
                     ><a-button
                       type="link"
@@ -798,7 +799,7 @@ const statRows = computed(() => {
                   ><a-tag>{{ o.kind }}</a-tag>
                 </div>
                 <div class="secondary">{{ o.view }}</div>
-                <p class="bind-summary">{{ summary(o) }}</p>
+                <ConfigSummary :fields="summaryFields(o)" />
                 <a-button
                   type="link"
                   :disabled="!editable || !o.editable"
@@ -1108,6 +1109,23 @@ const statRows = computed(() => {
 </template>
 
 <style scoped>
+.panel {
+  padding: 20px;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--surface);
+  min-width: 0;
+}
+.secondary {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.bind-mobile-list :deep(.config-summary) {
+  margin: 16px 0;
+}
 .bind-title {
   display: flex;
   align-items: center;

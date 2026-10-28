@@ -16,6 +16,7 @@ import type {
   ForwardingBackup,
 } from "../forwarding";
 import HelpHint from "../components/HelpHint.vue";
+import DataValues from "../components/DataValues.vue";
 
 const props = defineProps<{ admin: boolean }>();
 const { message } = AntdApp.useApp();
@@ -56,9 +57,9 @@ const rows = computed(
     ) || [],
 );
 const columns = [
-  { title: "域名", key: "domain" },
+  { title: "域名", key: "domain", width: "25%" },
   { title: "协议", key: "transport", width: 100 },
-  { title: "上游", key: "upstream" },
+  { title: "上游", key: "upstream", width: "24%" },
   { title: "TLS 校验域名", dataIndex: "tlsServerName" },
   { title: "转发模式", key: "mode", width: 120 },
   { title: "操作", key: "actions", width: 150 },
@@ -327,6 +328,7 @@ function mode(rule: ForwardingRule) {
         ><a-tag v-if="data.consistent" color="green">双节点一致</a-tag>
       </div>
       <a-table
+        table-layout="fixed"
         class="forwarding-desktop"
         :data-source="rows"
         :columns="columns"
@@ -338,7 +340,7 @@ function mode(rule: ForwardingRule) {
         <template #bodyCell="{ column, record }">
           <template v-if="column.key === 'domain'"
             ><strong>{{ record.domain }}</strong>
-            <div v-if="record.description" class="muted">
+            <div v-if="record.description" class="record-fqdn">
               {{ record.description }}
             </div></template
           >
@@ -348,14 +350,14 @@ function mode(rule: ForwardingRule) {
             >{{ record.transport === "DOT" ? "DoT" : "DNS" }}</a-tag
           >
           <template v-else-if="column.key === 'upstream'"
-            ><div
-              v-for="ip in record.addresses"
-              :key="ip"
-              class="forwarding-code"
-            >
-              {{ ip.includes(":") ? `[${ip}]` : ip }}:{{ record.port }}
-            </div></template
-          >
+            ><DataValues
+              :values="
+                record.addresses.map(
+                  (ip: string) =>
+                    `${ip.includes(':') ? `[${ip}]` : ip}:${record.port}`,
+                )
+              "
+          /></template>
           <template v-else-if="column.key === 'mode'">{{
             mode(record)
           }}</template>
@@ -396,8 +398,15 @@ function mode(rule: ForwardingRule) {
           </div>
           <dl>
             <dt>上游</dt>
-            <dd v-for="ip in rule.addresses" :key="ip" class="forwarding-code">
-              {{ ip.includes(":") ? `[${ip}]` : ip }}:{{ rule.port }}
+            <dd>
+              <DataValues
+                :values="
+                  rule.addresses.map(
+                    (ip: string) =>
+                      `${ip.includes(':') ? `[${ip}]` : ip}:${rule.port}`,
+                  )
+                "
+              />
             </dd>
             <template v-if="rule.transport === 'DOT'"
               ><dt>TLS 校验域名</dt>

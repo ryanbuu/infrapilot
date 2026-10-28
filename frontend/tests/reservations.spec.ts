@@ -91,7 +91,12 @@ test("reservation options survive save and re-edit, and cleared fields inherit",
     .locator(".reservation-table tr[data-row-key]")
     .filter({ hasText: "02:00:00:00:00:f0" });
   await expect(row).toContainText("198.51.100.2");
-  await expect(row).toContainText("192.0.2.20, 192.0.2.21");
+  await expect(
+    row.locator(".data-value").filter({ hasText: /^192\.0\.2\.20$/ }),
+  ).toBeVisible();
+  await expect(
+    row.locator(".data-value").filter({ hasText: /^192\.0\.2\.21$/ }),
+  ).toBeVisible();
   await expect(
     page
       .locator(".reservation-table .ant-table-thead")
@@ -100,8 +105,8 @@ test("reservation options survive save and re-edit, and cleared fields inherit",
   const widths = await page
     .locator(".reservation-table .ant-table-thead .ant-table-cell")
     .evaluateAll((cells) => cells.map((c) => c.getBoundingClientRect().width));
-  expect(widths[2] / widths.reduce((a, b) => a + b, 0)).toBeLessThan(0.18);
-  expect(widths[5]).toBeGreaterThan(widths[2]);
+  expect(widths[2] / widths.reduce((a, b) => a + b, 0)).toBeLessThan(0.25);
+  expect(widths[5]).toBeGreaterThan(widths[0]);
   await page.screenshot({
     path: info.outputPath("reservations-desktop.png"),
     fullPage: true,
@@ -124,7 +129,12 @@ test("reservation options survive save and re-edit, and cleared fields inherit",
     .fill("");
   await commit(page);
   await expect(row).toContainText("198.51.100.1");
-  await expect(row).toContainText("192.0.2.10, 192.0.2.11");
+  await expect(
+    row.locator(".data-value").filter({ hasText: /^192\.0\.2\.10$/ }),
+  ).toBeVisible();
+  await expect(
+    row.locator(".data-value").filter({ hasText: /^192\.0\.2\.11$/ }),
+  ).toBeVisible();
   await row.getByRole("button", { name: "编辑保留地址", exact: true }).click();
   await expect(
     page.getByRole("textbox", { name: "保留地址DNS 服务器", exact: true }),

@@ -18,6 +18,7 @@ import {
 import { api } from "../api";
 import type { DhcpState, DhcpSubnet, DhcpLease, Reservation } from "../types";
 import HelpHint from "../components/HelpHint.vue";
+import DataValues from "../components/DataValues.vue";
 import ReservationOptionsForm from "../components/ReservationOptionsForm.vue";
 const { message, modal: Modal } = AntdApp.useApp();
 const props = defineProps<{
@@ -429,7 +430,7 @@ function leaseAction(l: DhcpLease, action: string) {
     title: action === "release" ? "释放此租约？" : "重发 DNS 更新？",
     content:
       action === "release"
-        ? `${l.address}：从主备节点删除服务端租约，并请求清理 DDNS。客户端可能继续使用该地址直到续租或重新获取地址。`
+        ? `${l.address}：从主备节点删除服务端租约，${l.reservationDnsMode === "static" ? "保留静态 DNS 记录" : "并请求清理动态 DNS"}。客户端可能继续使用该地址直到续租或重新获取地址。`
         : `由 DHCP 服务为 ${l.address} 重发 A / PTR 更新，遵循现有 DDNS 策略。`,
     okText: action === "release" ? "确认释放" : "确认重发",
     okType: action === "release" ? "danger" : "primary",
@@ -456,21 +457,21 @@ function leaseAction(l: DhcpLease, action: string) {
 const subnetColumns = [
   { title: "子网", key: "prefix", width: 210 },
   { title: "地址池", key: "pools" },
-  { title: "DNS 服务器", dataIndex: "dnsServers", width: 210 },
+  { title: "DNS 服务器", key: "dnsServers", width: 210 },
   { title: "租约 / 保留", key: "usage", width: 120 },
   { title: "操作", key: "actions", width: 150 },
 ];
 const reservationColumns = [
-  { title: "固定地址", dataIndex: "address", width: "12%" },
-  { title: "MAC 地址", dataIndex: "mac", width: "16%" },
-  { title: "主机名", key: "hostname", width: "14%" },
-  { title: "子网", dataIndex: "prefix", width: "14%" },
-  { title: "网关", key: "router", width: "15%" },
-  { title: "DNS 服务器", key: "dnsServers", width: "21%" },
+  { title: "固定地址", key: "address", dataIndex: "address", width: "12%" },
+  { title: "MAC 地址", key: "mac", dataIndex: "mac", width: "15%" },
+  { title: "主机名", key: "hostname", width: "22%" },
+  { title: "子网", key: "prefix", dataIndex: "prefix", width: "15%" },
+  { title: "网关", key: "router", width: "13%" },
+  { title: "DNS 服务器", key: "dnsServers", width: "15%" },
   { title: "操作", key: "actions", width: "8%" },
 ];
 const leaseColumns = [
-  { title: "IP 地址", dataIndex: "address", width: 150 },
+  { title: "IP 地址", key: "address", dataIndex: "address", width: 170 },
   { title: "客户端", key: "client", width: 240 },
   { title: "到期时间", key: "expires", width: 180 },
   { title: "DNS / 副本", key: "dns", width: 150 },
@@ -754,6 +755,7 @@ const leaseColumns = [
           ><a-tag>双节点同步</a-tag>
         </div>
         <a-table
+          table-layout="fixed"
           :columns="subnetColumns"
           :data-source="filteredSubnets"
           row-key="id"
@@ -774,7 +776,10 @@ const leaseColumns = [
               >
                 {{ pool }}
               </div></template
-            ><template v-else-if="column.key === 'usage'"
+            ><template v-else-if="column.key === 'dnsServers'"
+              ><DataValues :values="record.dnsServers" separated
+            /></template>
+            <template v-else-if="column.key === 'usage'"
               >{{
                 activeLeases.filter((l) => l.subnetId === record.id).length
               }}
@@ -847,15 +852,16 @@ const leaseColumns = [
               ></template
             >
             <template v-else-if="['router', 'dnsServers'].includes(column.key)"
-              ><div class="reservation-setting-value">
-                <span>{{ record.effective?.[column.key] || "—" }}</span
-                ><a-tooltip
-                  v-if="!record[column.key]"
-                  title="继承所属网络的设置"
-                  ><span class="reservation-inherited">继承</span></a-tooltip
-                >
-              </div></template
-            >
+              ><DataValues
+                :values="record.effective?.[column.key]"
+                separated
+                :label="column.title"
+                :source="record[column.key] ? 'custom' : 'inherited'"
+            /></template>
+            <template
+              v-else-if="['address', 'mac', 'prefix'].includes(column.key)"
+              ><DataValues :values="record[column.key]"
+            /></template>
             <template v-else-if="column.key === 'actions'"
               ><a-button
                 type="link"
@@ -886,6 +892,7 @@ const leaseColumns = [
           /></span>
         </div>
         <a-table
+          table-layout="fixed"
           :columns="leaseColumns"
           :data-source="filteredLeases"
           row-key="address"
@@ -913,7 +920,10 @@ const leaseColumns = [
               <div class="record-fqdn mono">
                 {{ record.mac || "未提供 MAC" }}
               </div></template
-            ><template v-else-if="column.key === 'expires'"
+            ><template v-else-if="column.key === 'address'"
+              ><DataValues :values="record.address"
+            /></template>
+            <template v-else-if="column.key === 'expires'"
               ><span>{{
                 new Date(record.expiresAt * 1000).toLocaleString("zh-CN", {
                   hour12: false,
@@ -1055,7 +1065,12 @@ const leaseColumns = [
                 {{ pool }}
               </div>
             </div>
-            <div class="record-fqdn">DNS {{ s.dnsServers || "未指定" }}</div>
+            <dl class="reservation-mobile-settings">
+              <div>
+                <dt>DNS</dt>
+                <dd><DataValues :values="s.dnsServers" separated /></dd>
+              </div>
+            </dl>
             <div class="mobile-record-meta">
               租期 {{ s.validLifetime }} 秒 · 保留
               {{ s.reservations.length }} 个
@@ -1095,19 +1110,23 @@ const leaseColumns = [
               <div>
                 <dt>网关</dt>
                 <dd>
-                  {{ r.effective?.router || "—"
-                  }}<span v-if="!r.router" class="reservation-inherited"
-                    >继承</span
-                  >
+                  <DataValues
+                    :values="r.effective?.router"
+                    separated
+                    label="网关"
+                    :source="r.router ? 'custom' : 'inherited'"
+                  />
                 </dd>
               </div>
               <div>
                 <dt>DNS</dt>
                 <dd>
-                  {{ r.effective?.dnsServers || "—"
-                  }}<span v-if="!r.dnsServers" class="reservation-inherited"
-                    >继承</span
-                  >
+                  <DataValues
+                    :values="r.effective?.dnsServers"
+                    separated
+                    label="DNS 服务器"
+                    :source="r.dnsServers ? 'custom' : 'inherited'"
+                  />
                 </dd>
               </div>
             </dl>

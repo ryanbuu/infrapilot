@@ -16,6 +16,7 @@ import {
 import { api } from "../api";
 import GatewayEditor from "../components/GatewayEditor.vue";
 import HelpHint from "../components/HelpHint.vue";
+import DataValues from "../components/DataValues.vue";
 import {
   displayJson,
   gatewayKinds,
@@ -157,30 +158,35 @@ function statusText(item: GatewayItem) {
 }
 function configuration(item: GatewayItem) {
   const v = item.value;
-  if (kind.value === "ssls") return (v.snis || []).join(" · ") || "默认证书";
+  if (kind.value === "ssls") return v.snis?.length ? v.snis : ["默认证书"];
   if (kind.value === "consumers")
-    return v.desc || (v.group_id ? `消费者组 ${v.group_id}` : "独立消费者");
+    return [v.desc || (v.group_id ? `消费者组 ${v.group_id}` : "独立消费者")];
   if (kind.value === "protos")
-    return v.desc || `${(v.content || "").split("\n").length} 行协议定义`;
+    return [v.desc || `${(v.content || "").split("\n").length} 行协议定义`];
   if (kind.value === "secrets")
-    return v.uri || v.endpoint || v.prefix || item.id;
-  if (v.service_id) return `服务 · ${v.service_id}`;
-  if (v.upstream_id) return `上游 · ${v.upstream_id}`;
+    return [v.uri || v.endpoint || v.prefix || item.id];
+  if (v.service_id) return [`服务 · ${v.service_id}`];
+  if (v.upstream_id) return [`上游 · ${v.upstream_id}`];
   const u = kind.value === "upstreams" ? v : v.upstream;
   if (u?.nodes)
-    return (
-      Array.isArray(u.nodes)
-        ? u.nodes.map((n: GatewayValue) => `${n.host}:${n.port}`)
-        : Object.keys(u.nodes)
-    ).join(" · ");
-  return v.desc || Object.keys(v.plugins || {}).join(" · ") || "完整 JSON 配置";
+    return Array.isArray(u.nodes)
+      ? u.nodes.map(
+          (n: GatewayValue) =>
+            `${String(n.host).includes(":") && !String(n.host).startsWith("[") ? `[${n.host}]` : n.host}:${n.port}`,
+        )
+      : Object.keys(u.nodes);
+  return v.desc
+    ? [v.desc]
+    : Object.keys(v.plugins || {}).length
+      ? Object.keys(v.plugins)
+      : ["完整 JSON 配置"];
 }
 function matches(item: GatewayItem) {
   const v = item.value;
   return [
     ...(v.hosts || (v.host ? [v.host] : [])),
     ...(v.uris || (v.uri ? [v.uri] : [])),
-  ].join(" · ");
+  ];
 }
 function edit(item?: GatewayItem, copy = false) {
   selected.value = item;
@@ -482,6 +488,7 @@ onMounted(load);
               />
             </div>
             <a-table
+              table-layout="fixed"
               :columns="backupColumns"
               :data-source="filteredBackups"
               row-key="id"
@@ -534,6 +541,7 @@ onMounted(load);
               />
             </div>
             <a-table
+              table-layout="fixed"
               class="gateway-desktop-table"
               :columns="columns"
               :data-source="filtered"
@@ -551,21 +559,29 @@ onMounted(load);
                   >
                   <div class="record-fqdn mono">{{ record.id }}</div></template
                 ><template v-else-if="column.key === 'configuration'"
-                  ><div class="gateway-text">{{ configuration(record) }}</div>
-                  <div v-if="matches(record)" class="record-fqdn">
-                    {{ matches(record) }}
-                  </div></template
+                  ><DataValues :values="configuration(record)" />
+                  <div
+                    v-if="matches(record).length"
+                    class="record-fqdn gateway-matches"
+                  >
+                    <DataValues :values="matches(record)" /></div></template
                 ><template v-else-if="column.key === 'plugins'"
-                  ><a-tag
-                    v-for="name in Object.keys(
-                      record.value.plugins || {},
-                    ).slice(0, 2)"
-                    :key="name"
-                    >{{ name }}</a-tag
-                  ><span
-                    v-if="Object.keys(record.value.plugins || {}).length > 2"
-                    >+{{ Object.keys(record.value.plugins).length - 2 }}</span
-                  ></template
+                  ><div class="gateway-plugin-values">
+                    <a-tag
+                      v-for="name in Object.keys(
+                        record.value.plugins || {},
+                      ).slice(0, 2)"
+                      :key="name"
+                      >{{ name }}</a-tag
+                    ><span
+                      v-if="Object.keys(record.value.plugins || {}).length > 2"
+                      >+{{ Object.keys(record.value.plugins).length - 2 }}</span
+                    ><span
+                      v-if="!Object.keys(record.value.plugins || {}).length"
+                      class="data-empty"
+                      >—</span
+                    >
+                  </div></template
                 ><template v-else-if="column.key === 'status'"
                   ><a-badge
                     :status="record.value.status === 0 ? 'default' : 'success'"
@@ -612,10 +628,13 @@ onMounted(load);
                   />
                 </div>
                 <div class="record-fqdn mono">{{ record.id }}</div>
-                <p>{{ configuration(record) }}</p>
-                <p v-if="matches(record)" class="muted">
-                  {{ matches(record) }}
-                </p>
+                <DataValues :values="configuration(record)" />
+                <div
+                  v-if="matches(record).length"
+                  class="record-fqdn gateway-matches"
+                >
+                  <DataValues :values="matches(record)" />
+                </div>
                 <div class="gateway-plugin-tags">
                   <a-tag
                     v-for="name in Object.keys(record.value.plugins || {})"

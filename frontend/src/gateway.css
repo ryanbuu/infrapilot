@@ -333,3 +333,25 @@
     margin-bottom: 12px;
   }
 }
+
+.gateway-matches {
+  margin-top: 8px;
+}
+.gateway-matches .data-values-mono {
+  font-size: 12px;
+}
+.gateway-plugin-values {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.gateway-plugin-values .ant-tag {
+  margin: 0;
+  max-width: 100%;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.gateway-mobile-card > .data-values {
+  margin-top: 14px;
+}
