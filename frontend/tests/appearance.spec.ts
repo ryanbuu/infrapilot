@@ -123,3 +123,70 @@ test("help stays hidden until hover, keyboard focus or touch", async ({
     await context.close();
   }
 });
+
+for (const scheme of ["light", "dark"] as const) {
+  for (const mobile of [false, true]) {
+    test(`theme menu keeps icons separate from labels (${scheme}, ${mobile ? "touch" : "desktop"})`, async ({
+      browser,
+    }) => {
+      const context = await browser.newContext({
+        viewport: { width: mobile ? 390 : 1280, height: 844 },
+        colorScheme: scheme,
+        hasTouch: mobile,
+        isMobile: mobile,
+        deviceScaleFactor: mobile ? 3 : 1,
+      });
+      try {
+        const page = await context.newPage();
+        await page.goto("/");
+        // The same menu is available before and after signing in.
+        for (const signedIn of [false, true]) {
+          if (signedIn) await signIn(page);
+          await page
+            .getByRole("button", { name: "切换主题", exact: true })
+            .click();
+          const menu = page.locator(".theme-menu:visible");
+          await expect(menu).toBeVisible();
+          const items = menu.getByRole("menuitem");
+          await expect(items).toHaveCount(3);
+          for (const item of await items.all()) {
+            const icon = await item.locator(".anticon").boundingBox();
+            const label = await item
+              .locator(".ant-dropdown-menu-title-content")
+              .boundingBox();
+            expect(icon).not.toBeNull();
+            expect(label).not.toBeNull();
+            expect(label!.x - (icon!.x + icon!.width)).toBeGreaterThanOrEqual(
+              7.5,
+            );
+            expect(
+              Math.abs(
+                label!.y + label!.height / 2 - icon!.y - icon!.height / 2,
+              ),
+            ).toBeLessThan(2);
+            if (mobile)
+              await expect
+                .poll(async () => (await item.boundingBox())!.height)
+                .toBeGreaterThanOrEqual(44);
+          }
+          const bounds = (await menu.boundingBox())!;
+          expect(bounds.x).toBeGreaterThanOrEqual(0);
+          expect(bounds.x + bounds.width).toBeLessThanOrEqual(
+            mobile ? 390 : 1280,
+          );
+          const choice = scheme === "light" ? "深色模式" : "浅色模式";
+          await menu
+            .getByRole("menuitem", { name: choice, exact: true })
+            .click();
+          await expect(page.locator("html")).toHaveAttribute(
+            "data-theme",
+            scheme === "light" ? "dark" : "light",
+          );
+          await expect(menu).toHaveCount(0);
+        }
+      } finally {
+        await context.close();
+      }
+    });
+  }
+}
