@@ -14,7 +14,7 @@ test("record lifecycle, protected zones, comparison and audit", async ({
     page.getByRole("heading", { name: "intra.example.com" }),
   ).toBeVisible();
   const addButton = page.getByRole("button", { name: "添加记录" });
-  await expect(addButton).toHaveCSS("background-color", "rgb(22, 119, 255)");
+  await expect(addButton).toHaveCSS("background-color", "rgb(35, 130, 87)");
   await expect(addButton).toHaveCSS("border-radius", "6px");
   await expect(addButton).toHaveCSS("font-size", "14px");
   await addButton.click();
