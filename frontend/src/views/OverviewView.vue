@@ -9,6 +9,7 @@ import {
 import type { Zone, DhcpState } from "../types";
 import { api } from "../api";
 import HelpHint from "../components/HelpHint.vue";
+import DataValues from "../components/DataValues.vue";
 const props = defineProps<{ zones: Zone[]; loading: boolean; demo: boolean }>();
 const emit = defineEmits<{ select: [id: string] }>();
 const dhcp = ref<DhcpState>(),
@@ -187,8 +188,16 @@ onMounted(refresh);
         <GlobalOutlined />
         <div>
           <strong>BIND DNS</strong>
-          <p>主节点 {{ zones[0]?.primary || "未配置" }}</p>
-          <p>从节点 {{ zones[0]?.secondaries.join(", ") || "未配置" }}</p>
+          <dl class="service-endpoints">
+            <div>
+              <dt>主节点</dt>
+              <dd><DataValues :values="zones[0]?.primary" /></dd>
+            </div>
+            <div>
+              <dt>从节点</dt>
+              <dd><DataValues :values="zones[0]?.secondaries" /></dd>
+            </div>
+          </dl>
         </div>
         <a-badge
           :status="

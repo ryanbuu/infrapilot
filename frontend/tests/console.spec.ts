@@ -14,7 +14,7 @@ test("record lifecycle, protected zones, comparison and audit", async ({
     page.getByRole("heading", { name: "intra.example.com" }),
   ).toBeVisible();
   const addButton = page.getByRole("button", { name: "添加记录" });
-  await expect(addButton).toHaveCSS("background-color", "rgb(22, 119, 255)");
+  await expect(addButton).toHaveCSS("background-color", "rgb(35, 130, 87)");
   await expect(addButton).toHaveCSS("border-radius", "6px");
   await expect(addButton).toHaveCSS("font-size", "14px");
   await addButton.click();
@@ -176,7 +176,7 @@ test("DHCP reservations, subnet lifecycle and HA views", async ({ page }) => {
   ).toBeVisible();
   await page.getByRole("button", { name: "确认同步", exact: true }).click();
   const reservation = page
-    .getByRole("row")
+    .locator(".reservation-table tr[data-row-key]")
     .filter({ hasText: "02:00:00:00:00:ee" });
   await expect(reservation).toContainText("198.51.100.60");
   await reservation.getByRole("button", { name: "编辑保留地址" }).click();

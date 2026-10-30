@@ -2,7 +2,7 @@
 
 ![InfraPilot 标识](docs/screenshots/identity.png)
 
-基于 **Java 21 / Spring Boot + Vue 3 / Ant Design Vue** 的 BIND DNS / Kea DHCP 管理面板，前后端独立构建、独立部署。
+基于 **Java 21 / Spring Boot + Vue 3 / Ant Design Vue** 的 DNS、DHCP 与 **Application Gateway** 管理面板，前后端独立构建、独立部署。
 
 通过 AXFR 读取区域，使用 RFC2136 + TSIG 原子更新记录集。BIND 继续负责主从同步和 DNSSEC 签名；Kea 继续管理客户端 DDNS。
 
@@ -15,17 +15,21 @@
 - Session 登录、CSRF 防护，管理员和只读用户；账号凭据通过环境变量配置。
 - 区域概览、记录搜索、类型筛选、系统记录显示开关。
 - 原生浅色、[深色模式](docs/screenshots/dark.png)及跟随系统，浏览器记住选择；解释性文案收纳为支持悬停、键盘和触屏的问号提示。
-- A / AAAA / CNAME / MX / TXT / PTR / SRV / CAA 记录集增删改、TTL、多值编辑及提交前预览。
+- A / AAAA / CNAME / MX / TXT / PTR / SRV / CAA，以及 TLSA / SSHFP / NAPTR / URI / SVCB / HTTPS 等 25 种常规记录类型增删改、TTL、多值编辑及提交前预览。
 - 修改前校验记录版本，DNS UPDATE 携带旧记录集前置条件，未签名区域额外校验 SOA；检测到并发冲突返回 409。
 - Kea 区域只读，DHCID 名称、DNS 系统记录及已委派子域保护。生产中需同时配置 BIND 侧权限。
 - 主从实际 DNS 查询对比：回答、SOA 序列号、响应耗时和错误信息。
+- [条件转发](docs/CONDITIONAL-FORWARDING.md)：接入现有 DoT 规则，管理 DNS / DoT 上游、TLS 校验域名和转发模式；双节点预校验、重载回读、持久化事务和备份恢复。
+- [BIND 管理](docs/BIND-MANAGEMENT.md)：主从区域创建与初始数据导入、全局递归与缓存、ACL / Views、DNSSEC / TSIG、DoT / DoH、日志统计、预设运维命令及完整原生配置编辑；两节点预校验、差异预览、持久事务与私密备份恢复。
 - Kea DHCPv4 子网、地址池和 MAC 保留地址管理，租约查询/释放、重发 DDNS，以及双节点 HA 状态。
 - 配置变更先在两台 Kea 预校验，保存时保留各自 HA/DDNS 配置，并记录审计；部分失败时尝试回滚。
+- [Application Gateway](docs/APPLICATION-GATEWAY.md)：接入 APISIX Admin API，管理路由、服务、上游、消费者/凭据/分组、证书、全局规则、插件配置/元数据、TCP/UDP 路由、Protobuf 和 Secret；查看实时插件与 Schema、只读节点配置。
+- 网关支持基础表单与完整 JSON、提交前校验和差异预览、敏感字段原值保留、版本检查、私密回滚备份、回读确认和配置导出；每次恢复也会备份当前状态。
 - 持久化变更审计，包括修改前后内容、操作人、时间、PENDING / SUCCESS / FAILED 状态。
 - Docker Compose、接入模板、后端测试、浏览器端到端测试和 GitHub Actions。
-- 独立演示模式：DNS/DHCP 示例数据保存在后端内存中，重启重置；审计日志单独持久化。
+- 独立演示模式：DNS/DHCP/网关示例数据保存在后端内存中，重启重置；审计日志与网关变更备份单独持久化。
 
-当前不管理 BIND 全局配置、TSIG 密钥、DNSSEC 密钥、区域创建/删除或主从提升。A 与 PTR 是不同区域的独立操作，不提供跨区域事务或自动 PTR 联动。DHCP 目前支持 IPv4，不自动配置路由器、VLAN 或 relay。
+BIND 高级选项通过当前版本的原生配置语法维护；插件、HSM、证书等外部依赖需预先提供。主从角色调整还需协调外部 DDNS 与签名密钥。A 与 PTR 是不同区域的独立操作，不提供跨区域事务或自动 PTR 联动。DHCP 目前支持 IPv4，不自动配置路由器、VLAN 或 relay。
 
 ## 本地启动
 
@@ -101,6 +105,8 @@ CI 以 Java 21 和 Node.js 22 构建、测试。测试截图使用演示数据�
 
 [API 说明](docs/API.md) · [BIND 接入说明](docs/BIND-INTEGRATION.md) · [DHCP 管理说明](docs/DHCP.md) · [命名迁移](docs/MIGRATION.md)
 
+Application Gateway 的完整能力、接入变量、备份和版本限制见 [网关管理说明](docs/APPLICATION-GATEWAY.md)。该模块仅供管理员使用，Admin API 密钥保留在服务端。
+
 前端继续使用 Ant Design Vue 默认组件主题，整体布局参考 Cloudflare 面板：分组侧栏、网络概览、DNS 记录与 DHCP 管理、审计，以及手机端卡片。DNS 支持区域切换、通栏表格、展开编辑、筛选与列显示，当前筛选记录可导出为 zone 文本片段。
 
-DHCP 管理支持子网、地址池、保留地址、租约和 HA 状态，采用双节点预校验、保存和审计。连接设置与失败恢复限制见 [DHCP 管理说明](docs/DHCP.md)。
+DHCP 管理支持子网、地址池、保留地址、租约和 HA 状态，采用双节点预校验、保存和审计。保留地址可独立设置网关、DNS、搜索域、NTP、MTU、网络启动和附加选项，留空继续继承网络设置；宽屏列表展示网关与 DNS，手机使用卡片。连接设置、继承语义与失败恢复限制见 [DHCP 管理说明](docs/DHCP.md)。

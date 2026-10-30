@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import {
   AppstoreOutlined,
   AuditOutlined,
@@ -7,6 +7,7 @@ import {
   ClusterOutlined,
   GlobalOutlined,
   LogoutOutlined,
+  ApiOutlined,
 } from "@ant-design/icons-vue";
 import { routes } from "../navigation";
 import type { User } from "../types";
@@ -20,11 +21,33 @@ const emit = defineEmits<{
 }>();
 const search = ref("");
 const openKeys = ref(["dns", "dhcp"]);
+watch(search, (value) => {
+  if (value && menu.value.some((item) => item.id.startsWith("bind-"))) {
+    for (const key of ["dns", "dns-service"])
+      if (!openKeys.value.includes(key)) openKeys.value.push(key);
+  }
+});
 const menu = computed(() =>
   routes.filter(
     (r) =>
-      (r.id !== "audit" || props.user.admin) && r.title.includes(search.value),
+      ((r.id !== "audit" &&
+        !r.id.startsWith("bind-") &&
+        r.group !== "Application Gateway") ||
+        props.user.admin) &&
+      `${r.title} ${r.group} ${r.group === "Application Gateway" ? "网关" : ""}`
+        .toLowerCase()
+        .includes(search.value.toLowerCase()),
   ),
+);
+watch(
+  () => props.page,
+  (page) => {
+    if (page.startsWith("bind-") && !openKeys.value.includes("dns-service"))
+      openKeys.value.push("dns-service");
+    if (page.startsWith("gateway-") && !openKeys.value.includes("gateway"))
+      openKeys.value.push("gateway");
+  },
+  { immediate: true },
 );
 </script>
 
@@ -67,12 +90,26 @@ const menu = computed(() =>
         <template #icon><GlobalOutlined /></template
         ><template #title>DNS</template>
         <a-menu-item
-          v-for="item in menu.filter((m) => m.group === 'DNS')"
+          v-for="item in menu.filter(
+            (m) => m.group === 'DNS' && !m.id.startsWith('bind-'),
+          )"
           :key="item.id"
           @click="emit('navigate', item.id)"
         >
           {{ item.title }}
         </a-menu-item>
+        <a-sub-menu
+          v-if="menu.some((m) => m.id.startsWith('bind-'))"
+          key="dns-service"
+          title="DNS 服务配置"
+        >
+          <a-menu-item
+            v-for="item in menu.filter((m) => m.id.startsWith('bind-'))"
+            :key="item.id"
+            @click="emit('navigate', item.id)"
+            >{{ item.title }}</a-menu-item
+          >
+        </a-sub-menu>
       </a-sub-menu>
       <a-sub-menu v-if="menu.some((m) => m.group === 'DHCP')" key="dhcp">
         <template #icon><ClusterOutlined /></template
@@ -84,6 +121,21 @@ const menu = computed(() =>
         >
           {{ item.title }}
         </a-menu-item>
+      </a-sub-menu>
+      <a-sub-menu
+        v-if="menu.some((m) => m.group === 'Application Gateway')"
+        key="gateway"
+      >
+        <template #icon><ApiOutlined /></template>
+        <template #title
+          ><span class="gateway-nav-label">Application Gateway</span></template
+        >
+        <a-menu-item
+          v-for="item in menu.filter((m) => m.group === 'Application Gateway')"
+          :key="item.id"
+          @click="emit('navigate', item.id)"
+          >{{ item.title }}</a-menu-item
+        >
       </a-sub-menu>
       <a-menu-item
         v-if="menu.some((m) => m.id === 'audit')"

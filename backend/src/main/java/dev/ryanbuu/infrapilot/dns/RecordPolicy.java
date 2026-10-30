@@ -15,7 +15,32 @@ import org.xbill.DNS.Record;
 @Component
 public class RecordPolicy {
   public static final Set<String> WRITABLE_TYPES =
-      Set.of("A", "AAAA", "CNAME", "MX", "TXT", "PTR", "SRV", "CAA");
+      Set.of(
+          "A",
+          "AAAA",
+          "CNAME",
+          "MX",
+          "TXT",
+          "PTR",
+          "SRV",
+          "CAA",
+          "TLSA",
+          "SSHFP",
+          "NAPTR",
+          "URI",
+          "SVCB",
+          "HTTPS",
+          "DNAME",
+          "LOC",
+          "HINFO",
+          "RP",
+          "CERT",
+          "IPSECKEY",
+          "OPENPGPKEY",
+          "CSYNC",
+          "ZONEMD",
+          "EUI48",
+          "EUI64");
 
   public Name name(String value, Zone z) {
     try {

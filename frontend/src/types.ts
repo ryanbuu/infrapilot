@@ -66,12 +66,40 @@ export interface DhcpNode {
   leaseCount?: number;
   error?: string;
 }
-export interface Reservation {
+export interface DhcpOption {
+  name?: string;
+  code?: number;
+  space?: string;
+  data: string;
+  "csv-format"?: boolean;
+  "always-send"?: boolean;
+  "never-send"?: boolean;
+  [key: string]: unknown;
+}
+export interface ReservationSettings {
+  dnsMode: "static" | "dynamic";
+  router: string;
+  dnsServers: string;
+  domain: string;
+  searchDomains: string;
+  ntpServers: string;
+  mtu: number | string | null;
+  nextServer: string;
+  serverHostname: string;
+  bootFileName: string;
+  clientClasses: string[];
+  comment: string;
+  extraOptions: DhcpOption[];
+}
+export interface Reservation extends ReservationSettings {
+  fqdn: string;
   mac: string;
   address: string;
   hostname: string;
   editable: boolean;
   subnetId?: number;
+  inherited: Record<string, string>;
+  effective: Record<string, string>;
 }
 export interface DhcpSubnet {
   id: number;
@@ -83,8 +111,14 @@ export interface DhcpSubnet {
   searchDomains: string;
   validLifetime: number;
   reservations: Reservation[];
+  reservationDefaults: Record<string, string>;
 }
 export interface DhcpLease {
+  reserved: boolean;
+  reservationAddress?: string;
+  reservationFqdn?: string;
+  reservationDnsMode?: "static" | "dynamic";
+  reservationEditable?: boolean;
   address: string;
   mac: string;
   clientId: string;
@@ -99,6 +133,9 @@ export interface DhcpLease {
   seenOn: string[];
 }
 export interface DhcpState {
+  serverDomain: string;
+  staticDnsAvailable: boolean;
+  clientClasses: string[];
   enabled: boolean;
   revision: string;
   aligned: boolean;

@@ -50,4 +50,4 @@
 - `POST /api/dhcp/changes/{operation}`：保存并持久化，需要管理员和 CSRF。
 - `POST /api/dhcp/leases`：释放租约或重发 DDNS，需要管理员和 CSRF。
 
-配置 operation 为 `subnet-save`、`subnet-delete`、`reservation-save`、`reservation-delete`。请求结构为 `{revision, subnetId, values}`。租约请求为 `{revision, address, action}`，action 为 `release` 或 `resend-ddns`。不开放原始 Kea 命令透传。具体限制见 [DHCP 管理说明](DHCP.md)。
+配置 operation 为 `subnet-save`、`subnet-delete`、`reservation-create`、`reservation-save`、`reservation-delete`。请求结构为 `{revision, subnetId, values}`。租约请求为 `{revision, address, action}`，action 为 `release` 或 `resend-ddns`。保留地址 `values.dnsMode` 为 `static` 或 `dynamic`；新建同一子网已存在的 MAC 返回 409。租约含 `reserved`、`reservationAddress`、`reservationDnsMode` 和 `reservationFqdn`，原 `hostname` 保留节点实际返回值。静态维护设备拒绝重发 DDNS，释放时保留静态解析。不开放原始 Kea 命令透传。具体限制见 [DHCP 管理说明](DHCP.md)。

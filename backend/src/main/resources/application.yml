@@ -32,6 +32,25 @@ infrapilot:
   viewer-password: ${INFRAPILOT_VIEWER_PASSWORD:}
   timeout-seconds: 5
 
+  bind:
+    enabled: ${INFRAPILOT_BIND_ENABLED:false}
+    private-key-file: ${INFRAPILOT_BIND_PRIVATE_KEY_FILE:}
+    known-hosts-file: ${INFRAPILOT_BIND_KNOWN_HOSTS_FILE:}
+    backup-directory: ${INFRAPILOT_BIND_BACKUP_DIRECTORY:./data/bind}
+
+  forwarding:
+    enabled: ${INFRAPILOT_FORWARDING_ENABLED:false}
+    private-key-file: ${INFRAPILOT_FORWARDING_PRIVATE_KEY_FILE:}
+    known-hosts-file: ${INFRAPILOT_FORWARDING_KNOWN_HOSTS_FILE:}
+    backup-directory: ${INFRAPILOT_FORWARDING_BACKUP_DIRECTORY:./data/conditional-forwarding}
+
+  gateway:
+    enabled: ${INFRAPILOT_GATEWAY_ENABLED:false}
+    url: ${INFRAPILOT_GATEWAY_URL:}
+    api-key: ${INFRAPILOT_GATEWAY_API_KEY:}
+    backup-directory: ${INFRAPILOT_GATEWAY_BACKUP_DIRECTORY:./data/application-gateway}
+    runtime-config-file: ${INFRAPILOT_GATEWAY_RUNTIME_CONFIG_FILE:}
+
   dhcp:
     enabled: ${INFRAPILOT_DHCP_ENABLED:false}
     nodes:

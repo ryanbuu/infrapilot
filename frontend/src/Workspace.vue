@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from "vue";
+import {
+  computed,
+  defineAsyncComponent,
+  onMounted,
+  onUnmounted,
+  ref,
+} from "vue";
 import { App as AntdApp } from "ant-design-vue";
 import { MenuOutlined } from "@ant-design/icons-vue";
 import { routes } from "./navigation";
@@ -13,6 +19,13 @@ import DhcpView from "./views/DhcpView.vue";
 import ThemeSwitcher from "./components/ThemeSwitcher.vue";
 import HelpHint from "./components/HelpHint.vue";
 import BrandIdentity from "./components/BrandIdentity.vue";
+const GatewayView = defineAsyncComponent(
+  () => import("./views/GatewayView.vue"),
+);
+const ForwardingView = defineAsyncComponent(
+  () => import("./views/ForwardingView.vue"),
+);
+const BindView = defineAsyncComponent(() => import("./views/BindView.vue"));
 const { message } = AntdApp.useApp();
 const meta = ref<Meta>(),
   user = ref<User>(),
@@ -253,6 +266,17 @@ onUnmounted(() => {
     <p class="login-bottom">InfraPilot · v{{ meta?.version || "0.1.0" }}</p>
   </div>
   <div v-else class="app-shell">
+    <a
+      class="skip-link"
+      href="#workspace-content"
+      @click.prevent="
+        ($event.currentTarget as HTMLElement)
+          .closest('.app-shell')
+          ?.querySelector<HTMLElement>('#workspace-content')
+          ?.focus()
+      "
+      >跳到主内容</a
+    >
     <a-drawer
       v-if="compactNavigation"
       v-model:open="mobileMenu"
@@ -319,7 +343,7 @@ onUnmounted(() => {
           /><span class="version-label">v{{ meta?.version }}</span>
         </div>
       </header>
-      <div class="page-content">
+      <div id="workspace-content" class="page-content" tabindex="-1">
         <a-alert v-if="zoneError" :message="zoneError" type="error" show-icon />
         <OverviewView
           v-if="page === 'overview'"
@@ -335,12 +359,34 @@ onUnmounted(() => {
           :admin="user.admin"
           @changed="loadZones"
         />
+        <ForwardingView v-else-if="page === 'forwarding'" :admin="user.admin" />
+        <BindView
+          v-else-if="page.startsWith('bind-') && user.admin"
+          :key="page"
+          :section="page.slice(5)"
+          @changed="loadZones"
+        />
+        <a-result
+          v-else-if="page.startsWith('bind-')"
+          status="403"
+          title="需要管理员权限"
+        />
         <DhcpView
           v-else-if="page.startsWith('dhcp-')"
           :key="page"
           :section="section()"
           :admin="user.admin"
-        /><AuditView v-else-if="page === 'audit' && user.admin" />
+        /><GatewayView
+          v-else-if="page.startsWith('gateway-') && user.admin"
+          :key="page"
+          :section="page.slice(8)"
+        />
+        <a-result
+          v-else-if="page.startsWith('gateway-')"
+          status="403"
+          title="需要管理员权限"
+        />
+        <AuditView v-else-if="page === 'audit' && user.admin" />
         <footer class="page-footer">
           <span>InfraPilot</span><span>v{{ meta?.version }}</span>
         </footer>

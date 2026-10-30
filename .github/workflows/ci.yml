@@ -8,6 +8,8 @@ jobs:
       - uses: actions/setup-java@v4
         with: { distribution: temurin, java-version: "21", cache: maven }
       - run: mvn -B -f backend/pom.xml verify
+      - run: python3 -m unittest discover -s deploy/forwarding -p 'test_*.py' -v
+      - run: python3 -m unittest discover -s deploy/bind -p 'test_*.py' -v
   frontend:
     runs-on: ubuntu-latest
     steps:

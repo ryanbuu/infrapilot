@@ -6,11 +6,28 @@ import {
   TeamOutlined,
   DatabaseOutlined,
   SafetyCertificateOutlined,
+  ApiOutlined,
 } from "@ant-design/icons-vue";
 
 export const routes = [
   { id: "overview", title: "概览", icon: AppstoreOutlined, group: "工作空间" },
   { id: "records", title: "解析记录", icon: GlobalOutlined, group: "DNS" },
+  { id: "forwarding", title: "条件转发", icon: GlobalOutlined, group: "DNS" },
+  ...[
+    ["zones", "权威区域"],
+    ["resolver", "递归与缓存"],
+    ["access", "访问控制与 Views"],
+    ["dnssec", "DNSSEC 与密钥"],
+    ["transport", "加密传输"],
+    ["logging", "日志与统计"],
+    ["operations", "运维工具"],
+    ["advanced", "原生配置"],
+  ].map(([id, title]) => ({
+    id: `bind-${id}`,
+    title: title!,
+    icon: GlobalOutlined,
+    group: "DNS",
+  })),
   {
     id: "dhcp-subnets",
     title: "子网与地址池",
@@ -30,5 +47,21 @@ export const routes = [
     icon: SafetyCertificateOutlined,
     group: "DHCP",
   },
+  ...[
+    ["overview", "网关概览"],
+    ["routes", "路由"],
+    ["services", "服务"],
+    ["upstreams", "上游"],
+    ["consumers", "消费者"],
+    ["ssls", "证书"],
+    ["plugins", "插件"],
+    ["advanced", "高级配置"],
+    ["backups", "变更备份"],
+  ].map(([id, title]) => ({
+    id: `gateway-${id}`,
+    title: title!,
+    icon: ApiOutlined,
+    group: "Application Gateway",
+  })),
   { id: "audit", title: "操作审计", icon: AuditOutlined, group: "管理" },
 ];
