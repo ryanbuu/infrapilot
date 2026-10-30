@@ -23,6 +23,36 @@ export const isDark = computed(() =>
 );
 export const themeConfig = computed(() => ({
   algorithm: isDark.value ? theme.darkAlgorithm : theme.defaultAlgorithm,
+  components: {
+    Menu: {
+      itemSelectedColor: isDark.value ? "#80b3ff" : "#0958d9",
+      itemSelectedBg: isDark.value ? "#203955" : "#eaf2ff",
+    },
+  },
+  token: isDark.value
+    ? {
+        colorBgLayout: "#101827",
+        colorBgContainer: "#182233",
+        colorBgElevated: "#202d40",
+        colorBorder: "#3a4b62",
+        colorBorderSecondary: "#2b394d",
+        colorText: "#ecf1f8",
+        colorLink: "#80b3ff",
+        colorLinkHover: "#b5d2ff",
+        colorLinkActive: "#80b3ff",
+        colorTextSecondary: "#becbdc",
+        colorTextTertiary: "#a0b1c7",
+      }
+    : {
+        colorBgLayout: "#f4f7fb",
+        colorBgContainer: "#ffffff",
+        colorBgElevated: "#ffffff",
+        colorBorder: "#cbd5e1",
+        colorBorderSecondary: "#e2e8f0",
+        colorText: "#182338",
+        colorTextSecondary: "#475569",
+        colorTextTertiary: "#64748b",
+      },
 }));
 export function setThemePreference(value: ThemePreference) {
   themePreference.value = value;
@@ -39,7 +69,7 @@ watch(
     document.documentElement.style.colorScheme = dark ? "dark" : "light";
     document
       .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", dark ? "#000000" : "#f5f5f5");
+      ?.setAttribute("content", dark ? "#101827" : "#f4f7fb");
   },
   { immediate: true, flush: "sync" },
 );

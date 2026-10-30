@@ -266,6 +266,17 @@ onUnmounted(() => {
     <p class="login-bottom">InfraPilot · v{{ meta?.version || "0.1.0" }}</p>
   </div>
   <div v-else class="app-shell">
+    <a
+      class="skip-link"
+      href="#workspace-content"
+      @click.prevent="
+        ($event.currentTarget as HTMLElement)
+          .closest('.app-shell')
+          ?.querySelector<HTMLElement>('#workspace-content')
+          ?.focus()
+      "
+      >跳到主内容</a
+    >
     <a-drawer
       v-if="compactNavigation"
       v-model:open="mobileMenu"
@@ -332,7 +343,7 @@ onUnmounted(() => {
           /><span class="version-label">v{{ meta?.version }}</span>
         </div>
       </header>
-      <div class="page-content">
+      <div id="workspace-content" class="page-content" tabindex="-1">
         <a-alert v-if="zoneError" :message="zoneError" type="error" show-icon />
         <OverviewView
           v-if="page === 'overview'"

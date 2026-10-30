@@ -21,6 +21,12 @@ const emit = defineEmits<{
 }>();
 const search = ref("");
 const openKeys = ref(["dns", "dhcp"]);
+watch(search, (value) => {
+  if (value && menu.value.some((item) => item.id.startsWith("bind-"))) {
+    for (const key of ["dns", "dns-service"])
+      if (!openKeys.value.includes(key)) openKeys.value.push(key);
+  }
+});
 const menu = computed(() =>
   routes.filter(
     (r) =>
@@ -36,6 +42,8 @@ const menu = computed(() =>
 watch(
   () => props.page,
   (page) => {
+    if (page.startsWith("bind-") && !openKeys.value.includes("dns-service"))
+      openKeys.value.push("dns-service");
     if (page.startsWith("gateway-") && !openKeys.value.includes("gateway"))
       openKeys.value.push("gateway");
   },
@@ -82,12 +90,26 @@ watch(
         <template #icon><GlobalOutlined /></template
         ><template #title>DNS</template>
         <a-menu-item
-          v-for="item in menu.filter((m) => m.group === 'DNS')"
+          v-for="item in menu.filter(
+            (m) => m.group === 'DNS' && !m.id.startsWith('bind-'),
+          )"
           :key="item.id"
           @click="emit('navigate', item.id)"
         >
           {{ item.title }}
         </a-menu-item>
+        <a-sub-menu
+          v-if="menu.some((m) => m.id.startsWith('bind-'))"
+          key="dns-service"
+          title="DNS 服务配置"
+        >
+          <a-menu-item
+            v-for="item in menu.filter((m) => m.id.startsWith('bind-'))"
+            :key="item.id"
+            @click="emit('navigate', item.id)"
+            >{{ item.title }}</a-menu-item
+          >
+        </a-sub-menu>
       </a-sub-menu>
       <a-sub-menu v-if="menu.some((m) => m.group === 'DHCP')" key="dhcp">
         <template #icon><ClusterOutlined /></template

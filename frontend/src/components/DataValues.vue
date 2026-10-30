@@ -23,6 +23,12 @@ const items = computed(() => {
     ? values.filter((value) => value.length > 0)
     : values.map((value) => value.trim()).filter(Boolean);
 });
+function atomic(value: string) {
+  return (
+    /^(?:\d{1,3}\.){3}\d{1,3}(?:\/\d{1,2})?$/.test(value) ||
+    /^(?:[a-f0-9]{2}:){5}[a-f0-9]{2}$/i.test(value)
+  );
+}
 const sourceText = computed(() =>
   props.source === "inherited" ? "继承所属网络的设置" : "此设备独立配置",
 );
@@ -31,7 +37,12 @@ const sourceText = computed(() =>
 <template>
   <div class="data-values" :class="{ 'data-values-mono': monospace }">
     <div v-if="items.length" class="data-values-list">
-      <div v-for="(value, index) in items" :key="index" class="data-value">
+      <div
+        v-for="(value, index) in items"
+        :key="index"
+        class="data-value"
+        :class="{ 'data-value-atomic': atomic(value) }"
+      >
         {{ value }}
       </div>
     </div>

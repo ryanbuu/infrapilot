@@ -34,6 +34,7 @@ import "ant-design-vue/dist/reset.css";
 import App from "./App.vue";
 import "./style.css";
 import "./gateway.css";
+import "./console-design.css";
 const app = createApp(App);
 for (const component of [
   ConfigProvider,
