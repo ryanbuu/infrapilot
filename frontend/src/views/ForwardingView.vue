@@ -346,7 +346,7 @@ function mode(rule: ForwardingRule) {
           >
           <a-tag
             v-else-if="column.key === 'transport'"
-            :color="record.transport === 'DOT' ? 'blue' : undefined"
+            :color="record.transport === 'DOT' ? 'green' : undefined"
             >{{ record.transport === "DOT" ? "DoT" : "DNS" }}</a-tag
           >
           <template v-else-if="column.key === 'upstream'"
@@ -389,7 +389,7 @@ function mode(rule: ForwardingRule) {
         >
           <div class="forwarding-mobile-title">
             <strong>{{ rule.domain }}</strong
-            ><a-tag :color="rule.transport === 'DOT' ? 'blue' : undefined">{{
+            ><a-tag :color="rule.transport === 'DOT' ? 'green' : undefined">{{
               rule.transport === "DOT" ? "DoT" : "DNS"
             }}</a-tag>
           </div>

@@ -20,7 +20,7 @@ test("appearance follows the OS, preserves manual choice and themes overlays", a
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
   await expect(page.locator(".login-panel")).toHaveCSS(
     "background-color",
-    "rgb(24, 34, 51)",
+    "rgb(24, 42, 34)",
   );
   await chooseTheme(page, "浅色模式");
   await page.reload();
@@ -37,13 +37,13 @@ test("appearance follows the OS, preserves manual choice and themes overlays", a
   await signIn(page);
   await expect(page.locator(".resource-list-row").first()).toHaveCSS(
     "background-color",
-    "rgb(24, 34, 51)",
+    "rgb(24, 42, 34)",
   );
   await page.getByRole("menuitem", { name: "解析记录", exact: true }).click();
   await page.locator("tr[data-row-key]").first().waitFor();
   await expect(page.locator(".records-table-panel")).toHaveCSS(
     "background-color",
-    "rgb(24, 34, 51)",
+    "rgb(24, 42, 34)",
   );
   await page.screenshot({
     path: "../docs/screenshots/dark.png",
@@ -56,20 +56,20 @@ test("appearance follows the OS, preserves manual choice and themes overlays", a
   await row.getByRole("button", { name: "删除记录", exact: true }).click();
   await expect(page.locator(".ant-modal-content")).toHaveCSS(
     "background-color",
-    "rgb(32, 45, 64)",
+    "rgb(33, 57, 46)",
   );
   await page.getByRole("button", { name: /取\s*消/ }).click();
   await page.getByRole("button", { name: /添加记录/ }).click();
   await page.getByRole("button", { name: "预览变更", exact: true }).click();
   await expect(page.locator(".ant-message-notice-content")).toHaveCSS(
     "background-color",
-    "rgb(32, 45, 64)",
+    "rgb(33, 57, 46)",
   );
   await page.getByRole("button", { name: "关闭记录编辑", exact: true }).click();
   await page.getByRole("button", { name: /主从对比/ }).click();
   await expect(page.locator(".ant-drawer-content")).toHaveCSS(
     "background-color",
-    "rgb(32, 45, 64)",
+    "rgb(33, 57, 46)",
   );
 });
 

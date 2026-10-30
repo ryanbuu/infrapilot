@@ -1,18 +1,18 @@
 /* Initial palette is available before Vue boots; ThemeTokens uses Ant Design tokens. */
 :root {
   color-scheme: light;
-  --page-bg: #f5f5f5;
+  --page-bg: #f3faf6;
   --surface: #ffffff;
   --surface-subtle: rgba(0, 0, 0, 0.02);
   --surface-inset: rgba(0, 0, 0, 0.04);
-  --border: #f0f0f0;
-  --border-strong: #d9d9d9;
+  --border: #e0ebe4;
+  --border-strong: #cfdfd5;
   --text: rgba(0, 0, 0, 0.88);
   --text-secondary: rgba(0, 0, 0, 0.65);
   --text-muted: rgba(0, 0, 0, 0.45);
   --text-faint: rgba(0, 0, 0, 0.25);
-  --primary: #1677ff;
-  --link: #1677ff;
+  --primary: #238257;
+  --link: #238257;
   --success: #52c41a;
   --warning: #faad14;
   --diff-before: #fff2f0;
@@ -21,18 +21,18 @@
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --page-bg: #000000;
-  --surface: #141414;
+  --page-bg: #101d18;
+  --surface: #182a22;
   --surface-subtle: rgba(255, 255, 255, 0.02);
   --surface-inset: rgba(255, 255, 255, 0.08);
-  --border: #303030;
-  --border-strong: #424242;
+  --border: #2b4638;
+  --border-strong: #3d6050;
   --text: rgba(255, 255, 255, 0.85);
   --text-secondary: rgba(255, 255, 255, 0.65);
   --text-muted: rgba(255, 255, 255, 0.45);
   --text-faint: rgba(255, 255, 255, 0.25);
-  --primary: #1668dc;
-  --link: #1668dc;
+  --primary: #238257;
+  --link: #238257;
   --success: #49aa19;
   --warning: #d89614;
   --diff-before: #2a1215;

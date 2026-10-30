@@ -1162,14 +1162,14 @@ const statRows = computed(() => {
   min-width: 0;
 }
 .bind-node.is-selected {
-  border-color: #1677ff;
-  box-shadow: 0 0 0 1px #1677ff;
+  border-color: var(--link);
+  box-shadow: 0 0 0 1px var(--link);
 }
 .bind-node span {
   overflow-wrap: anywhere;
 }
 .bind-node:focus-visible {
-  outline: 2px solid #1677ff;
+  outline: 2px solid var(--link);
   outline-offset: 3px;
 }
 .bind-summary {

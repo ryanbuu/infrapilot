@@ -711,7 +711,7 @@ onMounted(load);
       <template v-if="preview"
         ><div class="gateway-preview-heading">
           <strong>{{ gatewayLabel(preview.kind) }} · {{ preview.id }}</strong
-          ><a-tag color="blue">{{ preview.validation }}</a-tag>
+          ><a-tag color="green">{{ preview.validation }}</a-tag>
         </div>
         <div class="change-preview gateway-diff">
           <div class="diff-before">

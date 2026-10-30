@@ -8,7 +8,7 @@ Minimalism & Swiss Style fits the enterprise operations console. The catalog's l
 
 ## Palette and typography
 
-Use Ant Design's default control algorithms with semantic slate surfaces. Light: layout #f4f7fb, surface #ffffff, foreground #182338, secondary #475569, muted #64748b. Dark: layout #101827, surface #182233, elevated #202d40, foreground #ecf1f8, secondary #becbdc, muted #a0b1c7. Primary actions retain Ant Design blue. Status always includes text.
+Use Ant Design's default control algorithms with semantic fresh green surfaces. Light: layout #f3faf6, surface #ffffff, foreground #183b2c, secondary #3d5e4d, muted #526f60. Dark: layout #101d18, surface #182a22, elevated #21392e, foreground #e8f5ec, secondary #bfd6c7, muted #a3bfad. Primary actions use #238257; light links use #1c6b46 and dark links #8edbb0. Status colors retain their meaning. Status always includes text.
 
 System sans-serif supports Chinese without external font requests; data values use system monospace. Headings 23/26px, data 13px, body/control text 14px and touch inputs >=16px. Contrast is checked separately for both schemes.
 
@@ -23,3 +23,5 @@ Keep management URLs, preview/confirmation flows and protected record behavior. 
 ## Implementation
 
 frontend/src/theme.ts supplies control tokens. console-design.css composes the workspace after existing component layout styles. All backend/API contracts are unchanged. Project-local .agents skill files remain user-owned and are not part of the application release.
+
+Palette update: fresh green for both themes, including active navigation, control states, browser chrome and brand assets. Keep the current layout and typography.

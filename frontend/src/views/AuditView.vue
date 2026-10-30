@@ -160,7 +160,7 @@ onMounted(load);
               record.action === 'DELETE'
                 ? 'red'
                 : record.action === 'CREATE'
-                  ? 'blue'
+                  ? 'green'
                   : 'orange'
             "
             >{{ actions[record.action] || record.action }}</a-tag

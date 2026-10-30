@@ -25,33 +25,40 @@ export const themeConfig = computed(() => ({
   algorithm: isDark.value ? theme.darkAlgorithm : theme.defaultAlgorithm,
   components: {
     Menu: {
-      colorItemTextSelected: isDark.value ? "#80b3ff" : "#0958d9",
-      colorItemBgSelected: isDark.value ? "#203955" : "#eaf2ff",
+      colorItemTextSelected: isDark.value ? "#8edbb0" : "#1c6b46",
+      colorItemBgSelected: isDark.value ? "#254936" : "#e4f3e9",
     },
   },
   token: isDark.value
     ? {
-        colorBgLayout: "#101827",
-        colorBgContainer: "#182233",
-        colorBgElevated: "#202d40",
-        colorBorder: "#3a4b62",
-        colorBorderSecondary: "#2b394d",
-        colorText: "#ecf1f8",
-        colorLink: "#80b3ff",
-        colorLinkHover: "#b5d2ff",
-        colorLinkActive: "#80b3ff",
-        colorTextSecondary: "#becbdc",
-        colorTextTertiary: "#a0b1c7",
+        colorPrimary: "#238257",
+        colorInfo: "#238257",
+        colorBgLayout: "#101d18",
+        colorBgContainer: "#182a22",
+        colorBgElevated: "#21392e",
+        colorBorder: "#3d6050",
+        colorBorderSecondary: "#2b4638",
+        colorText: "#e8f5ec",
+        colorLink: "#8edbb0",
+        colorLinkHover: "#bcecd0",
+        colorLinkActive: "#8edbb0",
+        colorTextSecondary: "#bfd6c7",
+        colorTextTertiary: "#a3bfad",
       }
     : {
-        colorBgLayout: "#f4f7fb",
+        colorPrimary: "#238257",
+        colorInfo: "#238257",
+        colorLink: "#1c6b46",
+        colorLinkHover: "#135437",
+        colorLinkActive: "#135437",
+        colorBgLayout: "#f3faf6",
         colorBgContainer: "#ffffff",
         colorBgElevated: "#ffffff",
-        colorBorder: "#cbd5e1",
-        colorBorderSecondary: "#e2e8f0",
-        colorText: "#182338",
-        colorTextSecondary: "#475569",
-        colorTextTertiary: "#64748b",
+        colorBorder: "#cfdfd5",
+        colorBorderSecondary: "#e0ebe4",
+        colorText: "#183b2c",
+        colorTextSecondary: "#3d5e4d",
+        colorTextTertiary: "#526f60",
       },
 }));
 export function setThemePreference(value: ThemePreference) {
@@ -69,7 +76,7 @@ watch(
     document.documentElement.style.colorScheme = dark ? "dark" : "light";
     document
       .querySelector('meta[name="theme-color"]')
-      ?.setAttribute("content", dark ? "#101827" : "#f4f7fb");
+      ?.setAttribute("content", dark ? "#101d18" : "#f3faf6");
   },
   { immediate: true, flush: "sync" },
 );
