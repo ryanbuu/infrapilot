@@ -464,9 +464,9 @@ const subnetColumns = [
 const reservationColumns = [
   { title: "固定地址", key: "address", dataIndex: "address", width: "12%" },
   { title: "MAC 地址", key: "mac", dataIndex: "mac", width: "15%" },
-  { title: "主机名", key: "hostname", width: "22%" },
+  { title: "主机名", key: "hostname", width: "20%" },
   { title: "子网", key: "prefix", dataIndex: "prefix", width: "15%" },
-  { title: "网关", key: "router", width: "13%" },
+  { title: "网关", key: "router", width: "15%" },
   { title: "DNS 服务器", key: "dnsServers", width: "15%" },
   { title: "操作", key: "actions", width: "8%" },
 ];

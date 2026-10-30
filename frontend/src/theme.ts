@@ -25,8 +25,8 @@ export const themeConfig = computed(() => ({
   algorithm: isDark.value ? theme.darkAlgorithm : theme.defaultAlgorithm,
   components: {
     Menu: {
-      itemSelectedColor: isDark.value ? "#80b3ff" : "#0958d9",
-      itemSelectedBg: isDark.value ? "#203955" : "#eaf2ff",
+      colorItemTextSelected: isDark.value ? "#80b3ff" : "#0958d9",
+      colorItemBgSelected: isDark.value ? "#203955" : "#eaf2ff",
     },
   },
   token: isDark.value
