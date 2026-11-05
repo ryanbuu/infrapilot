@@ -1,30 +1,12 @@
 :root {
-  --canvas: #f3f8f5;
-  --surface: #fff;
-  --text: #183b2c;
-  --muted: #587364;
-  --border: #dce8df;
-  --green: #238257;
-  --selected: #e1f0e7;
-  --danger: #b32626;
-  --base-color: #238257;
-  --accent-color: #238257;
-  --base-highlight-color: #e1f0e7;
-  --base-foreground-color: #fff;
-}
-html[data-theme="dark"] {
-  --canvas: #101d18;
-  --surface: #182a22;
-  --text: #e8f5ec;
-  --muted: #a3bfad;
-  --border: #2b4638;
-  --green: #87d7aa;
-  --selected: #254936;
-  --danger: #ff9a9a;
-  --base-color: #78cea0;
-  --accent-color: #78cea0;
-  --base-foreground-color: #123325;
-  --base-highlight-color: #254936;
+  /* Follow the SDK palette, including its native dark-mode variables. */
+  --canvas: var(--background-color);
+  --surface: var(--background-color);
+  --text: var(--color);
+  --muted: var(--highlight-color);
+  --border: var(--divider-color);
+  --selected: var(--selected-background-color);
+  --danger: var(--alert-color);
 }
 html,
 body,
@@ -88,7 +70,7 @@ body,
 }
 .brand-mark {
   display: inline-block;
-  color: var(--green);
+  color: var(--base-color);
   font-weight: 800;
   letter-spacing: -3px;
   margin-right: 16px;
@@ -137,7 +119,7 @@ body,
   background: var(--selected) !important;
 }
 .native-navigation .x-treelist-item-selected .x-treelist-item-text {
-  color: var(--green);
+  color: var(--base-color);
 }
 .page-title,
 .page-footer,
@@ -235,13 +217,6 @@ body,
 .x-button-flat:not(.x-disabled) .x-icon-el {
   color: var(--muted);
 }
-.x-button-action:not(.x-disabled) {
-  background: var(--green) !important;
-  color: var(--surface) !important;
-}
-.x-button-action .x-text-el {
-  color: var(--base-foreground-color) !important;
-}
 .x-button.danger-action:not(.x-disabled) .x-text-el {
   color: var(--danger);
 }
@@ -297,7 +272,7 @@ body,
 .login-card {
   border: 1px solid var(--border);
   border-radius: 12px;
-  box-shadow: 0 12px 45px #123a2510;
+  box-shadow: 0 12px 45px rgba(0, 0, 0, 0.08);
 }
 .login-title {
   font-size: 25px;
@@ -310,7 +285,7 @@ body,
 }
 .x-button:focus-visible,
 .x-treelist-row:focus-visible {
-  outline: 2px solid var(--green);
+  outline: 2px solid var(--base-color);
   outline-offset: -2px;
 }
 .x-mask {

@@ -126,13 +126,7 @@ export default function App() {
     return () => media.removeEventListener("change", change);
   }, []);
   useEffect(() => {
-    Ext.theme.Material.setColors({
-      base: "green",
-      baseWeight: "700",
-      accent: "green",
-      accentWeight: "700",
-      darkMode: dark,
-    });
+    Ext.theme.Material.setDarkMode(dark);
     document.documentElement.dataset.theme = dark ? "dark" : "light";
     localStorage.setItem("infrapilot-extreact-theme", theme);
   }, [theme, dark]);

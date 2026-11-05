@@ -1,6 +1,6 @@
 # InfraPilot · ExtReact 原生组件预览
 
-独立 React + ExtReact 前端，共 33 个功能页面及登录页。布局、导航、表格、表单、弹窗和提示均由原生 ExtReact 组件渲染；不加载 Vue、Ant Design 或 Element UI。绿色浅色、深色和系统主题共享一套配色。
+独立 React + ExtReact 前端，共 33 个功能页面及登录页。布局、导航、表格、表单、弹窗和提示均由原生 ExtReact 组件渲染；不加载 Vue、Ant Design 或 Element UI。使用 Material 主题默认配色，支持浅色、深色和跟随系统。
 
 这是可运行的兼容性预览，尚未替换 `frontend/` 或生产站点。默认连接本机隔离演示后端，不会修改现网 DNS、DHCP 或网关。
 
