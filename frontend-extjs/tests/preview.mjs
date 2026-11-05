@@ -7,7 +7,7 @@ const url = process.env.PREVIEW_URL || "http://127.0.0.1:5181";
 const output = resolve(process.env.SCREENSHOT_DIR || "test-results");
 const browser = await (
   process.env.BROWSER === "webkit" ? webkit : chromium
-).launch(process.env.BROWSER === "webkit" ? {} : { channel: "chrome" });
+).launch(process.env.BROWSER === "webkit" || process.env.CI ? {} : { channel: "chrome" });
 const page = await browser.newPage({ viewport: { width: 1500, height: 1000 } });
 page.setDefaultTimeout(10000);
 const errors = [];

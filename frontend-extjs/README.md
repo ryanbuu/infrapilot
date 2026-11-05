@@ -2,7 +2,7 @@
 
 使用官方 **Ext JS 7.0 Modern / Material** 实现 33 个功能页面及登录页。没有 React、ExtReact、Vue、Ant Design 或自定义组件兼容层；业务代码直接使用 Ext.application、ViewController、Store 和 Ext JS 组件。
 
-当前是独立预览，尚未替换仓库中的正式 `frontend/` 或生产站点。默认连接本机隔离演示后端，不修改现网 DNS、DHCP 或网关。
+仓库默认 Docker Compose 前端使用本目录。`npm run demo` 仍连接本机隔离演示后端，不修改现网 DNS、DHCP 或网关；旧 Vue 前端源码保留在 `frontend/`，不再用于默认部署。
 
 ## 原生界面
 
@@ -40,9 +40,15 @@ npm run demo
 python3 scripts/setup-sdk.py --archive /path/to/ext-7.0.0-gpl.zip
 ```
 
-下载脚本使用固定官方 URL 和 SHA-256 校验，仅安装同一 SDK 的 Modern 运行时及 Material 主题。SDK、字体与许可文件在忽略提交的 `public/vendor/ext/`，不混用其他版本的适配包。当前为 GPL 预览运行时；正式发布须遵循相应 SDK 的许可要求。
+下载脚本使用固定官方 URL 和 SHA-256 校验，仅安装同一 SDK 的 Modern 运行时及 Material 主题。SDK、字体与许可文件在忽略提交的 `public/vendor/ext/`，不混用其他版本的适配包。构建产物保留官方 GPL 许可文件。
 
 已单独启动后端时运行 `npm run dev`，通过 `API_PROXY_TARGET` 指定后端地址。`npm run build` 生成独立静态站点；Java API 的权限、CSRF、版本检查和变更预览流程保持不变。
+
+## 部署
+
+仓库根目录执行 `docker compose up -d --build`，通过本目录的多阶段 Dockerfile 安装固定 SDK 并构建前端。已有本地构建产物时，可用 `Dockerfile.runtime` 打包 `dist/`，避免宿主机重复安装 Node.js 和下载 SDK。前端通过 Nginx 的 `/api/` 代理连接现有 `backend:8080`，不在浏览器存放生产接入密钥。
+
+发布前保留旧前端镜像和 Compose 配置；使用 `docker compose up -d --no-deps frontend` 仅切换前端。应用回滚不覆盖数据库、DNS、DHCP 或网关配置。
 
 ## 功能
 

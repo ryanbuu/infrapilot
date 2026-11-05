@@ -2,21 +2,19 @@
 
 ![InfraPilot 标识](docs/screenshots/identity.png)
 
-基于 **Java 21 / Spring Boot + Vue 3 / Ant Design Vue** 的 DNS、DHCP 与 **Application Gateway** 管理面板，前后端独立构建、独立部署。
+基于 **Java 21 / Spring Boot + Ext JS 7.0 Modern / Material** 的 DNS、DHCP 与 **Application Gateway** 管理面板，前后端独立构建、独立部署。
 
-另有 [Ext JS 原生前端预览](frontend-extjs/README.md)，覆盖 33 个功能页面及登录，使用独立演示后端；当前正式前端与发布流程保持不变。
+默认前端为 [Ext JS 原生前端](frontend-extjs/README.md)，覆盖 33 个功能页面及登录。所有页面使用官方浅色主题，无自定义 CSS 或兼容层。旧 Vue 前端源码保留在 `frontend/`，用于历史参考。
 
 通过 AXFR 读取区域，使用 RFC2136 + TSIG 原子更新记录集。BIND 继续负责主从同步和 DNSSEC 签名；Kea 继续管理客户端 DDNS。
 
-![概览](docs/screenshots/overview.png)
-
-![记录管理](docs/screenshots/records.png)
+![Ext JS 概览](docs/screenshots/extjs-overview.png)
 
 ## 已实现
 
 - Session 登录、CSRF 防护，管理员和只读用户；账号凭据通过环境变量配置。
 - 区域概览、记录搜索、类型筛选、系统记录显示开关。
-- 原生浅色、[深色模式](docs/screenshots/dark.png)及跟随系统，浏览器记住选择；解释性文案收纳为支持悬停、键盘和触屏的问号提示。
+- 官方 Material 浅色主题；原生面板、表格、工具栏、菜单、表单及对话框，帮助文案收纳在问号提示中。
 - A / AAAA / CNAME / MX / TXT / PTR / SRV / CAA，以及 TLSA / SSHFP / NAPTR / URI / SVCB / HTTPS 等 25 种常规记录类型增删改、TTL、多值编辑及提交前预览。
 - 修改前校验记录版本，DNS UPDATE 携带旧记录集前置条件，未签名区域额外校验 SOA；检测到并发冲突返回 409。
 - Kea 区域只读，DHCID 名称、DNS 系统记录及已委派子域保护。生产中需同时配置 BIND 侧权限。
@@ -35,20 +33,17 @@ BIND 高级选项通过当前版本的原生配置语法维护；插件、HSM、
 
 ## 本地启动
 
-需要 Java 21+、Maven 3.9+、Node.js 22.12+。不需要本机 BIND。
+需要 Java 21+、Maven 3.9+、Node.js 22.12+、Python 3.11+。不需要本机 BIND。
 
 ```sh
-# 终端一
-cd backend
-mvn spring-boot:run
-
-# 终端二
-cd frontend
+mvn -f backend/pom.xml package -DskipTests
+cd frontend-extjs
 npm ci
-npm run dev
+npm run sdk
+npm run demo
 ```
 
-打开 http://127.0.0.1:5173 。开发服务器将 `/api` 代理到后端 8080，前端不存储密码或访问令牌。
+打开 http://127.0.0.1:5181 。演示启动器同时启动隔离后端和前端，`/api` 代理到本机 18085；生产环境通过 Nginx 连接现有后端。前端不存储生产接入密钥。
 
 默认是演示模式。点击「填入演示账户」后登录，或使用 `admin / infrapilot-demo`。该默认密码仅在演示模式可用；生产模式要求显式提供不少于 16 字符的管理员密码。
 
@@ -78,16 +73,16 @@ docker compose up -d --build
 
 ```sh
 mvn -f backend/pom.xml verify
-npm --prefix frontend ci
-npm --prefix frontend run build
-cd frontend
-npx playwright install chromium  # CI / Linux；macOS 本地测试默认使用已安装的 Chrome
-npm run test:e2e
+npm --prefix frontend-extjs ci
+npm --prefix frontend-extjs run sdk
+npm --prefix frontend-extjs run build
+# 在另一终端保持 npm --prefix frontend-extjs run demo 运行
+npm --prefix frontend-extjs run test:e2e
 ```
 
-手机导航另有 WebKit 回归检查：在 `frontend` 中执行 `npx playwright install webkit`、`npm run test:e2e:webkit`。浏览器触摸模拟和 WebKit 检查覆盖布局与交互，不代替真机 iOS Safari 验证。
+手机导航另有 WebKit 检查：在 `frontend-extjs` 中执行 `npx playwright install webkit`、`npm run test:webkit`。浏览器触摸模拟和 WebKit 检查不代替真机 iOS Safari 验证。
 
-浏览器测试启动隔离的内存数据库后端和开发前端，验证登录、DNS 记录及 DHCP 子网/保留地址的增删改、预览、HA 页面、审计、路由重载与手机导航（实色抽屉、遮罩/关闭、滚动与焦点隔离、横竖屏切换），并覆盖系统主题跟随、手动偏好保留、深色弹窗及问号提示的悬停、键盘与触屏交互。后端测试覆盖实际 TCP DNS 报文、TSIG、AXFR、UPDATE 前置条件，以及 Kea HTTP 认证、权限、配置保留、冲突、租约操作和部分失败回滚。这些测试使用隔离数据，不写生产 DNS/DHCP，也不等同于现网接入验收。
+浏览器测试仅在演示模式执行写入，覆盖 DNS、保留地址、条件转发、BIND 配置、网关资源的编辑和预览，以及各页面加载、固定浅色主题、手机导航和编辑窗。后端测试覆盖 DNS 报文、TSIG、AXFR、UPDATE 前置条件，以及 DHCP HTTP 认证、权限、配置保留、冲突、租约操作和部分失败回滚。隔离测试不写生产数据，现网发布另做只读验收。
 
 CI 以 Java 21 和 Node.js 22 构建、测试。测试截图使用演示数据。
 
@@ -109,6 +104,6 @@ CI 以 Java 21 和 Node.js 22 构建、测试。测试截图使用演示数据�
 
 Application Gateway 的完整能力、接入变量、备份和版本限制见 [网关管理说明](docs/APPLICATION-GATEWAY.md)。该模块仅供管理员使用，Admin API 密钥保留在服务端。
 
-前端继续使用 Ant Design Vue 默认组件主题，整体布局参考 Cloudflare 面板：分组侧栏、网络概览、DNS 记录与 DHCP 管理、审计，以及手机端卡片。DNS 支持区域切换、通栏表格、展开编辑、筛选与列显示，当前筛选记录可导出为 zone 文本片段。
+前端使用 Ext JS 原生组件：分组树形导航、可滚动表格、停靠工具栏和编辑对话框。手机端使用浮动导航和全屏编辑窗；布局和外观由官方主题及组件配置负责。
 
-DHCP 管理支持子网、地址池、保留地址、租约和 HA 状态，采用双节点预校验、保存和审计。保留地址可独立设置网关、DNS、搜索域、NTP、MTU、网络启动和附加选项，留空继续继承网络设置；宽屏列表展示网关与 DNS，手机使用卡片。连接设置、继承语义与失败恢复限制见 [DHCP 管理说明](docs/DHCP.md)。
+DHCP 管理支持子网、地址池、保留地址、租约和 HA 状态，采用双节点预校验、保存和审计。保留地址可独立设置网关、DNS、搜索域、NTP、MTU、网络启动和附加选项，留空继续继承网络设置。连接设置、继承语义与失败恢复限制见 [DHCP 管理说明](docs/DHCP.md)。

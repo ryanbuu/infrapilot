@@ -41,7 +41,7 @@ services:
     expose: ["8080"]
     security_opt: ["no-new-privileges:true"]
   frontend:
-    build: ./frontend
+    build: ./frontend-extjs
     restart: unless-stopped
     depends_on: [backend]
     ports:
