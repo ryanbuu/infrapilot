@@ -1072,7 +1072,7 @@ export default function createWorkspace({ route, user, navigate }) {
     columns: [],
     emptyText: "暂无记录",
     variableHeights: true,
-    striped: true,
+    striped: false,
     selectable: { mode: "single" },
     listeners: {
       selectionchange: (_, records) => {
