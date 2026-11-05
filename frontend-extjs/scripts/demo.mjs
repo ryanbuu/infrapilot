@@ -11,7 +11,7 @@ if (!existsSync(jar))
   );
 if (!existsSync(join(root, "public/vendor/ext/build/ext-modern-all.js")))
   throw Error("Install the GPL preview runtime first: npm run sdk");
-const work = mkdtempSync(join(tmpdir(), "infrapilot-extreact-demo-"));
+const work = mkdtempSync(join(tmpdir(), "infrapilot-extjs-demo-"));
 const java = process.env.JAVA_HOME
   ? join(process.env.JAVA_HOME, "bin/java")
   : "java";
@@ -25,7 +25,7 @@ const backend = spawn(
     "--server.address=127.0.0.1",
     "--server.port=18085",
     "--infrapilot.mode=demo",
-    "--spring.datasource.url=jdbc:h2:mem:extreact-preview",
+    "--spring.datasource.url=jdbc:h2:mem:extjs-preview",
   ],
   { cwd: work, stdio: ["ignore", "pipe", "pipe"] },
 );
@@ -83,6 +83,6 @@ if (!stopping) {
   );
   web.on("exit", (code) => stop(code || 0));
   console.log(
-    "ExtReact preview: http://127.0.0.1:5181\nDemo data is isolated; use “填入演示账户”.",
+    "Ext JS preview: http://127.0.0.1:5181\nDemo data is isolated; use “填入演示账户”.",
   );
 }

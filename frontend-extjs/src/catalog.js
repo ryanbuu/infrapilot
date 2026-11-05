@@ -118,7 +118,27 @@ export const reservationFields = [
   ["comment", "备注"],
   ["clientClasses", "客户端分类（JSON）", "area"],
   ["extraOptions", "附加选项（JSON）", "area"],
-].map(([name, label, kind, options]) => ({ name, label, kind, options }));
+].map(([name, label, kind, options]) => ({
+  name,
+  label,
+  kind,
+  options,
+  section: [
+    "dnsMode",
+    "router",
+    "dnsServers",
+    "domain",
+    "searchDomains",
+    "ntpServers",
+    "mtu",
+  ].includes(name)
+    ? "网络与 DNS"
+    : ["nextServer", "serverHostname", "bootFileName"].includes(name)
+      ? "网络引导"
+      : ["comment", "clientClasses", "extraOptions"].includes(name)
+        ? "高级选项"
+        : "基本设置",
+}));
 
 export const bindTemplates = {
   acl: 'acl "trusted-extra" {\n    192.0.2.0/24;\n};',

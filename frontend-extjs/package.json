@@ -1,5 +1,5 @@
 {
-  "name": "infrapilot-extreact-preview",
+  "name": "infrapilot-extjs-preview",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -10,11 +10,6 @@
     "demo": "node scripts/demo.mjs",
     "test:e2e": "node tests/preview.mjs",
     "test:webkit": "BROWSER=webkit node tests/preview.mjs"
-  },
-  "dependencies": {
-    "@sencha/ext-react-modern": "7.5.0",
-    "react": "16.13.1",
-    "react-dom": "16.13.1"
   },
   "devDependencies": {
     "@playwright/test": "1.56.1",

@@ -4,7 +4,7 @@
 
 基于 **Java 21 / Spring Boot + Vue 3 / Ant Design Vue** 的 DNS、DHCP 与 **Application Gateway** 管理面板，前后端独立构建、独立部署。
 
-另有 [ExtReact 原生组件预览](frontend-extreact/README.md)，覆盖 33 个功能页面及登录，使用独立演示后端；当前正式前端与发布流程保持不变。
+另有 [Ext JS 原生前端预览](frontend-extjs/README.md)，覆盖 33 个功能页面及登录，使用独立演示后端；当前正式前端与发布流程保持不变。
 
 通过 AXFR 读取区域，使用 RFC2136 + TSIG 原子更新记录集。BIND 继续负责主从同步和 DNSSEC 签名；Kea 继续管理客户端 DDNS。
 
