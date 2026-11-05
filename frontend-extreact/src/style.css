@@ -118,9 +118,6 @@ body,
 .native-navigation .x-treelist-row-over {
   background: var(--selected) !important;
 }
-.native-navigation .x-treelist-item-selected .x-treelist-item-text {
-  color: var(--base-color);
-}
 .page-title,
 .page-footer,
 .table-caption,
