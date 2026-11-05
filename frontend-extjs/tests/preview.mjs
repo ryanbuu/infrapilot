@@ -237,15 +237,12 @@ try {
   console.log("PASS all remaining data pages load without runtime errors");
 
   await navigate("dhcp-reservations");
-  await page.locator(".app-header .x-selectfield").click();
-  await page.locator(".x-listitem").filter({ hasText: "深色模式" }).click();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-  await page.screenshot({
-    path: output + "/reservations-dark.png",
-    fullPage: true,
-  });
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.evaluate(() => localStorage.setItem("infrapilot-theme", "dark"));
   await page.reload();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await expect(page.locator(".app-header .x-selectfield")).toHaveCount(0);
+  expect(await page.evaluate(() => localStorage.getItem("infrapilot-theme"))).toBeNull();
   await expect(page.locator(".workspace > .x-panelheader")).toContainText(
     "保留地址",
   );
@@ -259,7 +256,7 @@ try {
   await page.locator(".app-header .menu-trigger").click();
   await expect(page.locator(".mobile-sidebar")).toBeVisible();
   await page.screenshot({
-    path: output + "/mobile-navigation-dark.png",
+    path: output + "/mobile-navigation-light.png",
     fullPage: true,
   });
   await page
@@ -267,12 +264,12 @@ try {
     .last()
     .click({ position: { x: 370, y: 100 } });
   await expect(page.locator(".mobile-sidebar")).toHaveCount(0);
-  await page.screenshot({ path: output + "/mobile-dark.png", fullPage: true });
+  await page.screenshot({ path: output + "/mobile-light.png", fullPage: true });
   await row("printer").click();
   await button("更多操作").click();
   await expect(page.locator(".actions-menu")).toBeVisible();
   await page.screenshot({
-    path: output + "/mobile-actions-dark.png",
+    path: output + "/mobile-actions-light.png",
     fullPage: true,
   });
   await page
@@ -288,7 +285,7 @@ try {
   expect(mobileEditor.height).toBe(844);
   await expect(field("主机名")).toHaveValue("printer");
   await page.screenshot({
-    path: output + "/mobile-editor-dark.png",
+    path: output + "/mobile-editor-light.png",
     fullPage: true,
   });
   await button("取消", dialog()).click();
@@ -302,7 +299,7 @@ try {
     "条件转发",
   );
   await expect(page.locator(".mobile-sidebar")).toHaveCount(0);
-  console.log("PASS dark theme persistence and mobile navigation");
+  console.log("PASS fixed light theme with old dark preference and mobile navigation");
   console.log("PASS native menu action and full-screen mobile editor");
   expect(errors).toEqual([]);
   console.log("PASS zero uncaught browser errors");

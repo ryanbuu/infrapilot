@@ -15,7 +15,7 @@
 | 编辑与预览 | FormPanel / FieldSet / TextField / SelectField / TextArea / Dialog |
 | 手机导航与编辑 | 原生浮动 Panel、modal mask 和最大化 Dialog |
 
-字体、配色、留白、焦点、选择状态和控件外观全部由 Material 主题提供。**没有应用自定义 CSS、主题覆盖、DOM 布局补丁、React portal 或字段同步补丁。** 深浅色与跟随系统使用 Material 原生 `setDarkMode`。33 个导航项各有不同的 SDK 内置图标。
+字体、配色、留白、焦点、选择状态和控件外观全部由 Material 官方浅色主题提供。**没有应用自定义 CSS、主题覆盖、DOM 布局补丁、React portal 或字段同步补丁。** 登录页及全部工作页面统一使用浅色，移除主题切换及跟随系统逻辑，并清除旧主题偏好。33 个导航项各有不同的 SDK 内置图标。
 
 页面采用原生面板标题、停靠工具栏、填满剩余空间的滚动表格和底部状态栏。保留地址表单按基本设置、网络与 DNS、网络引导、高级选项分组。窄屏使用原生操作菜单，编辑窗全屏显示，表单内部滚动。
 
@@ -66,6 +66,6 @@ npx playwright install webkit
 npm run test:webkit
 ```
 
-测试在 `meta.demo=true` 时才执行写入，覆盖 DNS、保留地址及 DNS/网关选项、条件转发、BIND 配置、网关资源、各页面加载、表格边界、主题记忆、原生手机菜单和全屏编辑窗。可用 `PREVIEW_URL`、`SCREENSHOT_DIR` 指定地址与截图目录。WebKit 自动化不等同于 iPhone 真机验收。
+测试在 `meta.demo=true` 时才执行写入，覆盖 DNS、保留地址及 DNS/网关选项、条件转发、BIND 配置、网关资源、各页面加载、表格边界、固定浅色主题、原生手机菜单和全屏编辑窗。可用 `PREVIEW_URL`、`SCREENSHOT_DIR` 指定地址与截图目录。WebKit 自动化不等同于 iPhone 真机验收。
 
 参考：[Material 主题](https://docs.sencha.com/extjs/7.0.0/guides/core_concepts/material_theme.html)、[官方 GPL SDK](https://cdn.sencha.com/ext/gpl/ext-7.0.0-gpl.zip)。

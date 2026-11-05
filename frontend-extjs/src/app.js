@@ -1,17 +1,15 @@
 import { api, csrf, login } from "./api";
 import { groups, allRoutes } from "./catalog";
-import { field, toolbar, label, mobile, showError } from "./ui";
+import { toolbar, label, mobile, showError } from "./ui";
 import createWorkspace from "./workspace";
 
 Ext.define("InfraPilot.controller.Application", {
   extend: "Ext.app.ViewController",
   alias: "controller.infrapilot",
   init() {
-    this.theme = localStorage.getItem("infrapilot-theme") || "system";
-    this.systemTheme = matchMedia("(prefers-color-scheme: dark)");
-    this.onSystemTheme = () => this.applyTheme();
-    this.systemTheme.addEventListener("change", this.onSystemTheme);
-    this.applyTheme();
+    Ext.theme.Material.setDarkMode(false);
+    document.documentElement.dataset.theme = "light";
+    localStorage.removeItem("infrapilot-theme");
     this.onHashChange = () =>
       this.navigate(location.hash.slice(2) || "overview");
     this.onExpired = () => {
@@ -22,31 +20,6 @@ Ext.define("InfraPilot.controller.Application", {
     addEventListener("session-expired", this.onExpired);
     Ext.Viewport.on("resize", this.onViewportResize, this);
     this.connect();
-  },
-  applyTheme() {
-    const dark =
-      this.theme === "dark" ||
-      (this.theme === "system" && this.systemTheme.matches);
-    Ext.theme.Material.setDarkMode(dark);
-    document.documentElement.dataset.theme = dark ? "dark" : "light";
-    localStorage.setItem("infrapilot-theme", this.theme);
-  },
-  themeField() {
-    return field({
-      kind: "select",
-      ariaLabel: "主题",
-      width: 148,
-      value: this.theme,
-      options: [
-        { text: "跟随系统", value: "system" },
-        { text: "浅色模式", value: "light" },
-        { text: "深色模式", value: "dark" },
-      ],
-      onChange: (value) => {
-        this.theme = value;
-        this.applyTheme();
-      },
-    });
   },
   async connect() {
     this.getView().setMasked({ xtype: "loadmask", message: "正在连接…" });
@@ -105,11 +78,6 @@ Ext.define("InfraPilot.controller.Application", {
       scrollable: "vertical",
       padding: 16,
       items: [
-        toolbar([this.themeField()], {
-          docked: "top",
-          layout: { type: "hbox", pack: "end" },
-          cls: "login-theme",
-        }),
         {
           xtype: "panel",
           title: "登录 InfraPilot",
@@ -288,12 +256,7 @@ Ext.define("InfraPilot.controller.Application", {
       layout: "vbox",
       items: [
         toolbar(
-          [
-            this.menuButton,
-            this.breadcrumb,
-            this.themeField(),
-            this.connection,
-          ],
+          [this.menuButton, this.breadcrumb, this.connection],
           { docked: "top", cls: "app-header" },
         ),
         {
@@ -351,7 +314,6 @@ Ext.define("InfraPilot.controller.Application", {
     }
   },
   destroy() {
-    this.systemTheme?.removeEventListener("change", this.onSystemTheme);
     removeEventListener("hashchange", this.onHashChange);
     removeEventListener("session-expired", this.onExpired);
     Ext.Viewport.un("resize", this.onViewportResize, this);
