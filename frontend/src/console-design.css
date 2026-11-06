@@ -1,0 +1,433 @@
+/* InfraPilot operations design system: UI UX Pro Max, Swiss / dense dashboard.
+   Ant Design provides controls and semantic tokens; these rules compose the workspace. */
+:root {
+  --console-radius: 12px;
+  --console-gutter: 32px;
+  --console-sidebar: 240px;
+}
+.sidebar {
+  width: var(--console-sidebar);
+}
+.main-content {
+  margin-left: var(--console-sidebar);
+}
+.sidebar-top {
+  height: 76px;
+  padding: 0 22px;
+}
+.brand-wordmark {
+  font-size: 19px;
+  letter-spacing: -0.5px;
+}
+.brand-mark {
+  width: 32px;
+  height: 32px;
+}
+.nav-search {
+  padding: 20px 16px 12px;
+}
+.sidebar-layout .ant-menu {
+  padding: 0 8px 16px;
+}
+.sidebar-layout .ant-menu-item,
+.sidebar-layout .ant-menu-submenu-title {
+  margin-block: 3px;
+}
+.sidebar-layout .ant-menu-inline .ant-menu-item {
+  width: calc(100% - 8px);
+}
+.sidebar-user {
+  padding: 16px 20px;
+  background: var(--surface-subtle);
+}
+.topbar {
+  min-height: 64px;
+  height: 64px;
+  padding-inline: var(--console-gutter);
+  background: var(--surface);
+  position: relative;
+}
+.connection-status {
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+.topbar .version-label {
+  font-variant-numeric: tabular-nums;
+}
+.page-content {
+  max-width: 1720px;
+  padding: 32px var(--console-gutter) 24px;
+  outline: none;
+}
+.page-heading {
+  align-items: center;
+  margin-bottom: 24px;
+  min-height: 46px;
+}
+.page-heading h1 {
+  font-size: 26px;
+  font-weight: 650;
+  letter-spacing: -0.7px;
+}
+.resource-eyebrow {
+  font-size: 12px;
+  letter-spacing: 0.4px;
+  margin-bottom: 6px;
+}
+.page-heading > .ant-btn {
+  margin-top: 0;
+}
+.resource-metrics {
+  gap: 16px;
+  border: 0;
+  background: transparent;
+  margin-bottom: 24px;
+}
+.resource-metrics > div {
+  position: relative;
+  padding: 20px 22px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--console-radius);
+  min-width: 0;
+}
+.resource-metrics > div:last-child {
+  border-right: 1px solid var(--border);
+}
+.resource-metrics > div::before {
+  content: "";
+  position: absolute;
+  inset: 20px auto auto 0;
+  height: 22px;
+  width: 3px;
+  background: var(--primary);
+  border-radius: 0 3px 3px 0;
+}
+.resource-metrics strong {
+  font-size: 28px;
+  letter-spacing: -0.6px;
+  margin-top: 10px;
+}
+.resource-metrics > div > span {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.resource-tabs {
+  gap: 24px;
+  margin-bottom: 20px;
+}
+.records-toolbar {
+  padding: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--console-radius);
+  margin-bottom: 16px;
+}
+.records-table-panel,
+.resource-panel,
+.surface,
+.dns-reference,
+.topology-card,
+.service-summary,
+.probe-result {
+  border-color: var(--border);
+  border-radius: var(--console-radius);
+}
+.table-caption {
+  min-height: 52px;
+  padding: 12px 18px;
+  font-weight: 500;
+}
+.app-shell .ant-table-wrapper .ant-table .ant-table-thead > tr > th {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 14px 16px;
+  background: var(--surface-subtle);
+}
+.app-shell .ant-table-wrapper .ant-table .ant-table-tbody > tr > td {
+  padding: 14px 16px;
+  vertical-align: top;
+}
+.app-shell .ant-table-wrapper .ant-table .ant-table-tbody > tr:last-child > td {
+  border-bottom: 0;
+}
+.app-shell .ant-table-wrapper .ant-table-pagination.ant-pagination {
+  margin: 16px;
+}
+.record-owner strong,
+.reservation-hostname {
+  font-weight: 600;
+}
+.record-fqdn {
+  margin-top: 5px;
+  line-height: 1.6;
+}
+.data-values {
+  line-height: 1.7;
+}
+.data-values-mono {
+  font-size: 13px;
+}
+.data-values-list {
+  gap: 3px;
+}
+.data-source {
+  color: var(--text-secondary);
+}
+.inline-editor {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--console-radius);
+  padding: 24px;
+  margin-block: 20px;
+}
+.inline-editor-heading {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 22px;
+}
+.reservation-section-heading {
+  margin-block: 12px 18px;
+}
+.editor-footer {
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.change-preview {
+  border-radius: 8px;
+}
+.dns-reference {
+  margin-bottom: 20px;
+}
+.reference-header {
+  min-height: 46px;
+  padding-inline: 18px;
+}
+.reference-content {
+  min-height: 88px;
+  padding: 18px;
+}
+.zone-meta {
+  gap: 8px 24px;
+}
+.resource-list-header {
+  padding: 14px 20px;
+}
+.resource-list-row {
+  padding: 20px;
+}
+.resource-list-title strong {
+  font-weight: 600;
+}
+.resource-list-status {
+  gap: 20px;
+}
+.service-grid {
+  gap: 16px;
+}
+.service-summary {
+  padding: 22px;
+}
+.workspace-services {
+  margin-top: 28px;
+}
+.page-footer {
+  border-top: 0;
+  margin-top: 24px;
+  padding-top: 12px;
+}
+.bind-page .panel,
+.bind-node,
+.forwarding-node,
+.gateway-resource-card,
+.gateway-plugin-card,
+.gateway-instance {
+  border-radius: var(--console-radius);
+}
+.bind-node.is-selected {
+  box-shadow: none;
+  background: var(--surface-inset);
+}
+.config-summary {
+  gap: 8px;
+}
+.gateway-instance {
+  margin-bottom: 24px;
+}
+.gateway-resource-card {
+  min-height: 100px;
+}
+.gateway-resource-card strong {
+  font-weight: 600;
+}
+.login-layout {
+  justify-content: center;
+  background: var(--page-bg);
+  padding-top: 32px;
+}
+.login-panel {
+  border-radius: 16px;
+  padding: 36px;
+  box-shadow: 0 16px 48px var(--surface-inset);
+}
+.login-brand {
+  margin-bottom: 24px;
+}
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: -80px;
+  z-index: 2000;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: var(--surface);
+  border: 2px solid var(--primary);
+  color: var(--text);
+}
+.skip-link:focus {
+  top: 12px;
+}
+@media (hover: hover) and (pointer: fine) {
+  .resource-list-row,
+  .gateway-resource-card,
+  .bind-node {
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease;
+  }
+}
+@media (max-width: 1200px) {
+  :root {
+    --console-gutter: 24px;
+  }
+  .resource-metrics {
+    gap: 12px;
+  }
+  .resource-metrics > div {
+    padding: 18px;
+  }
+}
+@media (max-width: 760px) {
+  :root {
+    --console-gutter: 16px;
+  }
+  .main-content {
+    margin-left: 0;
+  }
+  .page-content {
+    padding-top: 24px;
+  }
+  .topbar {
+    height: calc(56px + env(safe-area-inset-top, 0px));
+    min-height: 56px;
+    padding-inline: 12px;
+  }
+  .connection-status {
+    border: 0;
+    padding: 0;
+    font-size: 11px;
+  }
+  .page-heading {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .page-heading h1 {
+    font-size: 23px;
+  }
+  .resource-metrics {
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .resource-metrics > div {
+    padding: 16px;
+    border: 1px solid var(--border);
+  }
+  .resource-metrics > div:nth-child(2),
+  .resource-metrics > div:nth-last-child(-n + 2) {
+    border: 1px solid var(--border);
+  }
+  .resource-metrics strong {
+    font-size: 25px;
+    margin-top: 6px;
+  }
+  .resource-metrics > div::before {
+    inset-block-start: 16px;
+    height: 18px;
+  }
+  .records-toolbar {
+    padding: 10px;
+    gap: 10px;
+  }
+  .records-toolbar .ant-btn {
+    min-height: 40px;
+  }
+  .mobile-record {
+    padding: 20px 16px;
+  }
+  .mobile-record-heading strong {
+    font-size: 16px;
+  }
+  .mobile-record-content {
+    margin-top: 14px;
+  }
+  .mobile-record .row-actions {
+    padding-top: 10px;
+    gap: 8px;
+  }
+  .mobile-record .row-actions .ant-btn {
+    min-height: 40px;
+    min-width: 40px;
+  }
+  .inline-editor {
+    padding: 18px 16px;
+  }
+  .inline-editor-heading {
+    padding-bottom: 12px;
+  }
+  .data-source {
+    min-width: 32px;
+    min-height: 32px;
+  }
+  .login-panel {
+    padding: 28px 24px;
+  }
+  .bind-page .record-tools,
+  .gateway-selectors {
+    gap: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .resource-list-row,
+  .gateway-resource-card,
+  .bind-node {
+    transition: none;
+  }
+}
+
+/* Keep IPv4, CIDR and MAC identifiers intact in the dense reservation grid. */
+.app-shell
+  .reservation-table.ant-table-wrapper
+  .ant-table
+  .ant-table-tbody
+  > tr
+  > td,
+.app-shell
+  .reservation-table.ant-table-wrapper
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th {
+  padding-inline: 10px;
+}
+.data-value-atomic {
+  white-space: nowrap;
+}
+
+.resource-list-title strong {
+  color: var(--link);
+}
+.resource-tabs > button.active {
+  border-bottom-color: var(--link);
+}

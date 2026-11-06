@@ -12,6 +12,7 @@ import org.xbill.DNS.Name;
 @Component
 public class ZoneRegistry {
   private final List<Zone> zones;
+  private volatile List<Zone> managed = List.of();
 
   public ZoneRegistry(InfraPilotProperties p) {
     if (!Set.of("demo", "live").contains(p.getMode()))
@@ -38,11 +39,34 @@ public class ZoneRegistry {
   }
 
   public List<Zone> all() {
-    return zones;
+    List<Zone> all = new ArrayList<>(zones);
+    all.addAll(managed);
+    return List.copyOf(all);
+  }
+
+  public List<Zone> managed() {
+    return managed;
+  }
+
+  public synchronized void setManaged(List<Zone> values) {
+    Set<String> ids = new HashSet<>(), names = new HashSet<>();
+    for (Zone z : zones) {
+      ids.add(z.id());
+      names.add(z.name().toLowerCase(Locale.ROOT));
+    }
+    for (Zone z : values) {
+      if (z.id() == null
+          || !z.id().matches("bind-[a-f0-9]{16}")
+          || !ids.add(z.id())
+          || !names.add(z.name().toLowerCase(Locale.ROOT))
+          || !z.name().endsWith(".")
+          || z.primary() == null) throw new IllegalStateException("Invalid managed zone catalog");
+    }
+    managed = List.copyOf(values);
   }
 
   public Zone find(String id) {
-    return zones.stream()
+    return all().stream()
         .filter(z -> z.id().equals(id))
         .findFirst()
         .orElseThrow(() -> new ApiException(NOT_FOUND, "区域不存在"));

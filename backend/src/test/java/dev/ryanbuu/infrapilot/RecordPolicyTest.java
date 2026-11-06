@@ -46,6 +46,26 @@ class RecordPolicyTest {
   }
 
   @Test
+  void serviceBindingAndFingerprintRecordsUseNativeRdataValidation() {
+    assertThat(
+            policy.parse(
+                new Change("svc", "HTTPS", 300, List.of("1 . alpn=\"h2,h3\""), null), zone))
+        .hasSize(1);
+    assertThat(
+            policy.parse(
+                new Change("_443._tcp.svc", "TLSA", 300, List.of("3 1 1 " + "ab".repeat(32)), null),
+                zone))
+        .hasSize(1);
+    assertThat(
+            policy.parse(
+                new Change("ssh", "SSHFP", 300, List.of("4 2 " + "ab".repeat(32)), null), zone))
+        .hasSize(1);
+    assertThatThrownBy(
+            () -> policy.parse(new Change("svc", "HTTPS", 300, List.of("invalid"), null), zone))
+        .isInstanceOf(dev.ryanbuu.infrapilot.api.ApiException.class);
+  }
+
+  @Test
   void revisionDetectsTtlChangesAndIgnoresValueOrder() {
     var a =
         policy.parse(new Change("www", "A", 300, List.of("192.0.2.1", "192.0.2.2"), null), zone);

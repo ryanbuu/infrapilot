@@ -23,7 +23,7 @@ public class DemoDnsGateway implements DnsGateway {
 
   @Override
   public synchronized List<Record> read(Zone zone) {
-    return List.copyOf(data.get(zone.id()));
+    return List.copyOf(data.computeIfAbsent(zone.id(), id -> seed(zone)));
   }
 
   @Override
