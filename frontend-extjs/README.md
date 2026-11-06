@@ -56,7 +56,7 @@ python3 scripts/setup-sdk.py --archive /path/to/ext-7.0.0-gpl.zip
 - DHCP：子网与地址池、保留地址及完整选项、继承值、租约和 HA；已保留客户端禁用重复保留。
 - 条件转发：DNS / DoT 编辑、双节点预览、备份与恢复。
 - BIND：权威区域、递归与缓存、ACL / Views、DNSSEC / 密钥、加密传输、日志统计、原生配置和运维；包含主从区域创建、TSIG 生成、配置导出、备份与执行结果。
-- Application Gateway：13 类资源、插件 Schema、节点配置及备份恢复；复杂配置通过原生文本域编辑 JSON，由后端校验。
+- Application Gateway：13 类资源使用原生分组表单：节点、匹配条件、超时、健康检查、TLS、消费者凭据及插件参数均可逐项编辑；节点配置只读，保留后端校验与备份恢复。
 - 登录、管理员/只读权限、操作审计。
 
 这次重写不修改服务端业务、生产权限或数据。演示验证不等于所有 BIND 命令、网关插件组合或生产恢复流程均已通过现网验收。
@@ -67,6 +67,8 @@ python3 scripts/setup-sdk.py --archive /path/to/ext-7.0.0-gpl.zip
 
 ```sh
 npm run build
+npm test             # 表单数据类型与密钥标记
+npm run test:forms    # 网关表单、无损编辑及手机布局
 npm run test:e2e      # Google Chrome
 npx playwright install webkit
 npm run test:webkit

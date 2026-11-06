@@ -9,7 +9,9 @@
     "sdk": "python3 scripts/setup-sdk.py",
     "demo": "node scripts/demo.mjs",
     "test:e2e": "node tests/preview.mjs",
-    "test:webkit": "BROWSER=webkit node tests/preview.mjs"
+    "test:webkit": "BROWSER=webkit node tests/preview.mjs",
+    "test": "node --test tests/gateway-model.mjs",
+    "test:forms": "node tests/gateway-forms.mjs"
   },
   "devDependencies": {
     "@playwright/test": "1.56.1",

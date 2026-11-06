@@ -31,8 +31,11 @@ public class GatewayController {
   }
 
   @GetMapping("/schema/{kind}")
-  public JsonNode schema(@PathVariable String kind, @RequestParam(required = false) String plugin) {
-    return gateway.schema(kind, plugin);
+  public JsonNode schema(
+      @PathVariable String kind,
+      @RequestParam(required = false) String plugin,
+      @RequestParam(defaultValue = "default") String context) {
+    return gateway.schema(kind, plugin, context);
   }
 
   @GetMapping("/runtime")

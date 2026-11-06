@@ -7,7 +7,11 @@ const url = process.env.PREVIEW_URL || "http://127.0.0.1:5181";
 const output = resolve(process.env.SCREENSHOT_DIR || "test-results");
 const browser = await (
   process.env.BROWSER === "webkit" ? webkit : chromium
-).launch(process.env.BROWSER === "webkit" || process.env.CI ? {} : { channel: "chrome" });
+).launch(
+  process.env.BROWSER === "webkit" || process.env.CI
+    ? {}
+    : { channel: "chrome" },
+);
 const page = await browser.newPage({ viewport: { width: 1500, height: 1000 } });
 page.setDefaultTimeout(10000);
 const errors = [];
@@ -131,21 +135,17 @@ try {
     await removeSelected();
   }
   await button("添加配置").click();
-  await field("配置内容").fill(
-    JSON.stringify(
-      {
-        id: "extjs-preview",
-        value: {
-          name: "Ext JS preview",
-          uri: "/extjs-preview",
-          status: 0,
-          upstream: { type: "roundrobin", nodes: { "192.0.2.79:8080": 1 } },
-        },
-      },
-      null,
-      2,
-    ),
-  );
+  await field("资源 ID").fill("extjs-preview");
+  await field("名称").fill("Ext JS preview");
+  await dialog().locator(".x-tab").filter({ hasText: "匹配条件" }).click();
+  await field("匹配路径").fill("/extjs-preview");
+  await dialog().locator(".x-tab").filter({ hasText: "转发目标" }).click();
+  await button("添加节点", dialog()).click();
+  await dialog()
+    .locator('input[name="upstream.nodes.0.host"]')
+    .fill("192.0.2.79");
+  await dialog().locator('input[name="upstream.nodes.0.port"]').fill("8080");
+  await dialog().locator('input[name="upstream.nodes.0.weight"]').fill("1");
   await commit();
   await row("extjs-preview").click();
   await removeSelected();
@@ -242,7 +242,9 @@ try {
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
   await expect(page.locator(".app-header .x-selectfield")).toHaveCount(0);
-  expect(await page.evaluate(() => localStorage.getItem("infrapilot-theme"))).toBeNull();
+  expect(
+    await page.evaluate(() => localStorage.getItem("infrapilot-theme")),
+  ).toBeNull();
   await expect(page.locator(".workspace > .x-panelheader")).toContainText(
     "保留地址",
   );
@@ -299,7 +301,9 @@ try {
     "条件转发",
   );
   await expect(page.locator(".mobile-sidebar")).toHaveCount(0);
-  console.log("PASS fixed light theme with old dark preference and mobile navigation");
+  console.log(
+    "PASS fixed light theme with old dark preference and mobile navigation",
+  );
   console.log("PASS native menu action and full-screen mobile editor");
   expect(errors).toEqual([]);
   console.log("PASS zero uncaught browser errors");

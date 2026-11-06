@@ -1,4 +1,5 @@
 import { api, pretty, encode } from "./api";
+import { createGatewayForm } from "./gateway-form";
 import {
   allRoutes,
   gatewayKinds,
@@ -333,8 +334,83 @@ export default function createWorkspace({ route, user, navigate }) {
           })),
     );
   }
-  function gatewayEdit(item, remove = false) {
+  async function gatewayEdit(item, remove = false) {
     const kind = route.slice(8);
+    if (!remove) {
+      const context = ["consumers", "credentials"].includes(kind)
+        ? "consumer"
+        : kind === "stream_routes"
+          ? "stream"
+          : kind === "plugin_metadata"
+            ? "metadata"
+            : "default";
+      const loadPluginSchema = (name) =>
+        api(
+          "/gateway/schema/" +
+            kind +
+            "?plugin=" +
+            encodeURIComponent(name) +
+            "&context=" +
+            context,
+        );
+      busy = true;
+      refreshActions();
+      try {
+        const [schema, plugins] = await Promise.all([
+          kind === "plugin_metadata" && item
+            ? loadPluginSchema(item.id)
+            : api("/gateway/schema/" + kind),
+          api("/gateway/plugins"),
+        ]);
+        const pluginNames = [
+          ...new Set([
+            ...(Array.isArray(plugins) ? plugins : []),
+            ...Object.keys(item?.value?.plugins || {}),
+          ]),
+        ].sort();
+        const pluginSchemas = Object.fromEntries(
+          await Promise.all(
+            Object.keys(item?.value?.plugins || {}).map(async (name) => [
+              name,
+              await loadPluginSchema(name),
+            ]),
+          ),
+        );
+        if (page.destroyed) return;
+        trackWindow(
+          openEditor({
+            title:
+              (item ? "编辑" : "添加") +
+              (gatewayKinds.find(([id]) => id === kind)?.[1] || "配置"),
+            createForm: () =>
+              createGatewayForm({
+                kind,
+                item,
+                schema,
+                pluginNames,
+                pluginSchemas,
+                loadPluginSchema,
+              }),
+            path: "/gateway/resources/" + kind + "/changes",
+            preview: "/gateway/resources/" + kind + "/preview",
+            payload: (v) => ({
+              action: item ? "UPDATE" : "CREATE",
+              id: item?.id || v.id,
+              parent: parent || undefined,
+              revision: item?.revision,
+              value: v.value,
+            }),
+            onSaved: () => {
+              if (!page.destroyed) load();
+            },
+          }),
+        );
+      } finally {
+        busy = false;
+        if (!page.destroyed) refreshActions();
+      }
+      return;
+    }
     const value =
       item?.value ||
       {

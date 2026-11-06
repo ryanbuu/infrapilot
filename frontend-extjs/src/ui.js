@@ -156,42 +156,45 @@ export function openEditor(editor) {
       row.push(f);
     else section.rows.push([f]);
   }
-  const form = Ext.create("Ext.form.Panel", {
-    itemId: "edit-form",
-    flex: 1,
-    scrollable: "vertical",
-    padding: 16,
-    layout: "vbox",
-    items: editor.fields
-      ? sections.map((section) => ({
-          xtype: "fieldset",
-          title: section.title,
-          layout: "vbox",
-          items: section.rows.map((row) => ({
-            xtype: "container",
-            layout: "hbox",
-            items: row.map((f, i) =>
-              field({
-                ...f,
-                flex: 1,
-                margin: i ? "0 0 0 16" : 0,
-                height: f.kind === "area" ? f.height || 180 : undefined,
-                value: values[f.name] ?? "",
-              }),
-            ),
-          })),
-        }))
-      : [
-          field({
-            kind: "area",
-            name: "raw",
-            label: "配置内容",
-            value: pretty(editor.values || {}),
-            flex: 1,
-            minHeight: 360,
-          }),
-        ],
-  });
+  const customForm = editor.createForm?.();
+  const form =
+    customForm?.component ||
+    Ext.create("Ext.form.Panel", {
+      itemId: "edit-form",
+      flex: 1,
+      scrollable: "vertical",
+      padding: 16,
+      layout: "vbox",
+      items: editor.fields
+        ? sections.map((section) => ({
+            xtype: "fieldset",
+            title: section.title,
+            layout: "vbox",
+            items: section.rows.map((row) => ({
+              xtype: "container",
+              layout: "hbox",
+              items: row.map((f, i) =>
+                field({
+                  ...f,
+                  flex: 1,
+                  margin: i ? "0 0 0 16" : 0,
+                  height: f.kind === "area" ? f.height || 180 : undefined,
+                  value: values[f.name] ?? "",
+                }),
+              ),
+            })),
+          }))
+        : [
+            field({
+              kind: "area",
+              name: "raw",
+              label: "配置内容",
+              value: pretty(editor.values || {}),
+              flex: 1,
+              minHeight: 360,
+            }),
+          ],
+    });
   const review = Ext.create("Ext.field.TextArea", {
     label: "变更预览",
     labelAlign: "top",
@@ -224,9 +227,11 @@ export function openEditor(editor) {
       try {
         if (!preview) {
           const payload = editor.payload(
-            editor.fields
-              ? { ...values, ...form.getValues() }
-              : JSON.parse(form.down("[name=raw]").getValue()),
+            customForm
+              ? customForm.read()
+              : editor.fields
+                ? { ...values, ...form.getValues() }
+                : JSON.parse(form.down("[name=raw]").getValue()),
           );
           const result = editor.preview
             ? await api(editor.preview, payload)
@@ -260,20 +265,22 @@ export function openEditor(editor) {
       }
     },
   });
-  const contentHeight = editor.fields
-    ? 160 +
-      sections.reduce(
-        (sum, s) =>
-          sum +
-          52 +
-          s.rows.reduce(
-            (n, row) =>
-              n + (row[0].kind === "area" ? row[0].height || 180 : 64),
-            0,
-          ),
-        0,
-      )
-    : 680;
+  const contentHeight = customForm
+    ? 760
+    : editor.fields
+      ? 160 +
+        sections.reduce(
+          (sum, s) =>
+            sum +
+            52 +
+            s.rows.reduce(
+              (n, row) =>
+                n + (row[0].kind === "area" ? row[0].height || 180 : 64),
+              0,
+            ),
+          0,
+        )
+      : 680;
   const win = dialog(editor.title, {
     height: Math.min(contentHeight, Ext.getViewportHeight() - 48),
     items: [

@@ -41,6 +41,27 @@ class GatewayClientTest {
   }
 
   @Test
+  void pluginSchemasUseTheCorrectContextWithoutChangingConfiguration() throws Exception {
+    GatewayClient mock = mock(GatewayClient.class);
+    var schema = mapper.readTree("{\"type\":\"object\",\"properties\":{\"key\":{\"type\":\"string\"}}}");
+    when(mock.request(eq("GET"), eq("/schema/plugins/key-auth?schema_type=consumer"), isNull()))
+        .thenReturn(new GatewayClient.Reply(200, schema));
+    when(mock.request(eq("GET"), eq("/schema/plugins/mqtt-proxy?subsystem=stream"), isNull()))
+        .thenReturn(new GatewayClient.Reply(200, schema));
+    when(mock.request(eq("GET"), eq("/plugins?all=true"), isNull()))
+        .thenReturn(new GatewayClient.Reply(200, mapper.createObjectNode().set("http-logger", mapper.createObjectNode().set("metadata_schema", schema))));
+    GatewayService service = new GatewayService(mock, p, new GatewayBackups(p, mapper), mapper, mock(AuditService.class));
+    assertThat(service.schema("credentials", "key-auth", "consumer")).isEqualTo(schema);
+    assertThat(service.schema("stream_routes", "mqtt-proxy", "stream")).isEqualTo(schema);
+    assertThat(service.schema("plugin_metadata", "http-logger", "metadata")).isEqualTo(schema);
+    assertThat(service.schema("plugin_metadata", "missing", "metadata").path("available").asBoolean()).isFalse();
+    assertThatThrownBy(() -> service.schema("routes", "plugin?all=true", "default")).isInstanceOf(ApiException.class);
+    assertThatThrownBy(() -> service.schema("routes", "key-auth", "unknown")).isInstanceOf(ApiException.class);
+    verify(mock, never()).request(eq("POST"), anyString(), any());
+    verify(mock, never()).request(eq("PUT"), anyString(), any());
+  }
+
+  @Test
   void customMetadataValidationDoesNotCallTheBrokenGenericValidator() {
     GatewayClient mock = mock(GatewayClient.class);
     when(mock.request(eq("GET"), eq("/plugin_metadata/test-plugin"), isNull()))

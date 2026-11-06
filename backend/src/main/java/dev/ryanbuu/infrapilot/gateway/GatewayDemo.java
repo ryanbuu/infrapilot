@@ -81,11 +81,16 @@ final class GatewayDemo {
               .createObjectNode()
               .put(invalid ? "error_msg" : "message", invalid ? "配置字段类型或内容无效" : "ok"));
     }
+    if (path.equals("/plugins?all=true"))
+      return reply(200, obj("{\"http-logger\":{\"metadata_schema\":{\"type\":\"object\",\"properties\":{\"log_format\":{\"type\":\"object\",\"additionalProperties\":{\"type\":\"string\"}}}}}}"));
+    if (path.startsWith("/schema/plugins/key-auth"))
+      return reply(200, path.contains("schema_type=consumer")
+          ? obj("{\"type\":\"object\",\"required\":[\"key\"],\"properties\":{\"key\":{\"type\":\"string\",\"minLength\":1}},\"additionalProperties\":false}")
+          : obj("{\"type\":\"object\",\"properties\":{\"header\":{\"type\":\"string\",\"default\":\"apikey\"},\"hide_credentials\":{\"type\":\"boolean\",\"default\":false}}}"));
     if (path.startsWith("/schema/"))
       return reply(
           200,
-          obj(
-              "{\"type\":\"object\",\"properties\":{\"name\":{\"type\":\"string\"},\"desc\":{\"type\":\"string\"},\"plugins\":{\"type\":\"object\"}},\"additionalProperties\":true}"));
+          obj("{\"available\":false}"));
     if (method.equals("GET")) {
       ObjectNode existing = resources.get(path);
       if (existing != null) return reply(200, existing.deepCopy());

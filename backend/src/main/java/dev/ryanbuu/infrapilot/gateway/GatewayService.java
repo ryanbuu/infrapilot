@@ -151,10 +151,26 @@ public class GatewayService {
   }
 
   public JsonNode schema(String kind, String plugin) {
+    return schema(kind, plugin, "default");
+  }
+
+  public JsonNode schema(String kind, String plugin, String context) {
+    if (!Set.of("default", "consumer", "metadata", "stream").contains(context))
+      throw new ApiException(HttpStatus.BAD_REQUEST, "不支持的插件配置类型");
     String path;
-    if (plugin != null && !plugin.isBlank())
+    if (plugin != null && !plugin.isBlank()) {
+      GatewayResource.segment(plugin);
+      if (context.equals("metadata")) {
+        JsonNode all = require(client.request("GET", "/plugins?all=true", null), null);
+        JsonNode metadata = all.path(plugin).path("metadata_schema");
+        return metadata.isObject()
+            ? metadata
+            : mapper.createObjectNode().put("available", false);
+      }
       path = "/schema/plugins/" + GatewayResource.segment(plugin);
-    else path = "/schema/" + GatewayResource.of(kind).schema;
+      if (context.equals("consumer")) path += "?schema_type=consumer";
+      if (context.equals("stream")) path += "?subsystem=stream";
+    } else path = "/schema/" + GatewayResource.of(kind).schema;
     var reply = client.request("GET", path, null);
     if (reply.status() == 400 || reply.status() == 404)
       return mapper.createObjectNode().put("available", false);
