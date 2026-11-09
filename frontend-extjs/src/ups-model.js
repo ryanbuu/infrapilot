@@ -219,10 +219,10 @@ export function flatten(value, prefix = "", out = []) {
 export function chartRows(rows, keys) {
   return rows
     .map((r) => ({
-      time:
-        typeof (r.timestamp_utc ?? r.timestamp ?? r.created_at) === "number"
-          ? (r.timestamp_utc ?? r.timestamp ?? r.created_at)
-          : Date.parse(r.timestamp_utc || r.timestamp || r.created_at),
+      time: timestampMillis(
+        r.timestamp_utc ?? r.timestamp ?? r.created_at,
+        r.timestamp_utc !== undefined,
+      ),
       ...Object.fromEntries(keys.map((k) => [k, numeric(r[k])])),
     }))
     .filter((r) => Number.isFinite(r.time))
@@ -241,4 +241,21 @@ export function schemaDefaults(schema) {
         s.type === "integer" ? Number(s.default) : s.default,
       ]),
   );
+}
+
+export function timestampMillis(value, utc = false) {
+  if (typeof value === "number") return value;
+  if (typeof value !== "string" || !value) return NaN;
+  const normalized = value.replace(" ", "T");
+  return Date.parse(
+    utc && !/(Z|[+-]\d{2}:?\d{2})$/i.test(normalized)
+      ? normalized + "Z"
+      : normalized,
+  );
+}
+export function reading(value) {
+  const n = numeric(value);
+  return n === null
+    ? "—"
+    : new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(n);
 }

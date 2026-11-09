@@ -2,20 +2,22 @@ import { chromium, webkit, expect } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
 const browser = await (
   process.env.BROWSER === "webkit" ? webkit : chromium
-).launch(process.env.BROWSER === "webkit" || process.env.CI ? {} : { channel: "chrome" });
+).launch(
+  process.env.BROWSER === "webkit" || process.env.CI
+    ? {}
+    : { channel: "chrome" },
+);
 const page = await browser.newPage({ viewport: { width: 1440, height: 1000 } }),
   errors = [],
   out = process.env.SCREENSHOT_DIR || "test-results";
 await mkdir(out, { recursive: true });
 page.on("pageerror", (e) => errors.push(e.message));
 const button = (text, scope = page) =>
-  scope
-    .locator(".x-button")
-    .filter({
-      has: page.locator(".x-text-el", {
-        hasText: new RegExp("^" + text + "$"),
-      }),
-    });
+  scope.locator(".x-button").filter({
+    has: page.locator(".x-text-el", {
+      hasText: new RegExp("^" + text + "$"),
+    }),
+  });
 async function ready() {
   await expect(page.locator(".native-dialog")).toHaveCSS("opacity", "1");
   await page.waitForTimeout(350);
@@ -103,10 +105,56 @@ try {
     page.locator('.native-dialog input[name="body.username"]'),
   ).toBeVisible();
   await button("取消", page.locator(".native-dialog")).click();
-  await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("http://127.0.0.1:5181/#/ups-battery");
   await expect(page.locator(".ups-workspace")).toContainText("更新于");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(page.locator(".ups-workspace")).toContainText("更新于");
+  await page.waitForTimeout(1500);
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        return Ext.ComponentQuery.query("selectfield")
+          .find((x) => x.element.dom.closest(".ups-workspace"))
+          .getWidth();
+      }),
+    )
+    .toBe(200);
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const p = Ext.ComponentQuery.query("container").find((x) =>
+          x.hasCls?.("metrics"),
+        );
+        return p.getItems().first().getItems().getCount();
+      }),
+    )
+    .toBe(2);
+  await expect
+    .poll(() =>
+      page.evaluate(() => Ext.ComponentQuery.query("cartesian").length),
+    )
+    .toBeGreaterThan(0);
   await page.screenshot({ path: out + "/ups-mobile.png" });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        return Ext.ComponentQuery.query("selectfield")
+          .find((x) => x.element.dom.closest(".ups-workspace"))
+          .getWidth();
+      }),
+    )
+    .toBe(360);
+  await expect
+    .poll(() =>
+      page.evaluate(() => {
+        const p = Ext.ComponentQuery.query("container").find((x) =>
+          x.hasCls?.("metrics"),
+        );
+        return p.getItems().first().getItems().getCount();
+      }),
+    )
+    .toBe(4);
   expect(errors).toEqual([]);
   console.log(
     "PASS charts, all pages, native forms, demo target creation, mobile; no production actions",

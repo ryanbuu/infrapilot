@@ -5,6 +5,8 @@ import {
   pageFor,
   title,
   numeric,
+  reading,
+  timestampMillis,
   batteryCondition,
   powerReading,
   unwrap,
@@ -216,7 +218,12 @@ export default function createUpsWorkspace({ route, user }) {
           : k.includes("timestamp")
             ? 185
             : 130,
-        renderer: (v) => encode(cellValue(v)),
+        renderer: (v) =>
+          encode(
+            k.endsWith("_utc") && v
+              ? new Date(timestampMillis(v, true)).toLocaleString()
+              : cellValue(v),
+          ),
       }),
     );
     if (!columns.length) columns.push(col("内容", "name"));
@@ -417,7 +424,7 @@ export default function createUpsWorkspace({ route, user }) {
       let metrics;
       if (section === "battery")
         metrics = [
-          ["电量", `${d.battery_charge ?? "—"} %`],
+          ["电量", `${reading(d.battery_charge)} %`],
           [
             "预计续航",
             numeric(d.battery_runtime) !== null
@@ -452,8 +459,8 @@ export default function createUpsWorkspace({ route, user }) {
             p.value !== null ? p.value.toFixed(1) + " W" : "未上报",
             p.explanation,
           ],
-          ["负载", `${d.ups_load ?? "—"} %`],
-          ["电量", `${d.battery_charge ?? "—"} %`],
+          ["负载", `${reading(d.ups_load)} %`],
+          ["电量", `${reading(d.battery_charge)} %`],
         ];
       const charts =
         section === "battery"
@@ -842,7 +849,14 @@ export default function createUpsWorkspace({ route, user }) {
     )
       load();
   }, 30000);
+  const resize = Ext.Function.createBuffered(() => {
+    if (page.destroyed) return;
+    device.setWidth(mobile() ? 200 : 360);
+    render();
+  }, 120);
+  Ext.Viewport.on("resize", resize);
   page.on("destroy", () => {
+    Ext.Viewport.un("resize", resize);
     clearInterval(timer);
     loadSeq++;
     for (const w of windows) if (!w.destroyed) w.destroy();

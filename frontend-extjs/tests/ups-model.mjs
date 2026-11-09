@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
   pageFor,
+  timestampMillis,
   upsPages,
   numeric,
   batteryCondition,
@@ -61,4 +62,16 @@ test("upstream string defaults are converted only for numeric fields", () => {
     }),
     { page: 1 },
   );
+});
+
+test("UTC readings keep their actual instant across browser timezones", () => {
+  assert.equal(
+    timestampMillis("2026-11-09T16:50:00", true),
+    Date.parse("2026-11-09T16:50:00Z"),
+  );
+  assert.equal(
+    timestampMillis("2026-11-10T00:50:00+08:00", true),
+    Date.parse("2026-11-09T16:50:00Z"),
+  );
+  assert.equal(timestampMillis(1794240059999), 1794240059999);
 });
