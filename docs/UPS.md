@@ -50,7 +50,7 @@ Each request carries an explicit device scope, including both query and body whe
 - Charge is not battery capacity health. The UI reports actual status/test evidence; absence of evidence is unknown.
 - Missing temperature remains “未上报”. A real zero reading remains zero.
 - Power may be a Nutify-calculated value; the tooltip states this. Missing real power can be estimated only from available load and nominal wattage.
-- Missing chart readings and timestamps are never invented.
+- Missing chart readings and timestamps are never invented. Nutify 0.3.0 static/dynamic table serialization incorrectly attaches the configured local zone to UTC database wall-clock values. The adapter normalizes these two table responses to UTC, verified against the authoritative history endpoint epochs; all other offset-bearing timestamps retain their original offset. Charts and tables display the browser’s local timezone.
 - Configuration/script file contents are visible only in administrator editing contexts; audit previews redact them and JSON secret fields.
 
 ## Backups and rollback

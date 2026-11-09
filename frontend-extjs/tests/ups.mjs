@@ -134,6 +134,21 @@ try {
       page.evaluate(() => Ext.ComponentQuery.query("cartesian").length),
     )
     .toBeGreaterThan(0);
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll(".ups-workspace canvas")].some((canvas) => {
+      if (!canvas.width || !canvas.height) return false;
+      const pixels = canvas
+        .getContext("2d")
+        .getImageData(0, 0, canvas.width, canvas.height).data;
+      for (let i = 0; i < pixels.length; i += 4)
+        if (
+          pixels[i + 3] > 128 &&
+          Math.min(pixels[i], pixels[i + 1], pixels[i + 2]) < 200
+        )
+          return true;
+      return false;
+    }),
+  );
   await page.screenshot({ path: out + "/ups-mobile.png" });
   await page.setViewportSize({ width: 1440, height: 1000 });
   await expect

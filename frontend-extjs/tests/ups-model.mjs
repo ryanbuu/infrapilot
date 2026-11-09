@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import {
   pageFor,
   timestampMillis,
+  normalizeTableResponse,
   upsPages,
   numeric,
   batteryCondition,
@@ -74,4 +75,14 @@ test("UTC readings keep their actual instant across browser timezones", () => {
     Date.parse("2026-11-09T16:50:00Z"),
   );
   assert.equal(timestampMillis(1794240059999), 1794240059999);
+});
+
+test("Nutify table UTC timestamps agree with the authoritative history epoch", () => {
+  const input = {
+    rows: [{ timestamp_utc: "2026-11-09T16:52:59.999999+08:06" }],
+  };
+  const result = normalizeTableResponse("/api/table/dynamic", input);
+  assert.equal(chartRows(result.rows, [])[0].time, 1794243179999);
+  assert.equal(input.rows[0].timestamp_utc, "2026-11-09T16:52:59.999999+08:06");
+  assert.equal(normalizeTableResponse("/api/table/events", input), input);
 });

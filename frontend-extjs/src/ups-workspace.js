@@ -7,6 +7,7 @@ import {
   numeric,
   reading,
   timestampMillis,
+  normalizeTableResponse,
   batteryCondition,
   powerReading,
   unwrap,
@@ -76,7 +77,11 @@ export default function createUpsWorkspace({ route, user }) {
     loadSeq = 0,
     loading = false,
     filter = "",
-    auto = true;
+    auto = true,
+    metricContainer = null,
+    shownMetrics = [],
+    displayCharts = [],
+    compact = mobile();
   const windows = new Set(),
     track = (win) => {
       windows.add(win);
@@ -167,7 +172,14 @@ export default function createUpsWorkspace({ route, user }) {
   }
   async function query(op, input = {}) {
     if (!op) throw Error("当前版本未提供此接口");
-    return api("/ups/query/" + op.id, { targetId: target, ...input });
+    const response = await api("/ups/query/" + op.id, {
+      targetId: target,
+      ...input,
+    });
+    return {
+      ...response,
+      data: normalizeTableResponse(op.path, response.data),
+    };
   }
   async function read(path, queryParams = {}) {
     return (await query(opAt(path), { query: queryParams })).data;
@@ -417,6 +429,8 @@ export default function createUpsWorkspace({ route, user }) {
   function render() {
     if (page.destroyed || !data) return;
     content.removeAll(true);
+    metricContainer = null;
+    displayCharts = [];
     selected = null;
     if (["overview", "battery", "power", "voltage"].includes(section)) {
       const d = unwrap(data.snapshot),
@@ -475,13 +489,19 @@ export default function createUpsWorkspace({ route, user }) {
                 [["ups_realpower"], "有功功率（W）"],
                 [["ups_load"], "负载（%）"],
               ];
+      shownMetrics = metrics;
+      compact = mobile();
+      metricContainer = Ext.create("Ext.Container", metricFields(metrics));
+      displayCharts = charts.map(([keys, heading]) =>
+        Ext.create("Ext.Panel", plot(data.history, keys, heading)),
+      );
       content.add({
         xtype: "container",
         layout: "vbox",
         scrollable: "vertical",
         items: [
-          metricFields(metrics),
-          ...charts.map(([keys, heading]) => plot(data.history, keys, heading)),
+          metricContainer,
+          ...displayCharts,
           {
             xtype: "panel",
             title: "当前读数",
@@ -851,8 +871,19 @@ export default function createUpsWorkspace({ route, user }) {
   }, 30000);
   const resize = Ext.Function.createBuffered(() => {
     if (page.destroyed) return;
-    device.setWidth(mobile() ? 200 : 360);
-    render();
+    const nextCompact = mobile();
+    device.setWidth(nextCompact ? 200 : 360);
+    if (
+      compact !== nextCompact &&
+      metricContainer &&
+      !metricContainer.destroyed
+    ) {
+      metricContainer.removeAll(true);
+      metricContainer.add(metricFields(shownMetrics).items);
+      for (const chart of displayCharts)
+        if (!chart.destroyed) chart.setHeight(nextCompact ? 270 : 300);
+    }
+    compact = nextCompact;
   }, 120);
   Ext.Viewport.on("resize", resize);
   page.on("destroy", () => {

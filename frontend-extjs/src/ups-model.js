@@ -259,3 +259,24 @@ export function reading(value) {
     ? "—"
     : new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(n);
 }
+
+// Nutify 0.3.0 table serializers attach CACHE_TIMEZONE to UTC wall-clock
+// values without converting them (format_datetime_tz). The history endpoints'
+// epoch timestamps confirm the database values are UTC. Scope this repair to
+// these two table endpoints; normal offset-bearing timestamps stay untouched.
+export function normalizeTableResponse(path, value) {
+  if (!["/api/table/dynamic", "/api/table/static"].includes(path)) return value;
+  const visit = (item) => {
+    if (Array.isArray(item)) return item.map(visit);
+    if (!item || typeof item !== "object") return item;
+    return Object.fromEntries(
+      Object.entries(item).map(([key, v]) => [
+        key,
+        key === "timestamp_utc" && typeof v === "string"
+          ? v.replace(/(Z|[+-]\d{2}:?\d{2})$/i, "") + "Z"
+          : visit(v),
+      ]),
+    );
+  };
+  return visit(value);
+}
