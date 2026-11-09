@@ -137,9 +137,28 @@ class AgentTest(unittest.TestCase):
                                       revision=snapshot["revision"], rules=[]))
 
     def test_authoritative_parent_and_child_are_protected(self):
-        for name in ["intra.example.com", "child.intra.example.com", "example.com"]:
+        for name in ["intra.example.com", "child.intra.example.com", "example.com", "com"]:
             with self.subTest(domain=name), self.assertRaises(agent.Failure):
                 self.prepare([rule(name)])
+
+    def test_top_level_forwarding_survives_commit_and_restore(self):
+        tx, before = self.prepare([rule("IO."), rule("registry.example.io")])
+        generated = (self.managed / "generations" / tx / "zones.conf").read_text()
+        self.assertIn('zone "io" { type forward; forward only;', generated)
+        self.instance.handle(dict(operation="commit", transaction=tx))
+        self.assertEqual(["io", "registry.example.io"],
+                         [r["domain"] for r in self.instance.snapshot()["rules"]])
+        restarted = agent.Agent(self.config, self.run_command)
+        restarted.handle(dict(operation="abort", transaction=tx))
+        self.assertEqual(before["rules"], restarted.snapshot()["rules"])
+
+    def test_top_level_duplicates_and_unsafe_names_remain_rejected(self):
+        with self.assertRaises(agent.Failure):
+            agent.canonical([rule("io"), rule("IO.")])
+        for name in ["", ".", "*", "*.io", "-io", "i_o"]:
+            with self.subTest(domain=name), self.assertRaises(agent.Failure):
+                agent.canonical([rule(name)])
+        self.assertEqual("xn--p1ai", agent.canonical([rule("xn--p1ai")])[0]["domain"])
 
     def test_configuration_injection_and_path_traversal_are_rejected(self):
         invalid = [dict(rule(), domain='x"; include "/etc/shadow";'),

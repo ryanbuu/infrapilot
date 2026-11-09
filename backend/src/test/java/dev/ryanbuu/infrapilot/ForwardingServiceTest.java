@@ -88,6 +88,37 @@ class ForwardingServiceTest {
   }
 
   @Test
+  void topLevelForwardingCanBePreviewedSavedAndRestored() {
+    ObjectNode original = service.view();
+    Change create = create("IO.");
+    assertThat(service.change(create, "admin", true).path("nodesValidated").asInt()).isEqualTo(2);
+    assertThat(service.view().path("rules")).isEqualTo(original.path("rules"));
+    ObjectNode saved = service.change(create, "admin", false);
+    ObjectNode state = service.view();
+    assertThat(state.path("rules").toString()).contains("\"domain\":\"io\"");
+    assertThat(state.path("nodes").get(0).path("rules"))
+        .isEqualTo(state.path("nodes").get(1).path("rules"));
+    service.change(
+        new Change(state.path("revision").asText(), "restore", null, null,
+            saved.path("backupId").asText()), "admin", false);
+    assertThat(service.view().path("rules")).isEqualTo(original.path("rules"));
+  }
+
+  @Test
+  void topLevelRulesKeepRootWildcardDuplicateAndAuthorityProtection() {
+    assertThat(ForwardingRules.validate(List.of(rule("IO."), rule("xn--p1ai"))))
+        .extracting(Rule::domain).containsExactly("io", "xn--p1ai");
+    for (String name : List.of("", ".", "*", "*.io", "-io", "i_o")) {
+      assertThatThrownBy(() -> ForwardingRules.validate(List.of(rule(name))))
+          .isInstanceOf(ApiException.class);
+    }
+    assertThatThrownBy(() -> ForwardingRules.validate(List.of(rule("io"), rule("IO."))))
+        .hasMessageContaining("重复");
+    assertThatThrownBy(() -> ForwardingRules.protect(List.of(rule("io")),
+        List.of("intra.example.io."))).hasMessageContaining("权威");
+  }
+
+  @Test
   void staleRevisionAndProtectedZoneRejectBeforeMutation() {
     Change old = create("old.example.org");
     service.change(create("fresh.example.org"), "admin", false);

@@ -44,7 +44,7 @@ public final class ForwardingRules {
     for (Rule r : rules) {
       if (r == null) throw bad("规则格式无效");
       String name = domain(r.domain());
-      if (!name.contains(".") || !seen.add(name)) throw bad("域名重复或不是完整域名");
+      if (!seen.add(name)) throw bad("域名重复");
       if (!Set.of("DNS", "DOT").contains(Objects.toString(r.transport(), ""))
           || !Set.of("only", "first").contains(Objects.toString(r.forward(), "")))
         throw bad("转发协议或模式无效");

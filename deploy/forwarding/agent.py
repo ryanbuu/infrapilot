@@ -50,11 +50,11 @@ def canonical(rules):
                 not re.fullmatch(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?", part)
                 for part in value.split(".")
             ):
-                raise Failure("请输入完整域名，不支持通配符或根区域", 400)
+                raise Failure("请输入有效域名，不支持通配符或根区域", 400)
             return value
         name = domain(rule.get("domain"))
-        if "." not in name or name in domains:
-            raise Failure("域名重复或不是完整域名", 400)
+        if name in domains:
+            raise Failure("域名重复", 400)
         domains.add(name)
         transport, mode = rule.get("transport"), rule.get("forward")
         port, addresses = rule.get("port"), rule.get("addresses")
