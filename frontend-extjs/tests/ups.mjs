@@ -1,4 +1,5 @@
 import { chromium, webkit, expect } from "@playwright/test";
+import { upsPages } from "../src/ups-model.js";
 import { mkdir } from "node:fs/promises";
 const browser = await (
   process.env.BROWSER === "webkit" ? webkit : chromium
@@ -53,6 +54,13 @@ try {
   ];
   for (const name of pages) {
     await page.goto("http://127.0.0.1:5181/#/ups-" + name);
+    await page.waitForFunction(
+      (expected) =>
+        Ext.ComponentQuery.query("panel").some(
+          (p) => p.hasCls?.("ups-workspace") && p.getTitle() === expected,
+        ),
+      upsPages.find((p) => p[0] === name)[1],
+    );
     await expect(page.locator(".ups-workspace")).toBeVisible();
     await expect(page.locator(".ups-workspace")).toContainText("更新于");
     if (["overview", "battery"].includes(name))

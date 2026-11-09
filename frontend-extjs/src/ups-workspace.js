@@ -390,6 +390,10 @@ export default function createUpsWorkspace({ route, user }) {
         {
           xtype: "cartesian",
           animation: false,
+          listeners: {
+            painted: (chart) => chart.scheduleLayout(),
+            resize: (chart) => chart.scheduleLayout(),
+          },
           store: { data: records },
           legend: { docked: "bottom" },
           interactions: ["panzoom"],
@@ -425,6 +429,12 @@ export default function createUpsWorkspace({ route, user }) {
         },
       ],
     };
+  }
+  function layoutCharts() {
+    if (page.destroyed) return;
+    for (const panel of displayCharts) {
+      if (!panel.destroyed) panel.getItems().first()?.scheduleLayout?.();
+    }
   }
   function render() {
     if (page.destroyed || !data) return;
@@ -515,6 +525,7 @@ export default function createUpsWorkspace({ route, user }) {
       const rows = rowsOf(data);
       content.add(rows.length ? grid(rows) : resultComponent(data));
     }
+    Ext.defer(layoutCharts, 0);
     caption.setHtml(
       encode(
         `更新于 ${new Date().toLocaleTimeString()}${rowsOf(data).length ? " · " + rowsOf(data).length + " 条记录" : ""}`,
@@ -884,6 +895,7 @@ export default function createUpsWorkspace({ route, user }) {
         if (!chart.destroyed) chart.setHeight(nextCompact ? 270 : 300);
     }
     compact = nextCompact;
+    layoutCharts();
   }, 120);
   Ext.Viewport.on("resize", resize);
   page.on("destroy", () => {
