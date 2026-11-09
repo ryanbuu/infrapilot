@@ -168,8 +168,20 @@ public class DnsService {
     Zone z = registry.find(id);
     Name n = policy.name(name, z);
     String t = type.toUpperCase(Locale.ROOT);
-    if (!Set.of("A", "AAAA", "CNAME", "MX", "TXT", "PTR", "SRV", "CAA", "NS", "SOA").contains(t))
-      throw new ApiException(BAD_REQUEST, "不支持此查询类型");
+    if (!RecordPolicy.WRITABLE_TYPES.contains(t)
+        && !Set.of(
+                "NS",
+                "SOA",
+                "DNSKEY",
+                "DS",
+                "RRSIG",
+                "DHCID",
+                "NSEC",
+                "NSEC3",
+                "NSEC3PARAM",
+                "CDS",
+                "CDNSKEY")
+            .contains(t)) throw new ApiException(BAD_REQUEST, "不支持此查询类型");
     List<ProbeResult> result = new ArrayList<>();
     result.add(gateway.probe(z, z.primary(), n.toString(), t, true));
     for (var endpoint : z.replicas())

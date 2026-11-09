@@ -1,0 +1,21 @@
+{
+  "name": "infrapilot-extjs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5181",
+    "build": "vite build",
+    "sdk": "python3 scripts/setup-sdk.py",
+    "demo": "node scripts/demo.mjs",
+    "test:e2e": "node tests/preview.mjs",
+    "test:webkit": "BROWSER=webkit node tests/preview.mjs",
+    "test": "node --test tests/gateway-model.mjs tests/ups-model.mjs",
+    "test:forms": "node tests/gateway-forms.mjs",
+    "test:ups": "node tests/ups.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.56.1",
+    "vite": "7.3.7"
+  }
+}

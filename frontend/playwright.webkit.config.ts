@@ -3,7 +3,20 @@ import config from "./playwright.config";
 
 export default defineConfig({
   ...config,
-  testMatch: "navigation.spec.ts",
+  testMatch: [
+    "navigation.spec.ts",
+    "gateway.spec.ts",
+    "forwarding.spec.ts",
+    "bind.spec.ts",
+    "reservations.spec.ts",
+    "reservation-policy.spec.ts",
+    "data-layout.spec.ts",
+  ],
   outputDir: "test-results/webkit",
-  use: { ...config.use, browserName: "webkit", channel: undefined },
+  use: {
+    ...config.use,
+    browserName: "webkit",
+    channel: undefined,
+    hasTouch: true,
+  },
 });

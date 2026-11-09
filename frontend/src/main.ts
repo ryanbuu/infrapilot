@@ -6,6 +6,7 @@ import {
   Badge,
   Button,
   Checkbox,
+  Collapse,
   Descriptions,
   Drawer,
   Dropdown,
@@ -23,10 +24,17 @@ import {
   Table,
   Tag,
   Tooltip,
+  Tabs,
+  Radio,
+  Switch,
+  Result,
+  Space,
 } from "ant-design-vue";
 import "ant-design-vue/dist/reset.css";
 import App from "./App.vue";
 import "./style.css";
+import "./gateway.css";
+import "./console-design.css";
 const app = createApp(App);
 for (const component of [
   ConfigProvider,
@@ -35,6 +43,7 @@ for (const component of [
   Badge,
   Button,
   Checkbox,
+  Collapse,
   Descriptions,
   Drawer,
   Dropdown,
@@ -52,6 +61,11 @@ for (const component of [
   Table,
   Tag,
   Tooltip,
+  Tabs,
+  Radio,
+  Switch,
+  Result,
+  Space,
 ])
   app.use(component);
 app.mount("#app");

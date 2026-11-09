@@ -66,6 +66,24 @@ class ApiIntegrationTest {
   }
 
   @Test
+  void extendedRecordsCanBeComparedAcrossBothDnsNodes() throws Exception {
+    for (String type : List.of("TLSA", "SSHFP", "HTTPS", "SVCB", "DNSKEY", "DHCID"))
+      mvc.perform(
+              get("/api/zones/intra/probe")
+                  .param("name", "www")
+                  .param("type", type)
+                  .with(user("admin").roles("ADMIN")))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("$.length()").value(2));
+    mvc.perform(
+            get("/api/zones/intra/probe")
+                .param("name", "www")
+                .param("type", "AXFR")
+                .with(user("admin").roles("ADMIN")))
+        .andExpect(status().isBadRequest());
+  }
+
+  @Test
   void authenticationCsrfAndViewerAreEnforced() throws Exception {
     mvc.perform(get("/api/zones")).andExpect(status().isUnauthorized());
     mvc.perform(

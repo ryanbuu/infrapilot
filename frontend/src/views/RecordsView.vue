@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { editableRecordTypes } from "../record-types";
 import { computed, ref, watch, onMounted, onUnmounted, nextTick } from "vue";
 import { App as AntdApp } from "ant-design-vue";
 import {
@@ -18,6 +19,7 @@ import { api } from "../api";
 import type { Rrset, Zone, ZoneRecords, ProbeResult } from "../types";
 import RecordEditor from "../components/RecordEditor.vue";
 import HelpHint from "../components/HelpHint.vue";
+import DataValues from "../components/DataValues.vue";
 const { message, modal: Modal } = AntdApp.useApp();
 const props = defineProps<{
   zones: Zone[];
@@ -414,6 +416,7 @@ function shortName(name: string) {
         >
       </div>
       <a-table
+        table-layout="fixed"
         v-if="!mobile"
         :data-source="paginated"
         :columns="columns"
@@ -434,15 +437,9 @@ function shortName(name: string) {
             </div>
             <div class="record-fqdn">{{ record.name }}</div></template
           ><template v-else-if="column.key === 'type'"
-            ><span class="record-type">{{ record.type }}</span></template
+            ><a-tag class="record-type">{{ record.type }}</a-tag></template
           ><template v-else-if="column.key === 'values'"
-            ><div
-              v-for="value in record.values"
-              :key="value"
-              class="record-value"
-            >
-              {{ value }}
-            </div></template
+            ><DataValues :values="record.values" /></template
           ><template v-else-if="column.key === 'management'"
             ><span
               class="management-label"
@@ -509,13 +506,7 @@ function shortName(name: string) {
             class="mobile-record-content"
           >
             <span>内容</span>
-            <div
-              v-for="value in record.values"
-              :key="value"
-              class="record-value"
-            >
-              {{ value }}
-            </div>
+            <DataValues :values="record.values" />
           </div>
           <div class="mobile-record-meta">
             <span v-if="visibleColumns.includes('ttl')"
@@ -596,19 +587,21 @@ function shortName(name: string) {
         v-model:value="probeType"
         :options="
           [
-            'A',
-            'AAAA',
-            'CNAME',
-            'MX',
-            'TXT',
-            'PTR',
-            'SRV',
-            'CAA',
+            ...editableRecordTypes,
             'NS',
             'SOA',
+            'DNSKEY',
+            'DS',
+            'RRSIG',
+            'DHCID',
+            'NSEC',
+            'NSEC3',
+            'NSEC3PARAM',
+            'CDS',
+            'CDNSKEY',
           ].map((value) => ({ value }))
         "
-        style="width: 105px"
+        style="width: 130px"
       /><a-button type="primary" :loading="probeBusy" @click="probe"
         >查询</a-button
       >

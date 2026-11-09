@@ -24,7 +24,7 @@ for (const scheme of ["light", "dark"] as const) {
       ),
     ).toHaveCSS(
       "background-color",
-      scheme === "dark" ? "rgb(20, 20, 20)" : "rgb(255, 255, 255)",
+      scheme === "dark" ? "rgb(24, 42, 34)" : "rgb(255, 255, 255)",
     );
     const dialog = page.getByRole("dialog", { name: "导航菜单", exact: true });
     await expect(dialog).toBeVisible();
@@ -109,7 +109,7 @@ for (const scheme of ["light", "dark"] as const) {
     await expect(page.locator("body")).not.toHaveCSS("overflow-y", "hidden");
     await expect(page.locator(".sidebar")).toHaveCSS(
       "background-color",
-      scheme === "dark" ? "rgb(20, 20, 20)" : "rgb(255, 255, 255)",
+      scheme === "dark" ? "rgb(24, 42, 34)" : "rgb(255, 255, 255)",
     );
     await expect(
       page.getByRole("menuitem", { name: "解析记录", exact: true }),
