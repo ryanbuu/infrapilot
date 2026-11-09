@@ -64,3 +64,10 @@ infrapilot:
         url: ${INFRAPILOT_KEA2_API_URL:}
         username: ${INFRAPILOT_KEA2_API_USERNAME:}
         password: ${INFRAPILOT_KEA2_API_PASSWORD:}
+
+  ups:
+    enabled: ${INFRAPILOT_UPS_ENABLED:false}
+    url: ${INFRAPILOT_UPS_URL:}
+    username: ${INFRAPILOT_UPS_USERNAME:}
+    password: ${INFRAPILOT_UPS_PASSWORD:}
+    backup-directory: ${INFRAPILOT_UPS_BACKUP_DIRECTORY:./data/ups}

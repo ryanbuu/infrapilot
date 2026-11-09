@@ -1,6 +1,6 @@
 # InfraPilot · Ext JS 原生前端
 
-使用官方 **Ext JS 7.0 Modern / Material** 实现 33 个功能页面及登录页。没有 React、ExtReact、Vue、Ant Design 或自定义组件兼容层；业务代码直接使用 Ext.application、ViewController、Store 和 Ext JS 组件。
+使用官方 **Ext JS 7.0 Modern / Material** 实现 49 个功能页面及登录页。没有 React、ExtReact、Vue、Ant Design 或自定义组件兼容层；业务代码直接使用 Ext.application、ViewController、Store 和 Ext JS 组件。
 
 仓库默认 Docker Compose 前端使用本目录。`npm run demo` 仍连接本机隔离演示后端，不修改现网 DNS、DHCP 或网关；旧 Vue 前端源码保留在 `frontend/`，不再用于默认部署。
 
@@ -15,7 +15,7 @@
 | 编辑与预览 | FormPanel / FieldSet / TextField / SelectField / TextArea / Dialog |
 | 手机导航与编辑 | 原生浮动 Panel、modal mask 和最大化 Dialog |
 
-字体、配色、留白、焦点、选择状态和控件外观全部由 Material 官方浅色主题提供。**没有应用自定义 CSS、主题覆盖、DOM 布局补丁、React portal 或字段同步补丁。** 登录页及全部工作页面统一使用浅色，移除主题切换及跟随系统逻辑，并清除旧主题偏好。33 个导航项各有不同的 SDK 内置图标。
+字体、配色、留白、焦点、选择状态和控件外观全部由 Material 官方浅色主题提供。**没有应用自定义 CSS、主题覆盖、DOM 布局补丁、React portal 或字段同步补丁。** 登录页及全部工作页面统一使用浅色，移除主题切换及跟随系统逻辑，并清除旧主题偏好。49 个导航项各有不同的 SDK 内置图标。
 
 页面采用原生面板标题、停靠工具栏、填满剩余空间的滚动表格和底部状态栏。保留地址表单按基本设置、网络与 DNS、网络引导、高级选项分组。窄屏使用原生操作菜单，编辑窗全屏显示，表单内部滚动。
 
@@ -77,3 +77,5 @@ npm run test:webkit
 测试在 `meta.demo=true` 时才执行写入，覆盖 DNS、保留地址及 DNS/网关选项、条件转发、BIND 配置、网关资源、各页面加载、表格边界、固定浅色主题、原生手机菜单和全屏编辑窗。可用 `PREVIEW_URL`、`SCREENSHOT_DIR` 指定地址与截图目录。WebKit 自动化不等同于 iPhone 真机验收。
 
 参考：[Material 主题](https://docs.sencha.com/extjs/7.0.0/guides/core_concepts/material_theme.html)、[官方 GPL SDK](https://cdn.sencha.com/ext/gpl/ext-7.0.0-gpl.zip)。
+
+UPS 集成使用官方 Sencha Charts 原生图表及原生表单；接口与验证说明见 [UPS.md](../docs/UPS.md)。

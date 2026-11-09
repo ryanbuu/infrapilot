@@ -53,6 +53,8 @@ public class SecurityConfig {
                     .permitAll()
                     .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/audit")
                     .hasRole("ADMIN")
+                    .requestMatchers("/api/ups", "/api/ups/**")
+                    .hasRole("ADMIN")
                     .requestMatchers("/api/gateway", "/api/gateway/**")
                     .hasRole("ADMIN")
                     .requestMatchers("/api/bind", "/api/bind/**")

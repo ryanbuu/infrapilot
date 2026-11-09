@@ -59,6 +59,7 @@ jobs:
           done
           npm run test:e2e
           npm run test:forms
+          npm run test:ups
       - uses: actions/upload-artifact@v4
         if: failure()
         with:

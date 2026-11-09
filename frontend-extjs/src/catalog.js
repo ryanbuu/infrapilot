@@ -1,3 +1,4 @@
+import { upsPages } from "./ups-model";
 export const gatewayKinds = [
   ["routes", "路由", "route"],
   ["services", "服务", "cubes"],
@@ -61,6 +62,7 @@ export const groups = [
       ["gateway-runtime", "节点配置", "microchip"],
     ],
   ],
+  ["UPS", upsPages.map(([id, title, icon]) => ["ups-" + id, title, icon])],
   ["管理", [["audit", "操作审计", "list-alt"]]],
 ];
 export const allRoutes = groups.flatMap(([group, items]) =>

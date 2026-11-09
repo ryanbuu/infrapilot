@@ -139,12 +139,12 @@ Ext.define("InfraPilot.controller.Application", {
             .filter(
               ([group]) =>
                 this.user.admin ||
-                !["管理", "Application Gateway"].includes(group),
+                !["管理", "Application Gateway", "UPS"].includes(group),
             )
             .map(([text, items], i) => ({
               id: "group-" + i,
               text,
-              expanded: text !== "Application Gateway",
+              expanded: !["Application Gateway", "UPS"].includes(text),
               children: items.map(([id, text, icon]) => ({
                 id,
                 text,
@@ -255,10 +255,10 @@ Ext.define("InfraPilot.controller.Application", {
       xtype: "container",
       layout: "vbox",
       items: [
-        toolbar(
-          [this.menuButton, this.breadcrumb, this.connection],
-          { docked: "top", cls: "app-header" },
-        ),
+        toolbar([this.menuButton, this.breadcrumb, this.connection], {
+          docked: "top",
+          cls: "app-header",
+        }),
         {
           xtype: "container",
           flex: 1,

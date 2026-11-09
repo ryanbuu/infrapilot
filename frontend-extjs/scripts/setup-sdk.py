@@ -28,7 +28,7 @@ count = 0
 with zipfile.ZipFile(archive) as source:
     for entry in source.infolist():
         name = entry.filename.removeprefix('ext-7.0.0/')
-        if entry.is_dir() or not (name in exact or name.startswith('build/modern/theme-material/')):
+        if entry.is_dir() or not (name in exact or name.startswith('build/modern/theme-material/') or name.startswith('build/packages/charts/modern/')):
             continue
         path = target / name
         if not path.resolve().is_relative_to(target.resolve()):

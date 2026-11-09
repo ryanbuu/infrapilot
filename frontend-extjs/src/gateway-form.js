@@ -220,7 +220,7 @@ function scalar(schema, original, path, required) {
     label =
       schema.description?.includes("load balancing") && key === "type"
         ? "负载均衡算法"
-        : labelFor(key, path),
+        : schema.title || labelFor(key, path),
     type = schemaType(schema, original);
   let choices = schema.enum;
   if (
@@ -277,7 +277,7 @@ function scalar(schema, original, path, required) {
   } else {
     config.value = original ?? "";
     config.maxLength = schema.maxLength;
-    if (multiline(key)) {
+    if (multiline(key) || schema.format === "multiline") {
       config.xtype = "textareafield";
       config.height = 170;
     } else if (secretKey(key)) config.xtype = "passwordfield";
@@ -309,7 +309,7 @@ function makeNode(
   { root = false, noOptional = false, noVariant = false } = {},
 ) {
   const key = path.at(-1) || "配置",
-    label = labelFor(key, path);
+    label = schema.title || labelFor(key, path);
   if (original === MASK) {
     const mode = createField({
       xtype: "selectfield",
@@ -463,7 +463,7 @@ function objectNode(schema, original, path, env, { root = false } = {}) {
     fields = [];
   const known = new Map();
   for (const [key, s] of Object.entries(properties)) {
-    if (root && hiddenKeys.has(key)) continue;
+    if (root && !env.generic && hiddenKeys.has(key)) continue;
     const node = makeNode(
       s,
       original[key],
@@ -510,7 +510,7 @@ function objectNode(schema, original, path, env, { root = false } = {}) {
       ? schema.additionalProperties
       : {});
   for (const [key, value] of Object.entries(original))
-    if (!(key in properties) && !(root && hiddenKeys.has(key)))
+    if (!(key in properties) && !(root && !env.generic && hiddenKeys.has(key)))
       addExtra(key, value, extraSchema(key));
   if (schema.additionalProperties !== false || schema.patternProperties) {
     body.add(
@@ -527,7 +527,7 @@ function objectNode(schema, original, path, env, { root = false } = {}) {
     component:
       root || /^\d+$/.test(path.at(-1))
         ? body
-        : group(title(path.at(-1)), [body]),
+        : group(schema.title || title(path.at(-1)), [body]),
     complex: true,
     read() {
       const result = clone(original);
@@ -537,7 +537,10 @@ function objectNode(schema, original, path, env, { root = false } = {}) {
         else result[key] = v;
       }
       for (const key of Object.keys(original))
-        if (!(key in properties) && !(root && hiddenKeys.has(key)))
+        if (
+          !(key in properties) &&
+          !(root && !env.generic && hiddenKeys.has(key))
+        )
           delete result[key];
       const used = new Set(Object.keys(properties));
       for (const { name, node, oldKey } of extras.values()) {
@@ -963,5 +966,27 @@ export function createGatewayForm({
       validateMasks(value, original);
       return { id: resourceId, value };
     },
+  };
+}
+
+// Shared native field renderer. No resource-specific defaults or hidden fields.
+export function createSchemaForm(schema, value = {}) {
+  const model = makeNode(
+    schema,
+    clone(value),
+    [],
+    { pluginNames: [], pluginSchemas: {}, generic: true },
+    true,
+    { root: true },
+  );
+  return {
+    component: Ext.create("Ext.form.Panel", {
+      flex: 1,
+      scrollable: "vertical",
+      padding: 16,
+      layout: "vbox",
+      items: [model.component],
+    }),
+    read: () => model.read(),
   };
 }

@@ -2,9 +2,9 @@
 
 ![InfraPilot 标识](docs/screenshots/identity.png)
 
-基于 **Java 21 / Spring Boot + Ext JS 7.0 Modern / Material** 的 DNS、DHCP 与 **Application Gateway** 管理面板，前后端独立构建、独立部署。
+基于 **Java 21 / Spring Boot + Ext JS 7.0 Modern / Material** 的 DNS、DHCP、**Application Gateway** 与 UPS 管理面板，前后端独立构建、独立部署。
 
-默认前端为 [Ext JS 原生前端](frontend-extjs/README.md)，覆盖 33 个功能页面及登录。所有页面使用官方浅色主题，无自定义 CSS 或兼容层。旧 Vue 前端源码保留在 `frontend/`，用于历史参考。
+默认前端为 [Ext JS 原生前端](frontend-extjs/README.md)，覆盖 49 个功能页面及登录。所有页面使用官方浅色主题，无自定义 CSS 或兼容层。旧 Vue 前端源码保留在 `frontend/`，用于历史参考。
 
 通过 AXFR 读取区域，使用 RFC2136 + TSIG 原子更新记录集。BIND 继续负责主从同步和 DNSSEC 签名；Kea 继续管理客户端 DDNS。
 
@@ -25,6 +25,7 @@
 - 配置变更先在两台 Kea 预校验，保存时保留各自 HA/DDNS 配置，并记录审计；部分失败时尝试回滚。
 - [Application Gateway](docs/APPLICATION-GATEWAY.md)：接入 APISIX Admin API，管理路由、服务、上游、消费者/凭据/分组、证书、全局规则、插件配置/元数据、TCP/UDP 路由、Protobuf 和 Secret；查看实时插件与 Schema、只读节点配置。
 - 网关 13 类资源使用原生分组表单，支持节点列表、健康检查、TLS 和插件字段、提交前校验和差异预览、敏感字段原值保留、版本检查、私密回滚备份、回读确认和配置导出；每次恢复也会备份当前状态。
+- [UPS / Nutify](docs/UPS.md)：16 个原生页面，覆盖实时监控、历史曲线、电池状态、能耗费用、多设备、事件、控制命令、变量、报告导出、脚本、NUT 接入、用户与系统维护；不集成任何通知发送功能。
 - 持久化变更审计，包括修改前后内容、操作人、时间、PENDING / SUCCESS / FAILED 状态。
 - Docker Compose、接入模板、后端测试、浏览器端到端测试和 GitHub Actions。
 - 独立演示模式：DNS/DHCP/网关示例数据保存在后端内存中，重启重置；审计日志与网关变更备份单独持久化。

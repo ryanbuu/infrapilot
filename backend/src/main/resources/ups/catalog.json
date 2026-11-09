@@ -1,0 +1,6734 @@
+{
+  "version": "0.3.0",
+  "source": "https://github.com/DartSteven/Nutify/tree/943c5794773c4a39fb17462a0e4f4014a9c86e73",
+  "notifications": false,
+  "operations": [
+    {
+      "id": "get-get_nut_config-f1e58",
+      "group": "advanced",
+      "title": "读取配置文件",
+      "method": "GET",
+      "path": "/api/advanced/nut/config/<filename>",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "filename": {
+            "type": "string",
+            "title": "文件名"
+          }
+        },
+        "required": [
+          "filename"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.advanced.api_advanced.get_nut_config"
+    },
+    {
+      "id": "post-update_nut_config-f1e58",
+      "group": "advanced",
+      "title": "保存配置文件",
+      "method": "POST",
+      "path": "/api/advanced/nut/config/<filename>",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "filename": {
+            "type": "string",
+            "title": "文件名"
+          }
+        },
+        "required": [
+          "filename"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "title": "配置内容",
+            "format": "multiline"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.advanced.api_advanced.update_nut_config"
+    },
+    {
+      "id": "get-get_nut_docs-2ee5f",
+      "group": "advanced",
+      "title": "配置文件说明",
+      "method": "GET",
+      "path": "/api/advanced/nut/docs/<filename>",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "filename": {
+            "type": "string",
+            "title": "文件名"
+          }
+        },
+        "required": [
+          "filename"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.advanced.api_advanced.get_nut_docs"
+    },
+    {
+      "id": "get-get_nut_files-25b25",
+      "group": "advanced",
+      "title": "配置文件",
+      "method": "GET",
+      "path": "/api/advanced/nut/files",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.advanced.api_advanced.get_nut_files"
+    },
+    {
+      "id": "post-restart_nut-d9217",
+      "group": "advanced",
+      "title": "重启 NUT 服务",
+      "method": "POST",
+      "path": "/api/advanced/nut/restart",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.advanced.api_advanced.restart_nut"
+    },
+    {
+      "id": "delete-oidc_admin_delete-7bea5",
+      "group": "auth",
+      "title": "删除单点登录设置",
+      "method": "DELETE",
+      "path": "/auth/api/admin/oidc",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.auth.oidc_admin_routes.oidc_admin_delete"
+    },
+    {
+      "id": "get-oidc_admin_get-7bea5",
+      "group": "auth",
+      "title": "单点登录设置",
+      "method": "GET",
+      "path": "/auth/api/admin/oidc",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.auth.oidc_admin_routes.oidc_admin_get"
+    },
+    {
+      "id": "put-oidc_admin_save-7bea5",
+      "group": "auth",
+      "title": "保存单点登录设置",
+      "method": "PUT",
+      "path": "/auth/api/admin/oidc",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "title": "身份提供商地址"
+          },
+          "client_id": {
+            "type": "string",
+            "title": "客户端 ID"
+          },
+          "client_secret": {
+            "type": "string",
+            "title": "客户端密钥"
+          },
+          "redirect_uri": {
+            "type": "string",
+            "title": "回调地址"
+          },
+          "scopes": {
+            "type": "string",
+            "title": "授权范围"
+          },
+          "username_claim": {
+            "type": "string",
+            "title": "用户名属性"
+          },
+          "groups_claim": {
+            "type": "string",
+            "title": "用户组属性"
+          },
+          "admin_groups": {
+            "type": "string",
+            "title": "管理员组"
+          },
+          "user_groups": {
+            "type": "string",
+            "title": "用户组"
+          },
+          "allow_all_users": {
+            "type": "boolean",
+            "title": "允许所有用户"
+          },
+          "allow_private_network": {
+            "type": "boolean",
+            "title": "允许私网提供商"
+          },
+          "provider_name": {
+            "type": "string",
+            "title": "提供商名称"
+          },
+          "button_label": {
+            "type": "string",
+            "title": "登录按钮文字"
+          },
+          "auto_redirect": {
+            "type": "boolean",
+            "title": "自动跳转"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.auth.oidc_admin_routes.oidc_admin_save"
+    },
+    {
+      "id": "post-oidc_admin_discover-6e639",
+      "group": "auth",
+      "title": "发现身份提供商",
+      "method": "POST",
+      "path": "/auth/api/admin/oidc/discover",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.auth.oidc_admin_routes.oidc_admin_discover"
+    },
+    {
+      "id": "post-oidc_admin_dynamic_register-216b6",
+      "group": "auth",
+      "title": "注册单点登录客户端",
+      "method": "POST",
+      "path": "/auth/api/admin/oidc/dynamic-register",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "issuer": {
+            "type": "string",
+            "title": "身份提供商地址"
+          },
+          "client_id": {
+            "type": "string",
+            "title": "客户端 ID"
+          },
+          "client_secret": {
+            "type": "string",
+            "title": "客户端密钥"
+          },
+          "redirect_uri": {
+            "type": "string",
+            "title": "回调地址"
+          },
+          "scopes": {
+            "type": "string",
+            "title": "授权范围"
+          },
+          "username_claim": {
+            "type": "string",
+            "title": "用户名属性"
+          },
+          "groups_claim": {
+            "type": "string",
+            "title": "用户组属性"
+          },
+          "admin_groups": {
+            "type": "string",
+            "title": "管理员组"
+          },
+          "user_groups": {
+            "type": "string",
+            "title": "用户组"
+          },
+          "allow_all_users": {
+            "type": "boolean",
+            "title": "允许所有用户"
+          },
+          "allow_private_network": {
+            "type": "boolean",
+            "title": "允许私网提供商"
+          },
+          "provider_name": {
+            "type": "string",
+            "title": "提供商名称"
+          },
+          "button_label": {
+            "type": "string",
+            "title": "登录按钮文字"
+          },
+          "auto_redirect": {
+            "type": "boolean",
+            "title": "自动跳转"
+          },
+          "initial_access_token": {
+            "type": "string",
+            "title": "初始注册令牌"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.auth.oidc_admin_routes.oidc_admin_dynamic_register"
+    },
+    {
+      "id": "post-oidc_admin_enabled-34930",
+      "group": "auth",
+      "title": "启用或停用单点登录",
+      "method": "POST",
+      "path": "/auth/api/admin/oidc/enabled",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "启用"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.auth.oidc_admin_routes.oidc_admin_enabled"
+    },
+    {
+      "id": "get-api_admin_get_users-4c924",
+      "group": "auth",
+      "title": "用户列表",
+      "method": "GET",
+      "path": "/auth/api/admin/users",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.auth.routes.api_admin_get_users"
+    },
+    {
+      "id": "post-api_admin_create_user-4c924",
+      "group": "auth",
+      "title": "添加用户",
+      "method": "POST",
+      "path": "/auth/api/admin/users",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "password": {
+            "type": "string",
+            "title": "密码",
+            "default": ""
+          },
+          "role": {
+            "type": "string",
+            "title": "角色",
+            "enum": [
+              "administrator",
+              "user"
+            ],
+            "default": "user"
+          },
+          "username": {
+            "type": "string",
+            "title": "用户名",
+            "default": ""
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "username",
+          "password",
+          "role"
+        ]
+      },
+      "source": "core.auth.routes.api_admin_create_user"
+    },
+    {
+      "id": "delete-api_admin_delete_user-15b65",
+      "group": "auth",
+      "title": "删除用户",
+      "method": "DELETE",
+      "path": "/auth/api/admin/users/<int:user_id>",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "title": "用户 ID",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "user_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.auth.routes.api_admin_delete_user"
+    },
+    {
+      "id": "get-api_admin_get_user_options_tabs-e025a",
+      "group": "auth",
+      "title": "用户设置权限",
+      "method": "GET",
+      "path": "/auth/api/admin/users/<int:user_id>/options-tabs",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "title": "用户 ID",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "user_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.auth.routes.api_admin_get_user_options_tabs"
+    },
+    {
+      "id": "post-api_admin_update_user_options_tabs-e025a",
+      "group": "auth",
+      "title": "保存设置权限",
+      "method": "POST",
+      "path": "/auth/api/admin/users/<int:user_id>/options-tabs",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "title": "用户 ID",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "user_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "options_tabs": {
+            "type": "object",
+            "properties": {
+              "powerflow": {
+                "type": "boolean",
+                "title": "powerflow"
+              },
+              "options": {
+                "type": "boolean",
+                "title": "options"
+              },
+              "database": {
+                "type": "boolean",
+                "title": "database"
+              },
+              "log": {
+                "type": "boolean",
+                "title": "log"
+              },
+              "advanced": {
+                "type": "boolean",
+                "title": "advanced"
+              },
+              "renamer": {
+                "type": "boolean",
+                "title": "renamer"
+              },
+              "operations": {
+                "type": "boolean",
+                "title": "operations"
+              },
+              "admin": {
+                "type": "boolean",
+                "title": "admin"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.auth.routes.api_admin_update_user_options_tabs"
+    },
+    {
+      "id": "put-api_admin_update_user_password-9ae8d",
+      "group": "auth",
+      "title": "修改用户密码",
+      "method": "PUT",
+      "path": "/auth/api/admin/users/<int:user_id>/password",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "title": "用户 ID",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "user_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "new_password": {
+            "type": "string",
+            "title": "新密码",
+            "default": ""
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.auth.routes.api_admin_update_user_password"
+    },
+    {
+      "id": "get-api_admin_get_user_permissions-8bea7",
+      "group": "auth",
+      "title": "用户页面权限",
+      "method": "GET",
+      "path": "/auth/api/admin/users/<int:user_id>/permissions",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "title": "用户 ID",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "user_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.auth.routes.api_admin_get_user_permissions"
+    },
+    {
+      "id": "post-api_admin_update_user_permissions-8bea7",
+      "group": "auth",
+      "title": "保存页面权限",
+      "method": "POST",
+      "path": "/auth/api/admin/users/<int:user_id>/permissions",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "title": "用户 ID",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "user_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "permissions": {
+            "type": "object",
+            "properties": {
+              "home": {
+                "type": "boolean",
+                "title": "home"
+              },
+              "energy": {
+                "type": "boolean",
+                "title": "energy"
+              },
+              "power": {
+                "type": "boolean",
+                "title": "power"
+              },
+              "battery": {
+                "type": "boolean",
+                "title": "battery"
+              },
+              "voltage": {
+                "type": "boolean",
+                "title": "voltage"
+              },
+              "info": {
+                "type": "boolean",
+                "title": "info"
+              },
+              "command": {
+                "type": "boolean",
+                "title": "command"
+              },
+              "settings": {
+                "type": "boolean",
+                "title": "settings"
+              },
+              "events": {
+                "type": "boolean",
+                "title": "events"
+              },
+              "options": {
+                "type": "boolean",
+                "title": "options"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.auth.routes.api_admin_update_user_permissions"
+    },
+    {
+      "id": "put-api_admin_update_user_role-a86ae",
+      "group": "auth",
+      "title": "修改用户角色",
+      "method": "PUT",
+      "path": "/auth/api/admin/users/<int:user_id>/role",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "user_id": {
+            "type": "integer",
+            "title": "用户 ID",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "user_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "type": "string",
+            "title": "角色",
+            "enum": [
+              "administrator",
+              "user"
+            ],
+            "default": ""
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.auth.routes.api_admin_update_user_role"
+    },
+    {
+      "id": "get-api_battery_has_hour_data-a4a06",
+      "group": "battery",
+      "title": "采样可用性",
+      "method": "GET",
+      "path": "/api/battery/has_hour_data",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.battery.api_battery.api_battery_has_hour_data"
+    },
+    {
+      "id": "get-api_battery_history-6d9f0",
+      "group": "battery",
+      "title": "电池历史",
+      "method": "GET",
+      "path": "/api/battery/history",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string",
+            "title": "统计周期",
+            "default": "day"
+          },
+          "from_time": {
+            "type": "string",
+            "title": "开始时间（ISO 8601）"
+          },
+          "to_time": {
+            "type": "string",
+            "title": "结束时间（ISO 8601）"
+          },
+          "selected_date": {
+            "type": "string",
+            "title": "指定日期"
+          },
+          "today_mode": {
+            "type": "string",
+            "title": "当日模式"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.battery.api_battery.api_battery_history"
+    },
+    {
+      "id": "get-api_battery_metrics-30457",
+      "group": "battery",
+      "title": "电池读数",
+      "method": "GET",
+      "path": "/api/battery/metrics",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.battery.api_battery.api_battery_metrics"
+    },
+    {
+      "id": "get-api_battery_stats-b2750",
+      "group": "battery",
+      "title": "电池统计",
+      "method": "GET",
+      "path": "/api/battery/stats",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string",
+            "title": "统计周期",
+            "default": "day"
+          },
+          "from_time": {
+            "type": "string",
+            "title": "开始时间（ISO 8601）"
+          },
+          "to_time": {
+            "type": "string",
+            "title": "结束时间（ISO 8601）"
+          },
+          "selected_date": {
+            "type": "string",
+            "title": "指定日期"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.battery.api_battery.api_battery_stats"
+    },
+    {
+      "id": "get-api_backup_database-029bc",
+      "group": "database",
+      "title": "下载数据库备份",
+      "method": "GET",
+      "path": "/api/database/backup",
+      "read": true,
+      "scope": false,
+      "binary": true,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.api_backup_database"
+    },
+    {
+      "id": "post-api_optimize_database-c0c00",
+      "group": "database",
+      "title": "优化数据库",
+      "method": "POST",
+      "path": "/api/database/optimize",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.api_optimize_database"
+    },
+    {
+      "id": "get-api_database_stats-745e0",
+      "group": "database",
+      "title": "数据库统计",
+      "method": "GET",
+      "path": "/api/database/stats",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.api_database_stats"
+    },
+    {
+      "id": "post-api_vacuum_database-84221",
+      "group": "database",
+      "title": "回收数据库空间",
+      "method": "POST",
+      "path": "/api/database/vacuum",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.api_vacuum_database"
+    },
+    {
+      "id": "get-get_available_years-a2b23",
+      "group": "energy",
+      "title": "可查询年份",
+      "method": "GET",
+      "path": "/api/energy/available-years",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.energy.api_energy.get_available_years"
+    },
+    {
+      "id": "get-get_cost_trend_data-82b27",
+      "group": "energy",
+      "title": "费用趋势",
+      "method": "GET",
+      "path": "/api/energy/cost-trend",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "类型",
+            "default": "day"
+          },
+          "from_time": {
+            "type": "string",
+            "title": "开始时间（ISO 8601）"
+          },
+          "to_time": {
+            "type": "string",
+            "title": "结束时间（ISO 8601）"
+          },
+          "selected_date": {
+            "type": "string",
+            "title": "指定日期"
+          },
+          "selected_day": {
+            "type": "string",
+            "title": "指定日期"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.energy.api_energy.get_cost_trend_data"
+    },
+    {
+      "id": "get-get_energy_data_api-bd58c",
+      "group": "energy",
+      "title": "能耗与费用",
+      "method": "GET",
+      "path": "/api/energy/data",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "days": {
+            "type": "integer",
+            "title": "天数",
+            "minimum": 0
+          },
+          "from_time": {
+            "type": "string",
+            "title": "开始时间（ISO 8601）"
+          },
+          "to_time": {
+            "type": "string",
+            "title": "结束时间（ISO 8601）"
+          },
+          "selected_date": {
+            "type": "string",
+            "title": "指定日期"
+          },
+          "selected_day": {
+            "type": "string",
+            "title": "指定日期"
+          },
+          "type": {
+            "type": "string",
+            "title": "类型"
+          },
+          "period": {
+            "type": "string",
+            "title": "统计周期"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.energy.api_energy.get_energy_data_api"
+    },
+    {
+      "id": "get-get_energy_detailed_data-32f70",
+      "group": "energy",
+      "title": "能耗明细",
+      "method": "GET",
+      "path": "/api/energy/detailed",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "from_time": {
+            "type": "string",
+            "title": "开始时间（ISO 8601）"
+          },
+          "to_time": {
+            "type": "string",
+            "title": "结束时间（ISO 8601）"
+          },
+          "detail_type": {
+            "type": "string",
+            "title": "明细粒度",
+            "enum": [
+              "day",
+              "hour",
+              "minute"
+            ],
+            "default": "day"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "from_time",
+          "to_time",
+          "detail_type"
+        ]
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.energy.api_energy.get_energy_detailed_data"
+    },
+    {
+      "id": "get-api_energy_has_hour_data-c6d1f",
+      "group": "energy",
+      "title": "采样可用性",
+      "method": "GET",
+      "path": "/api/energy/has_hour_data",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.energy.api_energy.api_energy_has_hour_data"
+    },
+    {
+      "id": "post-acknowledge_event_route-38591",
+      "group": "events",
+      "title": "确认事件",
+      "method": "POST",
+      "path": "/api/events/acknowledge/<int:event_id>",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "integer",
+            "title": "事件 ID",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "event_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.events.api_events.acknowledge_event_route"
+    },
+    {
+      "id": "post-acknowledge_events_bulk-b44a3",
+      "group": "events",
+      "title": "批量确认事件",
+      "method": "POST",
+      "path": "/api/events/acknowledge/bulk",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "event_ids": {
+            "type": "array",
+            "title": "事件 ID 列表",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.events.api_events.acknowledge_events_bulk"
+    },
+    {
+      "id": "delete-delete_event_route-14e0c",
+      "group": "events",
+      "title": "删除事件",
+      "method": "DELETE",
+      "path": "/api/events/delete/<int:event_id>",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "integer",
+            "title": "事件 ID",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "event_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.events.api_events.delete_event_route"
+    },
+    {
+      "id": "delete-delete_all_events-be41a",
+      "group": "events",
+      "title": "清空事件",
+      "method": "DELETE",
+      "path": "/api/events/delete/all",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.events.api_events.delete_all_events"
+    },
+    {
+      "id": "delete-delete_events_bulk-a26ce",
+      "group": "events",
+      "title": "批量删除事件",
+      "method": "DELETE",
+      "path": "/api/events/delete/bulk",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "event_ids": {
+            "type": "array",
+            "title": "事件 ID 列表",
+            "items": {
+              "type": "integer"
+            }
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.events.api_events.delete_events_bulk"
+    },
+    {
+      "id": "get-handle_get_logs-18b99",
+      "group": "logs",
+      "title": "应用日志",
+      "method": "GET",
+      "path": "/api/logs",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "类型",
+            "default": "all"
+          },
+          "level": {
+            "type": "string",
+            "title": "级别",
+            "default": "all"
+          },
+          "range": {
+            "type": "string",
+            "title": "时间范围",
+            "default": "all"
+          },
+          "page": {
+            "type": "integer",
+            "title": "页码",
+            "default": 1,
+            "minimum": 0
+          },
+          "page_size": {
+            "type": "integer",
+            "title": "每页条数",
+            "default": 1000,
+            "minimum": 0
+          },
+          "metadata_only": {
+            "type": "string",
+            "title": "仅元数据",
+            "default": "false"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.handle_get_logs"
+    },
+    {
+      "id": "post-handle_clear_logs-80828",
+      "group": "logs",
+      "title": "清空应用日志",
+      "method": "POST",
+      "path": "/api/logs/clear",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "类型",
+            "default": "all"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.handle_clear_logs"
+    },
+    {
+      "id": "get-download_logs-38061",
+      "group": "logs",
+      "title": "下载日志",
+      "method": "GET",
+      "path": "/api/logs/download",
+      "read": true,
+      "scope": false,
+      "binary": true,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "类型",
+            "default": "all"
+          },
+          "level": {
+            "type": "string",
+            "title": "级别",
+            "default": "all"
+          },
+          "range": {
+            "type": "string",
+            "title": "时间范围",
+            "default": "all"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.download_logs"
+    },
+    {
+      "id": "get-get_column_data-6f4b1",
+      "group": "data",
+      "title": "单项监测值",
+      "method": "GET",
+      "path": "/api/data/<column>",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "column": {
+            "type": "string",
+            "title": "column"
+          }
+        },
+        "required": [
+          "column"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.api.get_column_data"
+    },
+    {
+      "id": "get-api_data_all-e080d",
+      "group": "data",
+      "title": "实时快照",
+      "method": "GET",
+      "path": "/api/data/all",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.infoapi.api_info.api_data_all"
+    },
+    {
+      "id": "get-overview_route-3e6e1",
+      "group": "multi-nut",
+      "title": "多设备概览",
+      "method": "GET",
+      "path": "/api/multi-nut/overview",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "hours": {
+            "type": "integer",
+            "title": "最近小时数",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.overview_route"
+    },
+    {
+      "id": "get-renamer_catalog_route-29ed5",
+      "group": "multi-nut",
+      "title": "变量映射",
+      "method": "GET",
+      "path": "/api/multi-nut/renamer/catalog",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.renamer_catalog_route"
+    },
+    {
+      "id": "post-save_renamer_mappings_route-2726d",
+      "group": "multi-nut",
+      "title": "保存变量映射",
+      "method": "POST",
+      "path": "/api/multi-nut/renamer/mappings",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "mappings": {
+            "type": "object",
+            "title": "变量映射",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "replace": {
+            "type": "boolean",
+            "title": "替换已有映射"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.save_renamer_mappings_route"
+    },
+    {
+      "id": "get-report_route-4aab0",
+      "group": "multi-nut",
+      "title": "设备汇总报告",
+      "method": "GET",
+      "path": "/api/multi-nut/report",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "hours": {
+            "type": "integer",
+            "title": "最近小时数",
+            "minimum": 0
+          },
+          "scope": {
+            "type": "string",
+            "title": "scope",
+            "default": "selected"
+          },
+          "download": {
+            "type": "string",
+            "title": "download",
+            "default": "false"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.report_route"
+    },
+    {
+      "id": "get-multi_nut_state-a74e4",
+      "group": "multi-nut",
+      "title": "监控模式",
+      "method": "GET",
+      "path": "/api/multi-nut/state",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.multi_nut_state"
+    },
+    {
+      "id": "get-get_targets-0ba3b",
+      "group": "multi-nut",
+      "title": "设备列表",
+      "method": "GET",
+      "path": "/api/multi-nut/targets",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "include_disabled": {
+            "type": "boolean",
+            "title": "包含停用设备",
+            "default": true
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.get_targets"
+    },
+    {
+      "id": "post-create_target_route-0ba3b",
+      "group": "multi-nut",
+      "title": "添加设备",
+      "method": "POST",
+      "path": "/api/multi-nut/targets",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "名称"
+          },
+          "ups_name": {
+            "type": "string",
+            "title": "UPS 标识"
+          },
+          "host": {
+            "type": "string",
+            "title": "服务器地址"
+          },
+          "port": {
+            "type": "integer",
+            "title": "端口",
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "command_path": {
+            "type": "string",
+            "title": "NUT 客户端路径"
+          },
+          "nut_mode": {
+            "type": "string",
+            "title": "运行模式",
+            "enum": [
+              "netclient",
+              "netserver",
+              "standalone"
+            ]
+          },
+          "db_strategy": {
+            "type": "string",
+            "title": "存储策略",
+            "enum": [
+              "shared",
+              "sharded",
+              "separate"
+            ]
+          },
+          "shard_granularity": {
+            "type": "string",
+            "title": "分片周期",
+            "enum": [
+              "month",
+              "day"
+            ]
+          },
+          "separate_db_path": {
+            "type": "string",
+            "title": "独立数据库路径"
+          },
+          "polling_interval": {
+            "type": "integer",
+            "title": "采样间隔（秒）",
+            "minimum": 0
+          },
+          "retention_days": {
+            "type": "integer",
+            "title": "数据保留天数",
+            "minimum": 0
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "启用"
+          },
+          "is_primary": {
+            "type": "boolean",
+            "title": "主设备"
+          },
+          "location_enabled": {
+            "type": "boolean",
+            "title": "启用位置信息"
+          },
+          "location": {
+            "type": "string",
+            "title": "位置名称"
+          },
+          "location_country": {
+            "type": "string",
+            "title": "国家"
+          },
+          "location_region": {
+            "type": "string",
+            "title": "省/州"
+          },
+          "location_city": {
+            "type": "string",
+            "title": "城市"
+          },
+          "location_postal_code": {
+            "type": "string",
+            "title": "邮编"
+          },
+          "location_address": {
+            "type": "string",
+            "title": "详细地址"
+          },
+          "location_latitude": {
+            "type": "number",
+            "title": "纬度"
+          },
+          "location_longitude": {
+            "type": "number",
+            "title": "经度"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "name",
+          "ups_name",
+          "host"
+        ]
+      },
+      "source": "core.multi_nut.api_multi_nut.create_target_route"
+    },
+    {
+      "id": "delete-delete_target_route-cfb8e",
+      "group": "multi-nut",
+      "title": "删除设备",
+      "method": "DELETE",
+      "path": "/api/multi-nut/targets/<int:target_id>",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "target_id": {
+            "type": "integer",
+            "title": "UPS 设备",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "target_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.delete_target_route"
+    },
+    {
+      "id": "get-get_target-cfb8e",
+      "group": "multi-nut",
+      "title": "设备详情",
+      "method": "GET",
+      "path": "/api/multi-nut/targets/<int:target_id>",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "target_id": {
+            "type": "integer",
+            "title": "UPS 设备",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "target_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.get_target"
+    },
+    {
+      "id": "put-update_target_route-cfb8e",
+      "group": "multi-nut",
+      "title": "编辑设备",
+      "method": "PUT",
+      "path": "/api/multi-nut/targets/<int:target_id>",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "target_id": {
+            "type": "integer",
+            "title": "UPS 设备",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "target_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "名称"
+          },
+          "ups_name": {
+            "type": "string",
+            "title": "UPS 标识"
+          },
+          "host": {
+            "type": "string",
+            "title": "服务器地址"
+          },
+          "port": {
+            "type": "integer",
+            "title": "端口",
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "command_path": {
+            "type": "string",
+            "title": "NUT 客户端路径"
+          },
+          "nut_mode": {
+            "type": "string",
+            "title": "运行模式",
+            "enum": [
+              "netclient",
+              "netserver",
+              "standalone"
+            ]
+          },
+          "db_strategy": {
+            "type": "string",
+            "title": "存储策略",
+            "enum": [
+              "shared",
+              "sharded",
+              "separate"
+            ]
+          },
+          "shard_granularity": {
+            "type": "string",
+            "title": "分片周期",
+            "enum": [
+              "month",
+              "day"
+            ]
+          },
+          "separate_db_path": {
+            "type": "string",
+            "title": "独立数据库路径"
+          },
+          "polling_interval": {
+            "type": "integer",
+            "title": "采样间隔（秒）",
+            "minimum": 0
+          },
+          "retention_days": {
+            "type": "integer",
+            "title": "数据保留天数",
+            "minimum": 0
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "启用"
+          },
+          "is_primary": {
+            "type": "boolean",
+            "title": "主设备"
+          },
+          "location_enabled": {
+            "type": "boolean",
+            "title": "启用位置信息"
+          },
+          "location": {
+            "type": "string",
+            "title": "位置名称"
+          },
+          "location_country": {
+            "type": "string",
+            "title": "国家"
+          },
+          "location_region": {
+            "type": "string",
+            "title": "省/州"
+          },
+          "location_city": {
+            "type": "string",
+            "title": "城市"
+          },
+          "location_postal_code": {
+            "type": "string",
+            "title": "邮编"
+          },
+          "location_address": {
+            "type": "string",
+            "title": "详细地址"
+          },
+          "location_latitude": {
+            "type": "number",
+            "title": "纬度"
+          },
+          "location_longitude": {
+            "type": "number",
+            "title": "经度"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.update_target_route"
+    },
+    {
+      "id": "get-dashboard_route-ed561",
+      "group": "multi-nut",
+      "title": "设备运行数据",
+      "method": "GET",
+      "path": "/api/multi-nut/targets/<int:target_id>/dashboard",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "target_id": {
+            "type": "integer",
+            "title": "UPS 设备",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "target_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "hours": {
+            "type": "integer",
+            "title": "最近小时数",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.dashboard_route"
+    },
+    {
+      "id": "get-history_route-13737",
+      "group": "multi-nut",
+      "title": "设备历史",
+      "method": "GET",
+      "path": "/api/multi-nut/targets/<int:target_id>/history",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "target_id": {
+            "type": "integer",
+            "title": "UPS 设备",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "target_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "hours": {
+            "type": "integer",
+            "title": "最近小时数",
+            "minimum": 0
+          },
+          "limit": {
+            "type": "integer",
+            "title": "limit",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.history_route"
+    },
+    {
+      "id": "post-poll_now_route-1b3a1",
+      "group": "multi-nut",
+      "title": "立即采样",
+      "method": "POST",
+      "path": "/api/multi-nut/targets/<int:target_id>/poll-now",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "target_id": {
+            "type": "integer",
+            "title": "UPS 设备",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "target_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.poll_now_route"
+    },
+    {
+      "id": "post-set_primary_route-e48f9",
+      "group": "multi-nut",
+      "title": "设为主设备",
+      "method": "POST",
+      "path": "/api/multi-nut/targets/<int:target_id>/primary",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "target_id": {
+            "type": "integer",
+            "title": "UPS 设备",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "target_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.set_primary_route"
+    },
+    {
+      "id": "post-toggle_target_route-cfdd8",
+      "group": "multi-nut",
+      "title": "启用或停用设备",
+      "method": "POST",
+      "path": "/api/multi-nut/targets/<int:target_id>/toggle",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "target_id": {
+            "type": "integer",
+            "title": "UPS 设备",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "target_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "title": "启用",
+            "default": true
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.toggle_target_route"
+    },
+    {
+      "id": "post-test_target-52736",
+      "group": "multi-nut",
+      "title": "测试设备连接",
+      "method": "POST",
+      "path": "/api/multi-nut/targets/test",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "名称"
+          },
+          "ups_name": {
+            "type": "string",
+            "title": "UPS 标识"
+          },
+          "host": {
+            "type": "string",
+            "title": "服务器地址"
+          },
+          "port": {
+            "type": "integer",
+            "title": "端口",
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "command_path": {
+            "type": "string",
+            "title": "NUT 客户端路径"
+          },
+          "nut_mode": {
+            "type": "string",
+            "title": "运行模式",
+            "enum": [
+              "netclient",
+              "netserver",
+              "standalone"
+            ]
+          },
+          "db_strategy": {
+            "type": "string",
+            "title": "存储策略",
+            "enum": [
+              "shared",
+              "sharded",
+              "separate"
+            ]
+          },
+          "shard_granularity": {
+            "type": "string",
+            "title": "分片周期",
+            "enum": [
+              "month",
+              "day"
+            ]
+          },
+          "separate_db_path": {
+            "type": "string",
+            "title": "独立数据库路径"
+          },
+          "polling_interval": {
+            "type": "integer",
+            "title": "采样间隔（秒）",
+            "minimum": 0
+          },
+          "retention_days": {
+            "type": "integer",
+            "title": "数据保留天数",
+            "minimum": 0
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "启用"
+          },
+          "is_primary": {
+            "type": "boolean",
+            "title": "主设备"
+          },
+          "location_enabled": {
+            "type": "boolean",
+            "title": "启用位置信息"
+          },
+          "location": {
+            "type": "string",
+            "title": "位置名称"
+          },
+          "location_country": {
+            "type": "string",
+            "title": "国家"
+          },
+          "location_region": {
+            "type": "string",
+            "title": "省/州"
+          },
+          "location_city": {
+            "type": "string",
+            "title": "城市"
+          },
+          "location_postal_code": {
+            "type": "string",
+            "title": "邮编"
+          },
+          "location_address": {
+            "type": "string",
+            "title": "详细地址"
+          },
+          "location_latitude": {
+            "type": "number",
+            "title": "纬度"
+          },
+          "location_longitude": {
+            "type": "number",
+            "title": "经度"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.multi_nut.api_multi_nut.test_target"
+    },
+    {
+      "id": "get-get_logs-7a95e",
+      "group": "nut",
+      "title": "NUT 服务日志",
+      "method": "GET",
+      "path": "/api/nut/logs/<service_name>",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "service_name": {
+            "type": "string",
+            "title": "服务名称"
+          }
+        },
+        "required": [
+          "service_name"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "lines": {
+            "type": "integer",
+            "title": "日志行数",
+            "default": 50,
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut.api_nut.get_logs"
+    },
+    {
+      "id": "post-restart_services-5ba8c",
+      "group": "nut",
+      "title": "重启 NUT 服务",
+      "method": "POST",
+      "path": "/api/nut/restart",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "wait_time": {
+            "type": "integer",
+            "title": "等待时间（秒）",
+            "default": 2,
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut.api_nut.restart_services"
+    },
+    {
+      "id": "post-start_services-10295",
+      "group": "nut",
+      "title": "启动 NUT 服务",
+      "method": "POST",
+      "path": "/api/nut/start",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "wait_time": {
+            "type": "integer",
+            "title": "等待时间（秒）",
+            "default": 2,
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut.api_nut.start_services"
+    },
+    {
+      "id": "get-get_nut_status-d0e78",
+      "group": "nut",
+      "title": "NUT 服务状态",
+      "method": "GET",
+      "path": "/api/nut/status",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut.api_nut.get_nut_status"
+    },
+    {
+      "id": "post-stop_services-110f4",
+      "group": "nut",
+      "title": "停止 NUT 服务",
+      "method": "POST",
+      "path": "/api/nut/stop",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "wait_time": {
+            "type": "integer",
+            "title": "等待时间（秒）",
+            "default": 2,
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut.api_nut.stop_services"
+    },
+    {
+      "id": "get-nut_history-50a59",
+      "group": "nut_history",
+      "title": "NUT 事件历史",
+      "method": "GET",
+      "path": "/api/nut_history",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.events.api_events.nut_history"
+    },
+    {
+      "id": "get-get_initial_setup_options-2434e",
+      "group": "options",
+      "title": "实例设置",
+      "method": "GET",
+      "path": "/api/options/options-from-initial-setup",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.get_initial_setup_options"
+    },
+    {
+      "id": "post-update_initial_setup_options-2434e",
+      "group": "options",
+      "title": "保存实例设置",
+      "method": "POST",
+      "path": "/api/options/options-from-initial-setup",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "ups_realpower_nominal": {
+            "type": "integer",
+            "title": "额定有功功率（W）",
+            "minimum": 0
+          },
+          "timezone": {
+            "type": "string",
+            "title": "时区"
+          },
+          "server_name": {
+            "type": "string",
+            "title": "实例名称"
+          },
+          "monitoring_profile": {
+            "type": "string",
+            "title": "监控模式",
+            "enum": [
+              "single",
+              "multi"
+            ],
+            "default": "single"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.update_initial_setup_options"
+    },
+    {
+      "id": "get-list_script_actions-0e708",
+      "group": "options",
+      "title": "自动化脚本",
+      "method": "GET",
+      "path": "/api/options/script-actions",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.list_script_actions"
+    },
+    {
+      "id": "post-create_script_action-0e708",
+      "group": "options",
+      "title": "添加自动化脚本",
+      "method": "POST",
+      "path": "/api/options/script-actions",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "名称"
+          },
+          "trigger_event": {
+            "type": "string",
+            "title": "触发事件",
+            "enum": [
+              "ONBATT",
+              "LOWBATT"
+            ]
+          },
+          "battery_threshold": {
+            "type": "integer",
+            "title": "电量阈值（%）",
+            "minimum": 0
+          },
+          "cooldown_seconds": {
+            "type": "integer",
+            "title": "冷却时间（秒）",
+            "minimum": 0
+          },
+          "script_body": {
+            "type": "string",
+            "title": "脚本内容",
+            "format": "multiline"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "启用"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.create_script_action"
+    },
+    {
+      "id": "delete-delete_script_action-8c096",
+      "group": "options",
+      "title": "删除自动化脚本",
+      "method": "DELETE",
+      "path": "/api/options/script-actions/<int:action_id>",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "integer",
+            "title": "脚本 ID",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "action_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.delete_script_action"
+    },
+    {
+      "id": "put-update_script_action-8c096",
+      "group": "options",
+      "title": "编辑自动化脚本",
+      "method": "PUT",
+      "path": "/api/options/script-actions/<int:action_id>",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "integer",
+            "title": "脚本 ID",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "action_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "名称"
+          },
+          "trigger_event": {
+            "type": "string",
+            "title": "触发事件",
+            "enum": [
+              "ONBATT",
+              "LOWBATT"
+            ]
+          },
+          "battery_threshold": {
+            "type": "integer",
+            "title": "电量阈值（%）",
+            "minimum": 0
+          },
+          "cooldown_seconds": {
+            "type": "integer",
+            "title": "冷却时间（秒）",
+            "minimum": 0
+          },
+          "script_body": {
+            "type": "string",
+            "title": "脚本内容",
+            "format": "multiline"
+          },
+          "enabled": {
+            "type": "boolean",
+            "title": "启用"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.update_script_action"
+    },
+    {
+      "id": "post-test_script_action-46275",
+      "group": "options",
+      "title": "执行脚本测试",
+      "method": "POST",
+      "path": "/api/options/script-actions/<int:action_id>/test",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "action_id": {
+            "type": "integer",
+            "title": "脚本 ID",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "action_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.test_script_action"
+    },
+    {
+      "id": "get-api_power_has_hour_data-6b5ae",
+      "group": "power",
+      "title": "功率采样可用性",
+      "method": "GET",
+      "path": "/api/power/has_hour_data",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.power.api_power.api_power_has_hour_data"
+    },
+    {
+      "id": "get-api_power_history-46547",
+      "group": "power",
+      "title": "功率历史",
+      "method": "GET",
+      "path": "/api/power/history",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string",
+            "title": "统计周期",
+            "default": "day"
+          },
+          "from_time": {
+            "type": "string",
+            "title": "开始时间（ISO 8601）"
+          },
+          "to_time": {
+            "type": "string",
+            "title": "结束时间（ISO 8601）"
+          },
+          "selected_day": {
+            "type": "string",
+            "title": "指定日期"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.power.api_power.api_power_history"
+    },
+    {
+      "id": "get-api_power_metrics-08a55",
+      "group": "power",
+      "title": "功率读数",
+      "method": "GET",
+      "path": "/api/power/metrics",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.power.api_power.api_power_metrics"
+    },
+    {
+      "id": "get-api_power_outlet_groups-9c209",
+      "group": "power",
+      "title": "功率插座分组",
+      "method": "GET",
+      "path": "/api/power/outlet-groups",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string",
+            "title": "统计周期",
+            "default": "day"
+          },
+          "from_time": {
+            "type": "string",
+            "title": "开始时间（ISO 8601）"
+          },
+          "to_time": {
+            "type": "string",
+            "title": "结束时间（ISO 8601）"
+          },
+          "selected_date": {
+            "type": "string",
+            "title": "指定日期"
+          },
+          "selected_day": {
+            "type": "string",
+            "title": "指定日期"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.power.api_power.api_power_outlet_groups"
+    },
+    {
+      "id": "get-api_power_stats-ced48",
+      "group": "power",
+      "title": "功率统计",
+      "method": "GET",
+      "path": "/api/power/stats",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string",
+            "title": "统计周期",
+            "default": "day"
+          },
+          "from_time": {
+            "type": "string",
+            "title": "开始时间（ISO 8601）"
+          },
+          "to_time": {
+            "type": "string",
+            "title": "结束时间（ISO 8601）"
+          },
+          "selected_date": {
+            "type": "string",
+            "title": "指定日期"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.power.api_power.api_power_stats"
+    },
+    {
+      "id": "post-generate_report-d81b6",
+      "group": "report",
+      "title": "生成报告",
+      "method": "POST",
+      "path": "/api/report/generate",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "from_date": {
+            "type": "string",
+            "title": "开始时间"
+          },
+          "to_date": {
+            "type": "string",
+            "title": "结束时间"
+          },
+          "report_type": {
+            "type": "string",
+            "title": "报告类型",
+            "enum": [
+              "custom",
+              "daily",
+              "weekly",
+              "monthly"
+            ],
+            "default": "custom"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "from_date",
+          "to_date",
+          "report_type"
+        ]
+      },
+      "source": "core.report.api_report.generate_report"
+    },
+    {
+      "id": "post-restart_application-9298b",
+      "group": "restart",
+      "title": "重启 Nutify",
+      "method": "POST",
+      "path": "/api/restart",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.restart_application"
+    },
+    {
+      "id": "get-update_log_setting-fd804",
+      "group": "settings",
+      "title": "日志级别设置",
+      "method": "GET",
+      "path": "/api/settings/log",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.update_log_setting"
+    },
+    {
+      "id": "post-update_log_setting-fd804",
+      "group": "settings",
+      "title": "保存日志级别",
+      "method": "POST",
+      "path": "/api/settings/log",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "log": {
+            "type": "boolean",
+            "title": "记录日志"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "DEBUG",
+              "INFO",
+              "WARNING",
+              "ERROR",
+              "CRITICAL"
+            ],
+            "title": "日志级别"
+          },
+          "werkzeug": {
+            "type": "boolean",
+            "title": "记录 HTTP 请求"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.update_log_setting"
+    },
+    {
+      "id": "get-get_operations_settings-919cb",
+      "group": "settings",
+      "title": "计算公式",
+      "method": "GET",
+      "path": "/api/settings/operations",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.get_operations_settings"
+    },
+    {
+      "id": "post-save_operations_settings-919cb",
+      "group": "settings",
+      "title": "保存计算公式",
+      "method": "POST",
+      "path": "/api/settings/operations",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "measured_power_metric_key": {
+            "type": "string",
+            "title": "实测功率变量"
+          },
+          "load_metric_key": {
+            "type": "string",
+            "title": "负载变量"
+          },
+          "nominal_power_metric_key": {
+            "type": "string",
+            "title": "额定功率变量"
+          },
+          "realpower_formula": {
+            "type": "string",
+            "title": "功率计算公式"
+          },
+          "power_calibration_factor": {
+            "type": "number",
+            "title": "功率校准系数",
+            "minimum": 0
+          },
+          "energy_formula": {
+            "type": "string",
+            "title": "能耗计算公式"
+          },
+          "cost_formula": {
+            "type": "string",
+            "title": "费用计算公式"
+          },
+          "co2_formula": {
+            "type": "string",
+            "title": "碳排放计算公式"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.save_operations_settings"
+    },
+    {
+      "id": "post-update_polling_interval-06507",
+      "group": "settings",
+      "title": "修改采样间隔",
+      "method": "POST",
+      "path": "/api/settings/polling-interval",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "polling_interval": {
+            "type": "integer",
+            "title": "采样间隔（秒）",
+            "minimum": 0
+          },
+          "update_both": {
+            "type": "boolean",
+            "title": "同时更新 NUT 采样频率"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "polling_interval"
+        ]
+      },
+      "source": "core.options.api_options.update_polling_interval"
+    },
+    {
+      "id": "post-reload_settings-a43f3",
+      "group": "settings",
+      "title": "重新加载设置",
+      "method": "POST",
+      "path": "/api/settings/reload",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.settings.api_settings.reload_settings"
+    },
+    {
+      "id": "get-get_variables_settings-393f2",
+      "group": "settings",
+      "title": "计费与采样设置",
+      "method": "GET",
+      "path": "/api/settings/variables",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.get_variables_settings"
+    },
+    {
+      "id": "post-save_variables_config-393f2",
+      "group": "settings",
+      "title": "保存计费设置",
+      "method": "POST",
+      "path": "/api/settings/variables",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "currency": {
+            "type": "string",
+            "title": "币种"
+          },
+          "price_per_kwh": {
+            "type": "number",
+            "title": "电价（每千瓦时）",
+            "minimum": 0
+          },
+          "co2_factor": {
+            "type": "number",
+            "title": "碳排放系数",
+            "minimum": 0
+          },
+          "timezone": {
+            "type": "string",
+            "title": "时区"
+          },
+          "ups_realpower_nominal": {
+            "type": "integer",
+            "title": "额定有功功率（W）",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "currency",
+          "price_per_kwh",
+          "co2_factor"
+        ]
+      },
+      "source": "core.options.api_options.save_variables_config"
+    },
+    {
+      "id": "post-delete_config-de4d7",
+      "group": "nut_config",
+      "title": "重置接入配置",
+      "method": "POST",
+      "path": "/nut_config/api/delete-config",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut_config.routes.delete_config"
+    },
+    {
+      "id": "post-check_status-a7761",
+      "group": "nut_config",
+      "title": "检查接入状态",
+      "method": "POST",
+      "path": "/nut_config/api/nut/check",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut_config.routes.check_status"
+    },
+    {
+      "id": "get-get_nut_status-e5775",
+      "group": "nut_config",
+      "title": "NUT 服务状态",
+      "method": "GET",
+      "path": "/nut_config/api/nut/status",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut_config.routes.get_nut_status"
+    },
+    {
+      "id": "post-restart_application-eb984",
+      "group": "nut_config",
+      "title": "重启 Nutify",
+      "method": "POST",
+      "path": "/nut_config/api/restart",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut_config.api_nut_config.restart_application"
+    },
+    {
+      "id": "post-generate_config_preview-26070",
+      "group": "nut_config",
+      "title": "预览接入配置",
+      "method": "POST",
+      "path": "/nut_config/api/setup/generate-preview",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "title": "mode"
+          },
+          "monitoring_profile": {
+            "type": "string",
+            "title": "监控模式",
+            "enum": [
+              "single",
+              "multi"
+            ],
+            "default": "single"
+          },
+          "multi_topology": {
+            "type": "string",
+            "title": "设备拓扑"
+          },
+          "multi_targets": {
+            "type": "array",
+            "title": "设备列表",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "title": "名称"
+                },
+                "ups_name": {
+                  "type": "string",
+                  "title": "UPS 标识"
+                },
+                "connection_type": {
+                  "type": "string",
+                  "title": "连接类型",
+                  "enum": [
+                    "remote_nut",
+                    "local_usb_serial",
+                    "local_network_driver"
+                  ]
+                },
+                "host": {
+                  "type": "string",
+                  "title": "服务器地址"
+                },
+                "port": {
+                  "type": "integer",
+                  "title": "端口",
+                  "minimum": 1,
+                  "maximum": 65535
+                },
+                "nut_mode": {
+                  "type": "string",
+                  "title": "运行模式",
+                  "enum": [
+                    "netclient",
+                    "netserver",
+                    "standalone"
+                  ]
+                },
+                "monitor_username": {
+                  "type": "string",
+                  "title": "监控用户名"
+                },
+                "monitor_password": {
+                  "type": "string",
+                  "title": "监控密码"
+                },
+                "local_driver": {
+                  "type": "string",
+                  "title": "local_driver"
+                },
+                "local_port": {
+                  "type": "string",
+                  "title": "local_port"
+                },
+                "local_description": {
+                  "type": "string",
+                  "title": "local_description"
+                },
+                "snmp_version": {
+                  "type": "string",
+                  "title": "snmp_version"
+                },
+                "snmp_community": {
+                  "type": "string",
+                  "title": "snmp_community"
+                },
+                "snmp_secLevel": {
+                  "type": "string",
+                  "title": "snmp_secLevel"
+                },
+                "snmp_secName": {
+                  "type": "string",
+                  "title": "snmp_secName"
+                },
+                "snmp_authProtocol": {
+                  "type": "string",
+                  "title": "snmp_authProtocol"
+                },
+                "snmp_authPassword": {
+                  "type": "string",
+                  "title": "snmp_authPassword"
+                },
+                "snmp_privProtocol": {
+                  "type": "string",
+                  "title": "snmp_privProtocol"
+                },
+                "snmp_privPassword": {
+                  "type": "string",
+                  "title": "snmp_privPassword"
+                },
+                "usb_vendorid": {
+                  "type": "string",
+                  "title": "usb_vendorid"
+                },
+                "usb_productid": {
+                  "type": "string",
+                  "title": "usb_productid"
+                },
+                "usb_serial": {
+                  "type": "string",
+                  "title": "usb_serial"
+                },
+                "usb_vendor": {
+                  "type": "string",
+                  "title": "usb_vendor"
+                },
+                "usb_product": {
+                  "type": "string",
+                  "title": "usb_product"
+                },
+                "usb_bus": {
+                  "type": "string",
+                  "title": "usb_bus"
+                },
+                "usb_device": {
+                  "type": "string",
+                  "title": "usb_device"
+                },
+                "usb_busport": {
+                  "type": "string",
+                  "title": "usb_busport"
+                },
+                "timezone": {
+                  "type": "string",
+                  "title": "时区"
+                },
+                "currency": {
+                  "type": "string",
+                  "title": "币种"
+                },
+                "ups_realpower_nominal": {
+                  "type": "integer",
+                  "title": "额定有功功率（W）",
+                  "minimum": 0
+                },
+                "location_enabled": {
+                  "type": "boolean",
+                  "title": "启用位置信息"
+                },
+                "location_country": {
+                  "type": "string",
+                  "title": "国家"
+                },
+                "location_region": {
+                  "type": "string",
+                  "title": "省/州"
+                },
+                "location_city": {
+                  "type": "string",
+                  "title": "城市"
+                },
+                "location_postal_code": {
+                  "type": "string",
+                  "title": "邮编"
+                },
+                "location_address": {
+                  "type": "string",
+                  "title": "详细地址"
+                },
+                "location_latitude": {
+                  "type": "number",
+                  "title": "纬度"
+                },
+                "location_longitude": {
+                  "type": "number",
+                  "title": "经度"
+                }
+              },
+              "required": [
+                "ups_name",
+                "connection_type"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "ups_name": {
+            "type": "string",
+            "title": "UPS 标识",
+            "default": "ups"
+          },
+          "ups_driver": {
+            "type": "string",
+            "title": "UPS 驱动",
+            "default": "usbhid-ups"
+          },
+          "ups_port": {
+            "type": "string",
+            "title": "设备端口",
+            "default": "auto"
+          },
+          "ups_desc": {
+            "type": "string",
+            "title": "设备描述",
+            "default": ""
+          },
+          "server_address": {
+            "type": "string",
+            "title": "server_address",
+            "default": "127.0.0.1"
+          },
+          "raw_ups_config": {
+            "type": "string",
+            "title": "raw_ups_config",
+            "format": "multiline"
+          },
+          "monitor_username": {
+            "type": "string",
+            "title": "监控用户名",
+            "default": "monuser"
+          },
+          "monitor_password": {
+            "type": "string",
+            "title": "监控密码",
+            "default": "monpass"
+          },
+          "listen_address": {
+            "type": "string",
+            "title": "监听地址",
+            "default": "0.0.0.0"
+          },
+          "listen_port": {
+            "type": "string",
+            "title": "监听端口",
+            "default": "3493"
+          },
+          "admin_user": {
+            "type": "string",
+            "title": "管理用户名",
+            "default": "admin"
+          },
+          "admin_password": {
+            "type": "string",
+            "title": "管理密码",
+            "default": "adminpass"
+          },
+          "remote_user": {
+            "type": "string",
+            "title": "远程用户名",
+            "default": "monuser"
+          },
+          "remote_password": {
+            "type": "string",
+            "title": "远程密码",
+            "default": "monpass"
+          },
+          "remote_ups_name": {
+            "type": "string",
+            "title": "远程 UPS 标识",
+            "default": "ups"
+          },
+          "remote_host": {
+            "type": "string",
+            "title": "远程服务器",
+            "default": "localhost"
+          },
+          "remote_port": {
+            "type": "string",
+            "title": "远程端口",
+            "default": "3493"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut_config.routes.generate_config_preview"
+    },
+    {
+      "id": "get-get_available_drivers-dcd08",
+      "group": "nut_config",
+      "title": "驱动目录",
+      "method": "GET",
+      "path": "/nut_config/api/setup/get-available-drivers",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut_config.routes.get_available_drivers"
+    },
+    {
+      "id": "post-location_suggestions-f2ecb",
+      "group": "nut_config",
+      "title": "位置建议",
+      "method": "POST",
+      "path": "/nut_config/api/setup/location-suggestions",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "title": "limit",
+            "minimum": 0
+          },
+          "query": {
+            "type": "string",
+            "title": "query"
+          },
+          "location_address": {
+            "type": "string",
+            "title": "详细地址"
+          },
+          "location_city": {
+            "type": "string",
+            "title": "城市"
+          },
+          "location_region": {
+            "type": "string",
+            "title": "省/州"
+          },
+          "location_postal_code": {
+            "type": "string",
+            "title": "邮编"
+          },
+          "location_country": {
+            "type": "string",
+            "title": "国家"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut_config.routes.location_suggestions"
+    },
+    {
+      "id": "post-run_nut_scanner-25704",
+      "group": "nut_config",
+      "title": "扫描 UPS",
+      "method": "POST",
+      "path": "/nut_config/api/setup/run-nut-scanner",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "scan_types": {
+            "type": "array",
+            "title": "scan_types",
+            "items": {
+              "type": "string"
+            }
+          },
+          "current_ups_name": {
+            "type": "string",
+            "title": "current_ups_name",
+            "default": "ups"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut_config.routes.run_nut_scanner"
+    },
+    {
+      "id": "post-save_config-ee555",
+      "group": "nut_config",
+      "title": "应用接入配置",
+      "method": "POST",
+      "path": "/nut_config/api/setup/save-config",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "nut_mode": {
+            "type": "string",
+            "title": "运行模式",
+            "enum": [
+              "netclient",
+              "netserver",
+              "standalone"
+            ],
+            "default": "standalone"
+          },
+          "connection_scenario": {
+            "type": "string",
+            "title": "connection_scenario",
+            "default": "local_usb"
+          },
+          "timezone_explicit": {
+            "type": "string",
+            "title": "timezone_explicit"
+          },
+          "monitoring_profile": {
+            "type": "string",
+            "title": "监控模式",
+            "enum": [
+              "single",
+              "multi"
+            ]
+          },
+          "multi_topology": {
+            "type": "string",
+            "title": "设备拓扑"
+          },
+          "multi_targets": {
+            "type": "array",
+            "title": "设备列表",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "title": "名称"
+                },
+                "ups_name": {
+                  "type": "string",
+                  "title": "UPS 标识"
+                },
+                "connection_type": {
+                  "type": "string",
+                  "title": "连接类型",
+                  "enum": [
+                    "remote_nut",
+                    "local_usb_serial",
+                    "local_network_driver"
+                  ]
+                },
+                "host": {
+                  "type": "string",
+                  "title": "服务器地址"
+                },
+                "port": {
+                  "type": "integer",
+                  "title": "端口",
+                  "minimum": 1,
+                  "maximum": 65535
+                },
+                "nut_mode": {
+                  "type": "string",
+                  "title": "运行模式",
+                  "enum": [
+                    "netclient",
+                    "netserver",
+                    "standalone"
+                  ]
+                },
+                "monitor_username": {
+                  "type": "string",
+                  "title": "监控用户名"
+                },
+                "monitor_password": {
+                  "type": "string",
+                  "title": "监控密码"
+                },
+                "local_driver": {
+                  "type": "string",
+                  "title": "local_driver"
+                },
+                "local_port": {
+                  "type": "string",
+                  "title": "local_port"
+                },
+                "local_description": {
+                  "type": "string",
+                  "title": "local_description"
+                },
+                "snmp_version": {
+                  "type": "string",
+                  "title": "snmp_version"
+                },
+                "snmp_community": {
+                  "type": "string",
+                  "title": "snmp_community"
+                },
+                "snmp_secLevel": {
+                  "type": "string",
+                  "title": "snmp_secLevel"
+                },
+                "snmp_secName": {
+                  "type": "string",
+                  "title": "snmp_secName"
+                },
+                "snmp_authProtocol": {
+                  "type": "string",
+                  "title": "snmp_authProtocol"
+                },
+                "snmp_authPassword": {
+                  "type": "string",
+                  "title": "snmp_authPassword"
+                },
+                "snmp_privProtocol": {
+                  "type": "string",
+                  "title": "snmp_privProtocol"
+                },
+                "snmp_privPassword": {
+                  "type": "string",
+                  "title": "snmp_privPassword"
+                },
+                "usb_vendorid": {
+                  "type": "string",
+                  "title": "usb_vendorid"
+                },
+                "usb_productid": {
+                  "type": "string",
+                  "title": "usb_productid"
+                },
+                "usb_serial": {
+                  "type": "string",
+                  "title": "usb_serial"
+                },
+                "usb_vendor": {
+                  "type": "string",
+                  "title": "usb_vendor"
+                },
+                "usb_product": {
+                  "type": "string",
+                  "title": "usb_product"
+                },
+                "usb_bus": {
+                  "type": "string",
+                  "title": "usb_bus"
+                },
+                "usb_device": {
+                  "type": "string",
+                  "title": "usb_device"
+                },
+                "usb_busport": {
+                  "type": "string",
+                  "title": "usb_busport"
+                },
+                "timezone": {
+                  "type": "string",
+                  "title": "时区"
+                },
+                "currency": {
+                  "type": "string",
+                  "title": "币种"
+                },
+                "ups_realpower_nominal": {
+                  "type": "integer",
+                  "title": "额定有功功率（W）",
+                  "minimum": 0
+                },
+                "location_enabled": {
+                  "type": "boolean",
+                  "title": "启用位置信息"
+                },
+                "location_country": {
+                  "type": "string",
+                  "title": "国家"
+                },
+                "location_region": {
+                  "type": "string",
+                  "title": "省/州"
+                },
+                "location_city": {
+                  "type": "string",
+                  "title": "城市"
+                },
+                "location_postal_code": {
+                  "type": "string",
+                  "title": "邮编"
+                },
+                "location_address": {
+                  "type": "string",
+                  "title": "详细地址"
+                },
+                "location_latitude": {
+                  "type": "number",
+                  "title": "纬度"
+                },
+                "location_longitude": {
+                  "type": "number",
+                  "title": "经度"
+                }
+              },
+              "required": [
+                "ups_name",
+                "connection_type"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "ups_realpower_nominal": {
+            "type": "integer",
+            "title": "额定有功功率（W）",
+            "minimum": 0
+          },
+          "additional_users": {
+            "type": "array",
+            "title": "其他 NUT 用户",
+            "items": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "type": "string",
+                  "title": "用户名"
+                },
+                "password": {
+                  "type": "string",
+                  "title": "密码"
+                },
+                "role": {
+                  "type": "string",
+                  "title": "角色",
+                  "enum": [
+                    "administrator",
+                    "user"
+                  ]
+                }
+              },
+              "additionalProperties": true
+            }
+          },
+          "ups_conf": {
+            "type": "string",
+            "title": "ups_conf",
+            "format": "multiline"
+          },
+          "nut_conf": {
+            "type": "string",
+            "title": "nut_conf",
+            "format": "multiline"
+          },
+          "upsd_conf": {
+            "type": "string",
+            "title": "upsd_conf",
+            "format": "multiline"
+          },
+          "upsd_users": {
+            "type": "string",
+            "title": "upsd_users",
+            "format": "multiline"
+          },
+          "upsmon_conf": {
+            "type": "string",
+            "title": "upsmon_conf",
+            "format": "multiline"
+          },
+          "ups_name": {
+            "type": "string",
+            "title": "UPS 标识",
+            "default": "ups"
+          },
+          "ups_host": {
+            "type": "string",
+            "title": "ups_host",
+            "default": "localhost"
+          },
+          "usb_vendorid": {
+            "type": "string",
+            "title": "usb_vendorid"
+          },
+          "usb_productid": {
+            "type": "string",
+            "title": "usb_productid"
+          },
+          "raw_ups_config": {
+            "type": "string",
+            "title": "raw_ups_config",
+            "format": "multiline"
+          },
+          "monitor_username": {
+            "type": "string",
+            "title": "监控用户名"
+          },
+          "remote_user": {
+            "type": "string",
+            "title": "远程用户名",
+            "default": "monuser"
+          },
+          "monitor_password": {
+            "type": "string",
+            "title": "监控密码"
+          },
+          "remote_password": {
+            "type": "string",
+            "title": "远程密码",
+            "default": "monpass"
+          },
+          "dashboard_admin_username": {
+            "type": "string",
+            "title": "dashboard_admin_username"
+          },
+          "dashboard_admin_password": {
+            "type": "string",
+            "title": "dashboard_admin_password"
+          },
+          "nut.conf": {
+            "type": "string",
+            "title": "nut.conf",
+            "default": "",
+            "format": "multiline"
+          },
+          "ups.conf": {
+            "type": "string",
+            "title": "ups.conf",
+            "default": "",
+            "format": "multiline"
+          },
+          "upsd.conf": {
+            "type": "string",
+            "title": "upsd.conf",
+            "default": "",
+            "format": "multiline"
+          },
+          "upsd.users": {
+            "type": "string",
+            "title": "upsd.users",
+            "default": "",
+            "format": "multiline"
+          },
+          "upsmon.conf": {
+            "type": "string",
+            "title": "upsmon.conf",
+            "default": "",
+            "format": "multiline"
+          },
+          "driver": {
+            "type": "string",
+            "title": "driver"
+          },
+          "serial_baudrate": {
+            "type": "string",
+            "title": "serial_baudrate"
+          },
+          "currency": {
+            "type": "string",
+            "title": "币种"
+          },
+          "polling_interval": {
+            "type": "integer",
+            "title": "采样间隔（秒）",
+            "minimum": 0
+          },
+          "server_name": {
+            "type": "string",
+            "title": "实例名称"
+          },
+          "timezone": {
+            "type": "string",
+            "title": "时区"
+          },
+          "ups_driver": {
+            "type": "string",
+            "title": "UPS 驱动",
+            "default": "usbhid-ups"
+          },
+          "ups_port": {
+            "type": "string",
+            "title": "设备端口",
+            "default": "auto"
+          },
+          "ups_desc": {
+            "type": "string",
+            "title": "设备描述",
+            "default": "Network UPS"
+          },
+          "server_address": {
+            "type": "string",
+            "title": "server_address",
+            "default": "127.0.0.1"
+          },
+          "port": {
+            "type": "integer",
+            "title": "端口",
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "snmp_version": {
+            "type": "string",
+            "title": "snmp_version",
+            "default": "v1"
+          },
+          "snmp_community": {
+            "type": "string",
+            "title": "snmp_community",
+            "default": "public"
+          },
+          "listen_address": {
+            "type": "string",
+            "title": "监听地址",
+            "default": "0.0.0.0"
+          },
+          "listen_port": {
+            "type": "string",
+            "title": "监听端口",
+            "default": "3493"
+          },
+          "admin_user": {
+            "type": "string",
+            "title": "管理用户名",
+            "default": "admin"
+          },
+          "admin_password": {
+            "type": "string",
+            "title": "管理密码",
+            "default": ""
+          },
+          "remote_port": {
+            "type": "string",
+            "title": "远程端口",
+            "default": "3493"
+          },
+          "remote_ups_name": {
+            "type": "string",
+            "title": "远程 UPS 标识",
+            "default": "ups"
+          },
+          "remote_host": {
+            "type": "string",
+            "title": "远程服务器",
+            "default": "localhost"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut_config.routes.save_config"
+    },
+    {
+      "id": "post-test_config-ecde3",
+      "group": "nut_config",
+      "title": "测试接入配置",
+      "method": "POST",
+      "path": "/nut_config/api/setup/test-configuration",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "nut_conf": {
+            "type": "string",
+            "title": "nut_conf",
+            "format": "multiline"
+          },
+          "upsmon_conf": {
+            "type": "string",
+            "title": "upsmon_conf",
+            "default": "",
+            "format": "multiline"
+          },
+          "ups_conf": {
+            "type": "string",
+            "title": "ups_conf",
+            "default": "",
+            "format": "multiline"
+          },
+          "multi_targets": {
+            "type": "array",
+            "title": "设备列表",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "title": "名称"
+                },
+                "ups_name": {
+                  "type": "string",
+                  "title": "UPS 标识"
+                },
+                "connection_type": {
+                  "type": "string",
+                  "title": "连接类型",
+                  "enum": [
+                    "remote_nut",
+                    "local_usb_serial",
+                    "local_network_driver"
+                  ]
+                },
+                "host": {
+                  "type": "string",
+                  "title": "服务器地址"
+                },
+                "port": {
+                  "type": "integer",
+                  "title": "端口",
+                  "minimum": 1,
+                  "maximum": 65535
+                },
+                "nut_mode": {
+                  "type": "string",
+                  "title": "运行模式",
+                  "enum": [
+                    "netclient",
+                    "netserver",
+                    "standalone"
+                  ]
+                },
+                "monitor_username": {
+                  "type": "string",
+                  "title": "监控用户名"
+                },
+                "monitor_password": {
+                  "type": "string",
+                  "title": "监控密码"
+                },
+                "local_driver": {
+                  "type": "string",
+                  "title": "local_driver"
+                },
+                "local_port": {
+                  "type": "string",
+                  "title": "local_port"
+                },
+                "local_description": {
+                  "type": "string",
+                  "title": "local_description"
+                },
+                "snmp_version": {
+                  "type": "string",
+                  "title": "snmp_version"
+                },
+                "snmp_community": {
+                  "type": "string",
+                  "title": "snmp_community"
+                },
+                "snmp_secLevel": {
+                  "type": "string",
+                  "title": "snmp_secLevel"
+                },
+                "snmp_secName": {
+                  "type": "string",
+                  "title": "snmp_secName"
+                },
+                "snmp_authProtocol": {
+                  "type": "string",
+                  "title": "snmp_authProtocol"
+                },
+                "snmp_authPassword": {
+                  "type": "string",
+                  "title": "snmp_authPassword"
+                },
+                "snmp_privProtocol": {
+                  "type": "string",
+                  "title": "snmp_privProtocol"
+                },
+                "snmp_privPassword": {
+                  "type": "string",
+                  "title": "snmp_privPassword"
+                },
+                "usb_vendorid": {
+                  "type": "string",
+                  "title": "usb_vendorid"
+                },
+                "usb_productid": {
+                  "type": "string",
+                  "title": "usb_productid"
+                },
+                "usb_serial": {
+                  "type": "string",
+                  "title": "usb_serial"
+                },
+                "usb_vendor": {
+                  "type": "string",
+                  "title": "usb_vendor"
+                },
+                "usb_product": {
+                  "type": "string",
+                  "title": "usb_product"
+                },
+                "usb_bus": {
+                  "type": "string",
+                  "title": "usb_bus"
+                },
+                "usb_device": {
+                  "type": "string",
+                  "title": "usb_device"
+                },
+                "usb_busport": {
+                  "type": "string",
+                  "title": "usb_busport"
+                },
+                "timezone": {
+                  "type": "string",
+                  "title": "时区"
+                },
+                "currency": {
+                  "type": "string",
+                  "title": "币种"
+                },
+                "ups_realpower_nominal": {
+                  "type": "integer",
+                  "title": "额定有功功率（W）",
+                  "minimum": 0
+                },
+                "location_enabled": {
+                  "type": "boolean",
+                  "title": "启用位置信息"
+                },
+                "location_country": {
+                  "type": "string",
+                  "title": "国家"
+                },
+                "location_region": {
+                  "type": "string",
+                  "title": "省/州"
+                },
+                "location_city": {
+                  "type": "string",
+                  "title": "城市"
+                },
+                "location_postal_code": {
+                  "type": "string",
+                  "title": "邮编"
+                },
+                "location_address": {
+                  "type": "string",
+                  "title": "详细地址"
+                },
+                "location_latitude": {
+                  "type": "number",
+                  "title": "纬度"
+                },
+                "location_longitude": {
+                  "type": "number",
+                  "title": "经度"
+                }
+              },
+              "required": [
+                "ups_name",
+                "connection_type"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut_config.routes.test_config"
+    },
+    {
+      "id": "post-test_setup_target-3ef2f",
+      "group": "nut_config",
+      "title": "测试接入目标",
+      "method": "POST",
+      "path": "/nut_config/api/setup/test-target",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "名称"
+          },
+          "ups_name": {
+            "type": "string",
+            "title": "UPS 标识"
+          },
+          "connection_type": {
+            "type": "string",
+            "title": "连接类型",
+            "enum": [
+              "remote_nut",
+              "local_usb_serial",
+              "local_network_driver"
+            ]
+          },
+          "host": {
+            "type": "string",
+            "title": "服务器地址"
+          },
+          "port": {
+            "type": "integer",
+            "title": "端口",
+            "minimum": 1,
+            "maximum": 65535
+          },
+          "nut_mode": {
+            "type": "string",
+            "title": "运行模式",
+            "enum": [
+              "netclient",
+              "netserver",
+              "standalone"
+            ]
+          },
+          "monitor_username": {
+            "type": "string",
+            "title": "监控用户名"
+          },
+          "monitor_password": {
+            "type": "string",
+            "title": "监控密码"
+          },
+          "local_driver": {
+            "type": "string",
+            "title": "local_driver"
+          },
+          "local_port": {
+            "type": "string",
+            "title": "local_port"
+          },
+          "local_description": {
+            "type": "string",
+            "title": "local_description"
+          },
+          "snmp_version": {
+            "type": "string",
+            "title": "snmp_version"
+          },
+          "snmp_community": {
+            "type": "string",
+            "title": "snmp_community"
+          },
+          "snmp_secLevel": {
+            "type": "string",
+            "title": "snmp_secLevel"
+          },
+          "snmp_secName": {
+            "type": "string",
+            "title": "snmp_secName"
+          },
+          "snmp_authProtocol": {
+            "type": "string",
+            "title": "snmp_authProtocol"
+          },
+          "snmp_authPassword": {
+            "type": "string",
+            "title": "snmp_authPassword"
+          },
+          "snmp_privProtocol": {
+            "type": "string",
+            "title": "snmp_privProtocol"
+          },
+          "snmp_privPassword": {
+            "type": "string",
+            "title": "snmp_privPassword"
+          },
+          "usb_vendorid": {
+            "type": "string",
+            "title": "usb_vendorid"
+          },
+          "usb_productid": {
+            "type": "string",
+            "title": "usb_productid"
+          },
+          "usb_serial": {
+            "type": "string",
+            "title": "usb_serial"
+          },
+          "usb_vendor": {
+            "type": "string",
+            "title": "usb_vendor"
+          },
+          "usb_product": {
+            "type": "string",
+            "title": "usb_product"
+          },
+          "usb_bus": {
+            "type": "string",
+            "title": "usb_bus"
+          },
+          "usb_device": {
+            "type": "string",
+            "title": "usb_device"
+          },
+          "usb_busport": {
+            "type": "string",
+            "title": "usb_busport"
+          },
+          "timezone": {
+            "type": "string",
+            "title": "时区"
+          },
+          "currency": {
+            "type": "string",
+            "title": "币种"
+          },
+          "ups_realpower_nominal": {
+            "type": "integer",
+            "title": "额定有功功率（W）",
+            "minimum": 0
+          },
+          "location_enabled": {
+            "type": "boolean",
+            "title": "启用位置信息"
+          },
+          "location_country": {
+            "type": "string",
+            "title": "国家"
+          },
+          "location_region": {
+            "type": "string",
+            "title": "省/州"
+          },
+          "location_city": {
+            "type": "string",
+            "title": "城市"
+          },
+          "location_postal_code": {
+            "type": "string",
+            "title": "邮编"
+          },
+          "location_address": {
+            "type": "string",
+            "title": "详细地址"
+          },
+          "location_latitude": {
+            "type": "number",
+            "title": "纬度"
+          },
+          "location_longitude": {
+            "type": "number",
+            "title": "经度"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut_config.routes.test_setup_target"
+    },
+    {
+      "id": "post-validate_setup_location-b4967",
+      "group": "nut_config",
+      "title": "校验位置",
+      "method": "POST",
+      "path": "/nut_config/api/setup/validate-location",
+      "read": false,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "location_country": {
+            "type": "string",
+            "title": "国家"
+          },
+          "location_region": {
+            "type": "string",
+            "title": "省/州"
+          },
+          "location_city": {
+            "type": "string",
+            "title": "城市"
+          },
+          "location_postal_code": {
+            "type": "string",
+            "title": "邮编"
+          },
+          "location_address": {
+            "type": "string",
+            "title": "详细地址"
+          },
+          "location": {
+            "type": "string",
+            "title": "位置名称"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.nut_config.routes.validate_setup_location"
+    },
+    {
+      "id": "get-api_system_info_compat-350a2",
+      "group": "system",
+      "title": "系统信息",
+      "method": "GET",
+      "path": "/api/system/info",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.api_system_info_compat"
+    },
+    {
+      "id": "get-system_stats-480a3",
+      "group": "system_stats",
+      "title": "系统资源",
+      "method": "GET",
+      "path": "/api/system_stats",
+      "read": true,
+      "scope": false,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.api.system_stats"
+    },
+    {
+      "id": "get-get_dynamic_table-dd226",
+      "group": "table",
+      "title": "历史采样数据",
+      "method": "GET",
+      "path": "/api/table/dynamic",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "type": "integer",
+            "title": "记录条数",
+            "default": "all",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.infoapi.api_info.get_dynamic_table"
+    },
+    {
+      "id": "get-get_events_table_route-367ca",
+      "group": "table",
+      "title": "事件列表",
+      "method": "GET",
+      "path": "/api/table/events",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "type": "integer",
+            "title": "记录条数",
+            "default": "all",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.events.api_events.get_events_table_route"
+    },
+    {
+      "id": "post-get_events_table_route-367ca",
+      "group": "table",
+      "title": "事件列表",
+      "method": "POST",
+      "path": "/api/table/events",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "type": "integer",
+            "title": "记录条数",
+            "default": "all",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "integer",
+            "title": "事件 ID",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.events.api_events.get_events_table_route"
+    },
+    {
+      "id": "get-get_static_table-bc0e7",
+      "group": "table",
+      "title": "设备静态信息",
+      "method": "GET",
+      "path": "/api/table/static",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.infoapi.api_info.get_static_table"
+    },
+    {
+      "id": "get-get_ups_json-8cfe2",
+      "group": "ups",
+      "title": "导出 UPS 数据",
+      "method": "GET",
+      "path": "/api/ups/json",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.options.api_options.get_ups_json"
+    },
+    {
+      "id": "post-api_clear_command_logs-0c85f",
+      "group": "upscmd",
+      "title": "清空命令历史",
+      "method": "POST",
+      "path": "/api/upscmd/clear/logs",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.upscmd.api_upscmd.api_clear_command_logs"
+    },
+    {
+      "id": "post-execute_ups_command_api-08c50",
+      "group": "upscmd",
+      "title": "执行控制命令",
+      "method": "POST",
+      "path": "/api/upscmd/execute",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "title": "控制命令"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "command"
+        ]
+      },
+      "source": "core.upscmd.api_upscmd.execute_ups_command_api"
+    },
+    {
+      "id": "get-get_ups_commands_api-8eb75",
+      "group": "upscmd",
+      "title": "支持的控制命令",
+      "method": "GET",
+      "path": "/api/upscmd/list",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.upscmd.api_upscmd.get_ups_commands_api"
+    },
+    {
+      "id": "get-api_get_command_logs-fc024",
+      "group": "upscmd",
+      "title": "命令历史",
+      "method": "GET",
+      "path": "/api/upscmd/logs",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.upscmd.api_upscmd.api_get_command_logs"
+    },
+    {
+      "id": "get-api_get_command_stats-5878d",
+      "group": "upscmd",
+      "title": "命令统计",
+      "method": "GET",
+      "path": "/api/upscmd/stats",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.upscmd.api_upscmd.api_get_command_stats"
+    },
+    {
+      "id": "post-api_upsrw_clear_history-9e045",
+      "group": "upsrw",
+      "title": "清空变量历史",
+      "method": "POST",
+      "path": "/api/upsrw/clear-history",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.upsrw.api_upsrw.api_upsrw_clear_history"
+    },
+    {
+      "id": "get-api_upsrw_history-6604c",
+      "group": "upsrw",
+      "title": "变量变更历史",
+      "method": "GET",
+      "path": "/api/upsrw/history",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.upsrw.api_upsrw.api_upsrw_history"
+    },
+    {
+      "id": "get-api_upsrw_history_variable-2b537",
+      "group": "upsrw",
+      "title": "单变量历史",
+      "method": "GET",
+      "path": "/api/upsrw/history/<variable>",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "variable": {
+            "type": "string",
+            "title": "变量名称"
+          }
+        },
+        "required": [
+          "variable"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.upsrw.api_upsrw.api_upsrw_history_variable"
+    },
+    {
+      "id": "get-api_upsrw_list-96606",
+      "group": "upsrw",
+      "title": "可写变量",
+      "method": "GET",
+      "path": "/api/upsrw/list",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.upsrw.api_upsrw.api_upsrw_list"
+    },
+    {
+      "id": "post-api_upsrw_set-cfa51",
+      "group": "upsrw",
+      "title": "修改变量",
+      "method": "POST",
+      "path": "/api/upsrw/set",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "名称"
+          },
+          "value": {
+            "type": "string",
+            "title": "值"
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "name",
+          "value"
+        ]
+      },
+      "source": "core.upsrw.api_upsrw.api_upsrw_set"
+    },
+    {
+      "id": "get-get_events-e87a0",
+      "group": "upsmon",
+      "title": "UPS 事件",
+      "method": "GET",
+      "path": "/api/upsmon/events",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "rows": {
+            "type": "integer",
+            "title": "记录条数",
+            "default": "all",
+            "minimum": 0
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.upsmon.api_upsmon.get_events"
+    },
+    {
+      "id": "post-handle_acknowledge_event-ac25c",
+      "group": "upsmon",
+      "title": "确认事件",
+      "method": "POST",
+      "path": "/api/upsmon/events/<int:event_id>/acknowledge",
+      "read": false,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "integer",
+            "title": "事件 ID",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "event_id"
+        ],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.upsmon.api_upsmon.handle_acknowledge_event"
+    },
+    {
+      "id": "get-get_history-ee78d",
+      "group": "upsmon",
+      "title": "UPS 历史",
+      "method": "GET",
+      "path": "/api/upsmon/history",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.upsmon.api_upsmon.get_history"
+    },
+    {
+      "id": "get-api_voltage_has_hour_data-2dfcd",
+      "group": "voltage",
+      "title": "电压采样可用性",
+      "method": "GET",
+      "path": "/api/voltage/has_hour_data",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.voltage.api_voltage.api_voltage_has_hour_data"
+    },
+    {
+      "id": "get-api_voltage_history-b2b2c",
+      "group": "voltage",
+      "title": "电压历史",
+      "method": "GET",
+      "path": "/api/voltage/history",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string",
+            "title": "统计周期",
+            "default": "day"
+          },
+          "from_time": {
+            "type": "string",
+            "title": "开始时间（ISO 8601）"
+          },
+          "to_time": {
+            "type": "string",
+            "title": "结束时间（ISO 8601）"
+          },
+          "selected_day": {
+            "type": "string",
+            "title": "指定日期"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.voltage.api_voltage.api_voltage_history"
+    },
+    {
+      "id": "get-get_voltage_metrics-5f60e",
+      "group": "voltage",
+      "title": "电压读数",
+      "method": "GET",
+      "path": "/api/voltage/metrics",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.voltage.api_voltage.get_voltage_metrics"
+    },
+    {
+      "id": "get-api_voltage_stats-f9aca",
+      "group": "voltage",
+      "title": "电压统计",
+      "method": "GET",
+      "path": "/api/voltage/stats",
+      "read": true,
+      "scope": true,
+      "binary": false,
+      "params": {
+        "type": "object",
+        "properties": {},
+        "required": [],
+        "additionalProperties": false
+      },
+      "query": {
+        "type": "object",
+        "properties": {
+          "period": {
+            "type": "string",
+            "title": "统计周期",
+            "default": "day"
+          },
+          "from_time": {
+            "type": "string",
+            "title": "开始时间（ISO 8601）"
+          },
+          "to_time": {
+            "type": "string",
+            "title": "结束时间（ISO 8601）"
+          }
+        },
+        "additionalProperties": true,
+        "required": []
+      },
+      "body": {
+        "type": "object",
+        "properties": {},
+        "additionalProperties": true,
+        "required": []
+      },
+      "source": "core.voltage.api_voltage.api_voltage_stats"
+    }
+  ],
+  "excluded": [
+    {
+      "path": "/api/about/image",
+      "methods": [
+        "GET"
+      ],
+      "reason": "登录与当前设备选择由 InfraPilot 提供；内部界面接口不转发"
+    },
+    {
+      "path": "/auth/api/change-password",
+      "methods": [
+        "POST"
+      ],
+      "reason": "登录与当前设备选择由 InfraPilot 提供；内部界面接口不转发"
+    },
+    {
+      "path": "/auth/api/change-username",
+      "methods": [
+        "POST"
+      ],
+      "reason": "登录与当前设备选择由 InfraPilot 提供；内部界面接口不转发"
+    },
+    {
+      "path": "/auth/api/forgot-password",
+      "methods": [
+        "POST"
+      ],
+      "reason": "登录与当前设备选择由 InfraPilot 提供；内部界面接口不转发"
+    },
+    {
+      "path": "/auth/api/login",
+      "methods": [
+        "POST"
+      ],
+      "reason": "登录与当前设备选择由 InfraPilot 提供；内部界面接口不转发"
+    },
+    {
+      "path": "/auth/api/logout",
+      "methods": [
+        "POST"
+      ],
+      "reason": "登录与当前设备选择由 InfraPilot 提供；内部界面接口不转发"
+    },
+    {
+      "path": "/auth/api/oidc",
+      "methods": [
+        "GET"
+      ],
+      "reason": "登录与当前设备选择由 InfraPilot 提供；内部界面接口不转发"
+    },
+    {
+      "path": "/auth/api/status",
+      "methods": [
+        "GET"
+      ],
+      "reason": "登录与当前设备选择由 InfraPilot 提供；内部界面接口不转发"
+    },
+    {
+      "path": "/api/frontend/bootstrap",
+      "methods": [
+        "GET"
+      ],
+      "reason": "登录与当前设备选择由 InfraPilot 提供；内部界面接口不转发"
+    },
+    {
+      "path": "/api/frontend/catalog",
+      "methods": [
+        "GET"
+      ],
+      "reason": "登录与当前设备选择由 InfraPilot 提供；内部界面接口不转发"
+    },
+    {
+      "path": "/api/log/clear",
+      "methods": [
+        "POST"
+      ],
+      "reason": "旧接口或通用配置入口；使用对应专用功能接口"
+    },
+    {
+      "path": "/api/log/download",
+      "methods": [
+        "GET"
+      ],
+      "reason": "旧接口或通用配置入口；使用对应专用功能接口"
+    },
+    {
+      "path": "/api/log/settings",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reason": "旧接口或通用配置入口；使用对应专用功能接口"
+    },
+    {
+      "path": "/api/multi-nut/active-target",
+      "methods": [
+        "DELETE"
+      ],
+      "reason": "登录与当前设备选择由 InfraPilot 提供；内部界面接口不转发"
+    },
+    {
+      "path": "/api/multi-nut/active-target",
+      "methods": [
+        "GET"
+      ],
+      "reason": "登录与当前设备选择由 InfraPilot 提供；内部界面接口不转发"
+    },
+    {
+      "path": "/api/multi-nut/active-target",
+      "methods": [
+        "POST"
+      ],
+      "reason": "登录与当前设备选择由 InfraPilot 提供；内部界面接口不转发"
+    },
+    {
+      "path": "/api/multi-nut/targets/<int:target_id>/notifycmd-script",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知发送脚本：用户要求不集成"
+    },
+    {
+      "path": "/api/ntfy/config",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/ntfy/config/<int:config_id>",
+      "methods": [
+        "DELETE"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/ntfy/config/<int:config_id>",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/ntfy/config/<int:config_id>/default",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/ntfy/configs",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/ntfy/setting",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/ntfy/settings",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/ntfy/test",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/ntfy/test/<int:config_id>",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/nut_event",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/options/database/backup",
+      "methods": [
+        "POST"
+      ],
+      "reason": "旧接口或通用配置入口；使用对应专用功能接口"
+    },
+    {
+      "path": "/api/options/database/optimize",
+      "methods": [
+        "POST"
+      ],
+      "reason": "旧接口或通用配置入口；使用对应专用功能接口"
+    },
+    {
+      "path": "/api/options/database/stats",
+      "methods": [
+        "GET"
+      ],
+      "reason": "旧接口或通用配置入口；使用对应专用功能接口"
+    },
+    {
+      "path": "/api/options/database/vacuum",
+      "methods": [
+        "POST"
+      ],
+      "reason": "旧接口或通用配置入口；使用对应专用功能接口"
+    },
+    {
+      "path": "/api/options/logs",
+      "methods": [
+        "GET"
+      ],
+      "reason": "旧接口或通用配置入口；使用对应专用功能接口"
+    },
+    {
+      "path": "/api/options/logs/clear/<log_type>",
+      "methods": [
+        "DELETE"
+      ],
+      "reason": "旧接口或通用配置入口；使用对应专用功能接口"
+    },
+    {
+      "path": "/api/options/logs/download",
+      "methods": [
+        "GET"
+      ],
+      "reason": "旧接口或通用配置入口；使用对应专用功能接口"
+    },
+    {
+      "path": "/api/options/system",
+      "methods": [
+        "GET"
+      ],
+      "reason": "旧接口或通用配置入口；使用对应专用功能接口"
+    },
+    {
+      "path": "/api/options/variable-config",
+      "methods": [
+        "GET"
+      ],
+      "reason": "旧接口或通用配置入口；使用对应专用功能接口"
+    },
+    {
+      "path": "/api/report/schedule",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/report/schedule",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/report/schedule/<int:schedule_id>",
+      "methods": [
+        "DELETE"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/report/send",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reason": "旧接口或通用配置入口；使用对应专用功能接口"
+    },
+    {
+      "path": "/api/settings/<filename>",
+      "methods": [
+        "POST"
+      ],
+      "reason": "旧接口或通用配置入口；使用对应专用功能接口"
+    },
+    {
+      "path": "/api/settings/mail",
+      "methods": [
+        "DELETE"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/mail",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/mail",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/mail/<int:config_id>",
+      "methods": [
+        "DELETE"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/mail/<int:config_id>",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/mail/<int:config_id>",
+      "methods": [
+        "PUT"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/mail/<int:config_id>/test",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/mail/all",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/mail/providers",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/mail/providers",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/mail/providers/<provider>",
+      "methods": [
+        "DELETE"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/mail/providers/<provider>",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/mail/providers/<provider>",
+      "methods": [
+        "PUT"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/mail/test",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/nutify",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/nutify",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/nutify/by-email/<int:email_id>",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/nutify/single",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/report/disable",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/report/schedules",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/report/schedules/<int:schedule_id>",
+      "methods": [
+        "GET",
+        "PUT",
+        "DELETE"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/report/schedules/test",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/settings/test-notification",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/telegram/config",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/telegram/config/<int:config_id>",
+      "methods": [
+        "DELETE"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/telegram/config/<int:config_id>",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/telegram/config/<int:config_id>/default",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/telegram/configs",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/telegram/setting",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/telegram/settings",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/telegram/test",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/telegram/test/<int:config_id>",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/webhook/config",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/webhook/config/<int:config_id>",
+      "methods": [
+        "GET",
+        "POST",
+        "DELETE"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/webhook/config/<int:config_id>/default",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/webhook/configs",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/webhook/send",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/webhook/setting",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/webhook/settings",
+      "methods": [
+        "GET"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/webhook/test",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    },
+    {
+      "path": "/api/webhook/test/<int:config_id>",
+      "methods": [
+        "POST"
+      ],
+      "reason": "通知与报告发送：用户要求不集成"
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import createUpsWorkspace from "./ups-workspace";
 import { api, pretty, encode } from "./api";
 import { createGatewayForm } from "./gateway-form";
 import {
@@ -40,6 +41,8 @@ const blankReservation = {
 };
 const options = (items) => items.map(([value, text]) => ({ value, text }));
 export default function createWorkspace({ route, user, navigate }) {
+  if (route.startsWith("ups-"))
+    return createUpsWorkspace({ route, user, navigate });
   let data = null,
     zones = [],
     zone = sessionStorage.getItem("extjs-zone") || "",
